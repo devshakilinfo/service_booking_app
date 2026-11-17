@@ -30,7 +30,7 @@ UI and UX designed to strictly match the **ServiceHub** design mockup.
    - Status indicators: `Pending`, `Confirmed`, `Completed`, `Cancelled`.
    - Cancellation with reason recording for pending/confirmed appointments.
 6. **User Profile:**
-   - User profile matching UI mockups ("Roksana Akter").
+   - User profile ("Shakil Ahamed").
    - Profile updating (Name, Phone number) & Password change functionality.
 7. **🤖 AI Service Assistant:**
    - Secure backend-mediated AI assistant (No API keys exposed in Flutter).

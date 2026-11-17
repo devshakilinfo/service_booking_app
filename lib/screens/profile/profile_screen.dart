@@ -210,7 +210,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      user?.name ?? 'Roksana Akter',
+                      user?.name ?? 'Shakil Ahamed',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w800,
@@ -219,7 +219,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      user?.email ?? 'roksana@example.com',
+                      user?.email ?? 'shakil@example.com',
                       style: const TextStyle(
                         fontSize: 14,
                         color: AppColors.textSecondary,
