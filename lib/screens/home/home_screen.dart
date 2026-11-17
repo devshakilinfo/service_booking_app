@@ -62,13 +62,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: const Icon(Icons.home_repair_service_rounded, size: 22, color: AppColors.primary),
                         ),
                         const SizedBox(width: 8),
-                        const Text(
-                          'ServiceHub',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.primary,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'ServiceHub',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                            if (authProvider.currentUser != null)
+                              Text(
+                                'Hello, ${authProvider.currentUser!.name.split(' ').first}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textSecondary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                          ],
                         ),
                       ],
                     ),
