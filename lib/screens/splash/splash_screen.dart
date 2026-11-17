@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
+import '../../widgets/app_illustrations.dart';
 import '../auth/login_screen.dart';
 import '../main_navigation_screen.dart';
 import '../onboarding/onboarding_screen.dart';
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkAppEntry() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(milliseconds: 2200));
     if (!mounted) return;
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -55,63 +56,62 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F8F1),
+      backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(),
-              Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryUltraLight,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                      color: AppColors.primaryLight.withValues(alpha: 0.3),
-                      width: 2),
-                ),
-                child: const Icon(Icons.home_repair_service_rounded,
-                    size: 54, color: AppColors.primary),
+        child: Stack(
+          children: [
+            // Decorative subtle leaves in corner
+            Positioned(
+              top: 10,
+              left: 10,
+              child: Opacity(
+                opacity: 0.6,
+                child: Icon(Icons.eco_rounded, size: 40, color: AppColors.accent.withValues(alpha: 0.4)),
               ),
-              const SizedBox(height: 20),
-              const Text(
-                'ServiceHub',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.primary,
-                  letterSpacing: -0.5,
-                ),
+            ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(flex: 2),
+                  // Screen 1: ServiceHub House-with-leaf logo + Tagline
+                  const ServiceHubLogo(
+                    iconSize: 58,
+                    fontSize: 28,
+                    showTagline: true,
+                  ),
+                  const Spacer(flex: 2),
+                  // Screen 1: Charming House with green hill and trees illustration
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: HouseWithGardenIllustration(height: 150),
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Your Trusted\nService Booking Partner',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      height: 1.35,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const Spacer(flex: 1),
+                  // Screen 1: Circular loading indicator
+                  const SizedBox(
+                    width: 28,
+                    height: 28,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.8,
+                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.accent),
+                    ),
+                  ),
+                  const SizedBox(height: 36),
+                ],
               ),
-              const SizedBox(height: 6),
-              const Text(
-                'Book • Manage • Live Better',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textSecondary,
-                  letterSpacing: 0.5,
-                ),
-              ),
-              const Spacer(),
-              const CircularProgressIndicator(
-                strokeWidth: 2.5,
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Your Trusted Service Booking Partner',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 30),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/custom_text_field.dart';
+import '../admin/admin_dashboard_screen.dart';
 import '../auth/login_screen.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -11,26 +13,27 @@ class ProfileScreen extends StatelessWidget {
   void _showEditProfileDialog(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final user = authProvider.currentUser;
-    final nameController = TextEditingController(text: user?.name ?? '');
+    final nameController = TextEditingController(text: user?.name ?? 'Shakil Ahamed');
     final phoneController = TextEditingController(text: user?.phone ?? '');
 
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Edit Profile'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Edit Profile', style: TextStyle(fontWeight: FontWeight.w800)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomTextField(
               controller: nameController,
-              label: 'Full Name',
-              hint: 'Enter your name',
+              hint: 'Full Name',
+              prefixIcon: Icons.person_outline,
             ),
             const SizedBox(height: 12),
             CustomTextField(
               controller: phoneController,
-              label: 'Phone Number',
-              hint: '+1 234 567 8900',
+              hint: 'Phone Number',
+              prefixIcon: Icons.phone_outlined,
               keyboardType: TextInputType.phone,
             ),
           ],
@@ -38,10 +41,13 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
             onPressed: () async {
               Navigator.pop(ctx);
               final success = await authProvider.updateProfile(
@@ -51,17 +57,13 @@ class ProfileScreen extends StatelessWidget {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(success
-                        ? 'Profile updated successfully'
-                        : 'Failed to update profile'),
-                    backgroundColor:
-                        success ? AppColors.success : AppColors.error,
+                    content: Text(success ? 'Profile updated successfully' : 'Failed to update profile'),
+                    backgroundColor: success ? AppColors.statusConfirmed : AppColors.statusCancelled,
                   ),
                 );
               }
             },
-            child: const Text('Save Changes',
-                style: TextStyle(color: Colors.white)),
+            child: const Text('Save Changes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
           ),
         ],
       ),
@@ -76,21 +78,22 @@ class ProfileScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Change Password'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Change Password', style: TextStyle(fontWeight: FontWeight.w800)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomTextField(
               controller: currentPasswordController,
-              label: 'Current Password',
-              hint: 'Enter current password',
+              hint: 'Current Password',
+              prefixIcon: Icons.lock_outline,
               isPassword: true,
             ),
             const SizedBox(height: 12),
             CustomTextField(
               controller: newPasswordController,
-              label: 'New Password',
-              hint: 'Min 6 characters',
+              hint: 'New Password (min 6 chars)',
+              prefixIcon: Icons.lock_reset_outlined,
               isPassword: true,
             ),
           ],
@@ -98,16 +101,17 @@ class ProfileScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
             onPressed: () async {
               if (newPasswordController.text.length < 6) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content:
-                          Text('New password must be at least 6 characters')),
+                  const SnackBar(content: Text('New password must be at least 6 characters')),
                 );
                 return;
               }
@@ -122,13 +126,12 @@ class ProfileScreen extends StatelessWidget {
                     content: Text(success
                         ? 'Password updated successfully'
                         : (authProvider.errorMessage ?? 'Update failed')),
-                    backgroundColor:
-                        success ? AppColors.success : AppColors.error,
+                    backgroundColor: success ? AppColors.statusConfirmed : AppColors.statusCancelled,
                   ),
                 );
               }
             },
-            child: const Text('Update', style: TextStyle(color: Colors.white)),
+            child: const Text('Update', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
           ),
         ],
       ),
@@ -139,15 +142,19 @@ class ProfileScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Logout'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text('Logout', style: TextStyle(fontWeight: FontWeight.w800)),
         content: const Text('Are you sure you want to log out of ServiceHub?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.statusCancelled,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
             onPressed: () async {
               Navigator.pop(ctx);
               await Provider.of<AuthProvider>(context, listen: false).logout();
@@ -159,7 +166,7 @@ class ProfileScreen extends StatelessWidget {
                 );
               }
             },
-            child: const Text('Logout', style: TextStyle(color: Colors.white)),
+            child: const Text('Logout', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
           ),
         ],
       ),
@@ -172,14 +179,23 @@ class ProfileScreen extends StatelessWidget {
     final user = authProvider.currentUser;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FAF3),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: AppColors.textPrimary, size: 20),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          },
+        ),
         title: const Text(
           'My Profile',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,
           ),
@@ -188,31 +204,37 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
           child: Column(
             children: [
+              // Screen 11: Avatar and Name (Shakil Ahamed)
               Center(
                 child: Column(
                   children: [
                     Stack(
                       children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: AppColors.primaryUltraLight,
-                          backgroundImage: NetworkImage(
-                            user?.avatar.isNotEmpty == true
-                                ? user!.avatar
-                                : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColors.accent.withValues(alpha: 0.3), width: 2),
+                          ),
+                          child: const CircleAvatar(
+                            radius: 46,
+                            backgroundColor: AppColors.primaryUltraLight,
+                            child: Icon(Icons.person_rounded, size: 54, color: AppColors.primary),
                           ),
                         ),
-                        const Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: CircleAvatar(
-                            radius: 16,
-                            backgroundColor: AppColors.primary,
-                            child: Icon(Icons.camera_alt,
-                                size: 16, color: Colors.white),
+                        Positioned(
+                          bottom: 2,
+                          right: 2,
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: const BoxDecoration(
+                              color: AppColors.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.camera_alt_rounded, size: 14, color: Colors.white),
                           ),
                         ),
                       ],
@@ -232,60 +254,78 @@ class ProfileScreen extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 14,
                         color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 28),
+              // Menu Cards
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: AppColors.border),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.02),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Column(
                   children: [
                     _buildMenuItem(
-                      icon: Icons.edit_outlined,
+                      icon: Icons.edit_note_rounded,
                       title: 'Edit Profile',
                       onTap: () => _showEditProfileDialog(context),
                     ),
-                    _buildDivider(),
+                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
                     _buildMenuItem(
-                      icon: Icons.lock_outline,
+                      icon: Icons.lock_outline_rounded,
                       title: 'Change Password',
                       onTap: () => _showChangePasswordDialog(context),
                     ),
-                    _buildDivider(),
+                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
                     _buildMenuItem(
                       icon: Icons.settings_outlined,
                       title: 'App Settings',
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('App Version: 1.0.0 (Build 1)')),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const SettingsScreen()),
                         );
                       },
                     ),
-                    _buildDivider(),
+                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
                     _buildMenuItem(
-                      icon: Icons.help_outline,
+                      icon: Icons.dashboard_outlined,
+                      title: 'Admin Dashboard',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const AdminDashboardScreen()),
+                        );
+                      },
+                    ),
+                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
+                    _buildMenuItem(
+                      icon: Icons.help_outline_rounded,
                       title: 'Help & Support',
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'Support email: support@servicehub.com')),
+                          const SnackBar(content: Text('Support email: support@servicehub.com')),
                         );
                       },
                     ),
-                    _buildDivider(),
+                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
                     _buildMenuItem(
-                      icon: Icons.logout,
+                      icon: Icons.logout_rounded,
                       title: 'Logout',
-                      textColor: AppColors.error,
-                      iconColor: AppColors.error,
+                      textColor: AppColors.statusCancelled,
+                      iconColor: AppColors.statusCancelled,
                       showArrow: false,
                       onTap: () => _handleLogout(context),
                     ),
@@ -310,7 +350,7 @@ class ProfileScreen extends StatelessWidget {
   }) {
     return ListTile(
       onTap: onTap,
-      leading: Icon(icon, color: iconColor ?? AppColors.primary, size: 22),
+      leading: Icon(icon, color: iconColor ?? AppColors.textPrimary, size: 22),
       title: Text(
         title,
         style: TextStyle(
@@ -320,18 +360,9 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       trailing: showArrow
-          ? const Icon(Icons.chevron_right,
+          ? const Icon(Icons.chevron_right_rounded,
               color: AppColors.textLight, size: 20)
           : null,
     );
-  }
-
-  Widget _buildDivider() {
-    return const Divider(
-        height: 1,
-        thickness: 1,
-        color: AppColors.divider,
-        indent: 16,
-        endIndent: 16);
   }
 }

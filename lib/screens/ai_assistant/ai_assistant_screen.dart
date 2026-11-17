@@ -56,64 +56,75 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
     final aiProvider = Provider.of<AIAssistantProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FAF3),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: AppColors.primaryUltraLight,
-                shape: BoxShape.circle,
-                border: Border.all(
-                    color: AppColors.primaryLight.withValues(alpha: 0.3)),
-              ),
-              child: const Icon(Icons.smart_toy_outlined,
-                  size: 22, color: AppColors.primary),
-            ),
-            const SizedBox(width: 10),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'AI Service Assistant',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                Text(
-                  'Always here to help!',
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: AppColors.success,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: AppColors.textPrimary, size: 20),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          },
         ),
+        title: const Text(
+          'AI Service Assistant',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh_rounded,
-                color: AppColors.textSecondary),
+            icon: const Icon(Icons.refresh_rounded, color: AppColors.textSecondary),
             onPressed: () => aiProvider.clearChat(),
-            tooltip: 'Clear Conversation',
+            tooltip: 'Clear Chat',
           ),
         ],
       ),
       body: SafeArea(
         child: Column(
           children: [
+            // Screen 12 Header: Robot icon with "Always here to help!"
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                children: [
+                  Container(
+                    height: 48,
+                    width: 48,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE0E7FF),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xFFC7D2FE), width: 1.5),
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.smart_toy_rounded,
+                          size: 26, color: Color(0xFF4F46E5)),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  const Text(
+                    'Always here to help!',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 1, color: AppColors.divider),
+            // Chat Stream
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 itemCount: aiProvider.messages.length,
                 itemBuilder: (context, index) {
                   final msg = aiProvider.messages[index];
@@ -131,13 +142,12 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                       width: 14,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
                       ),
                     ),
                     SizedBox(width: 8),
                     Text(
-                      'AI Assistant is thinking...',
+                      'AI Assistant is typing...',
                       style: TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
@@ -146,24 +156,26 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                   ],
                 ),
               ),
+            // Quick prompts chips
             SizedBox(
               height: 38,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 itemCount: _quickPrompts.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    padding: const EdgeInsets.only(right: 8.0),
                     child: ActionChip(
                       label: Text(
                         _quickPrompts[index],
                         style: const TextStyle(
-                            fontSize: 12, color: AppColors.primary),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary),
                       ),
-                      backgroundColor: AppColors.primaryUltraLight,
-                      side: const BorderSide(
-                          color: AppColors.primaryLight, width: 0.8),
+                      backgroundColor: Colors.white,
+                      side: const BorderSide(color: AppColors.border),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18)),
                       onPressed: () => _sendMessage(_quickPrompts[index]),
@@ -173,6 +185,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
               ),
             ),
             const SizedBox(height: 8),
+            // Screen 12 Bottom Input Bar
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
@@ -189,41 +202,49 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: _messageController,
-                      decoration: InputDecoration(
-                        hintText: 'Type your message...',
-                        hintStyle: const TextStyle(
-                            color: AppColors.textLight, fontSize: 14),
-                        filled: true,
-                        fillColor: const Color(0xFFF9FAF8),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 10),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: const BorderSide(color: AppColors.border),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: const BorderSide(color: AppColors.border),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(24),
-                          borderSide: const BorderSide(
-                              color: AppColors.primary, width: 1.5),
-                        ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.background,
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(color: AppColors.border),
                       ),
-                      onSubmitted: (val) => _sendMessage(),
+                      child: TextField(
+                        controller: _messageController,
+                        style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
+                        decoration: const InputDecoration(
+                          hintText: 'Type your message...',
+                          hintStyle: TextStyle(
+                              color: AppColors.textLight, fontSize: 14),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                        ),
+                        onSubmitted: (val) => _sendMessage(),
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  CircleAvatar(
-                    radius: 22,
-                    backgroundColor: AppColors.primary,
-                    child: IconButton(
-                      icon: const Icon(Icons.send_rounded,
-                          size: 20, color: Colors.white),
-                      onPressed: () => _sendMessage(),
+                  const SizedBox(width: 10),
+                  // Send Button
+                  GestureDetector(
+                    onTap: () => _sendMessage(),
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withValues(alpha: 0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: Icon(Icons.arrow_forward_rounded,
+                            size: 20, color: Colors.white),
+                      ),
                     ),
                   ),
                 ],
@@ -240,21 +261,32 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
       return Align(
         alignment: Alignment.centerRight,
         child: Container(
-          margin: const EdgeInsets.only(bottom: 12, left: 60),
+          margin: const EdgeInsets.only(bottom: 14, left: 60),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: AppColors.primary,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
-              bottomLeft: Radius.circular(16),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(18),
+              topRight: Radius.circular(18),
+              bottomLeft: Radius.circular(18),
               bottomRight: Radius.circular(4),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.2),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Text(
             msg.text,
-            style:
-                const TextStyle(color: Colors.white, fontSize: 14, height: 1.3),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              height: 1.35,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       );
@@ -263,20 +295,19 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12, right: 40),
+        margin: const EdgeInsets.only(bottom: 14, right: 30),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: AppColors.primaryUltraLight,
+              height: 32,
+              width: 32,
+              decoration: const BoxDecoration(
+                color: Color(0xFFE0E7FF),
                 shape: BoxShape.circle,
-                border: Border.all(
-                    color: AppColors.primaryLight.withValues(alpha: 0.3)),
               ),
-              child: const Icon(Icons.smart_toy_outlined,
-                  size: 18, color: AppColors.primary),
+              child: const Icon(Icons.smart_toy_rounded,
+                  size: 18, color: Color(0xFF4F46E5)),
             ),
             const SizedBox(width: 8),
             Expanded(
@@ -284,17 +315,23 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(16),
+                        topRight: Radius.circular(18),
+                        bottomLeft: Radius.circular(18),
+                        bottomRight: Radius.circular(18),
                       ),
                       border: Border.all(color: AppColors.border),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.02),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Text(
                       msg.text,
@@ -309,35 +346,40 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                     Column(
                       children: msg.recommendedServices.map((service) {
                         return Container(
-                          margin: const EdgeInsets.only(top: 8),
+                          margin: const EdgeInsets.only(top: 10),
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                                color:
-                                    AppColors.primary.withValues(alpha: 0.3)),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: AppColors.border),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.02),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
                           child: Row(
                             children: [
                               ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(10),
                                 child: Image.network(
                                   service.image,
-                                  height: 50,
-                                  width: 50,
+                                  height: 52,
+                                  width: 52,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) =>
                                       Container(
-                                    height: 50,
-                                    width: 50,
+                                    height: 52,
+                                    width: 52,
                                     color: AppColors.primaryUltraLight,
-                                    child: const Icon(Icons.build,
+                                    child: const Icon(Icons.cleaning_services_rounded,
                                         color: AppColors.primary, size: 24),
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 12),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,8 +389,10 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 13,
+                                        color: AppColors.textPrimary,
                                       ),
                                     ),
+                                    const SizedBox(height: 2),
                                     Text(
                                       '\$${service.price.toStringAsFixed(0)} • ${service.duration}',
                                       style: const TextStyle(
@@ -360,26 +404,31 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                                   ],
                                 ),
                               ),
-                              TextButton(
-                                onPressed: () {
+                              GestureDetector(
+                                onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => ServiceDetailsScreen(
-                                          service: service),
+                                      builder: (_) =>
+                                          ServiceDetailsScreen(service: service),
                                     ),
                                   );
                                 },
-                                style: TextButton.styleFrom(
-                                  foregroundColor: AppColors.primary,
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                ),
-                                child: const Text(
-                                  'View  →',
-                                  style: TextStyle(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryUltraLight,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Text(
+                                    'View Details →',
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 12),
+                                      fontSize: 11,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],

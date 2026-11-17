@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
+import '../../widgets/app_illustrations.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 import '../main_navigation_screen.dart';
@@ -32,8 +33,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final success = await authProvider.register(
-      _nameController.text,
-      _emailController.text,
+      _nameController.text.trim(),
+      _emailController.text.trim(),
       _passwordController.text,
     );
 
@@ -61,45 +62,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FAF3),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryUltraLight,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                        color: AppColors.primaryLight.withValues(alpha: 0.3)),
-                  ),
-                  child: const Icon(Icons.home_repair_service_rounded,
-                      size: 32, color: AppColors.primary),
+                const SizedBox(height: 12),
+                // Screen 3: ServiceHub Brand Logo
+                const ServiceHubLogo(
+                  iconSize: 42,
+                  fontSize: 22,
+                  showTagline: false,
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  'ServiceHub',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primary,
-                  ),
-                ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
+                // Create Your Account
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -123,76 +103,111 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
+                // Full Name
                 CustomTextField(
                   controller: _nameController,
-                  label: '',
                   hint: 'Full Name',
                   prefixIcon: Icons.person_outline,
                   validator: (val) {
-                    if (val == null || val.trim().isEmpty)
+                    if (val == null || val.trim().isEmpty) {
                       return 'Please enter your full name';
+                    }
                     if (val.trim().length < 2) return 'Name is too short';
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
+                // Email Address
                 CustomTextField(
                   controller: _emailController,
-                  label: '',
                   hint: 'Email Address',
                   prefixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
                   validator: (val) {
-                    if (val == null || val.trim().isEmpty)
+                    if (val == null || val.trim().isEmpty) {
                       return 'Please enter your email';
-                    if (!val.contains('@') || !val.contains('.'))
+                    }
+                    if (!val.contains('@') || !val.contains('.')) {
                       return 'Please enter a valid email address';
+                    }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
+                // Password
                 CustomTextField(
                   controller: _passwordController,
-                  label: '',
                   hint: 'Password',
                   prefixIcon: Icons.lock_outline,
                   isPassword: true,
                   validator: (val) {
-                    if (val == null || val.isEmpty)
+                    if (val == null || val.isEmpty) {
                       return 'Please enter a password';
-                    if (val.length < 6)
+                    }
+                    if (val.length < 6) {
                       return 'Password must be at least 6 characters';
+                    }
                     return null;
                   },
                 ),
                 const SizedBox(height: 24),
+                // Register Button
                 CustomButton(
                   text: 'Register',
                   isLoading: authProvider.isLoading,
                   onPressed: _submit,
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  'or continue with',
-                  style: TextStyle(color: AppColors.textLight, fontSize: 13),
+                const SizedBox(height: 24),
+                // Divider "or continue with"
+                Row(
+                  children: [
+                    Expanded(child: Divider(color: AppColors.border, thickness: 1)),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 14.0),
+                      child: Text(
+                        'or continue with',
+                        style: TextStyle(
+                          color: AppColors.textLight,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Expanded(child: Divider(color: AppColors.border, thickness: 1)),
+                  ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
+                // Social Login Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSocialButton(Icons.g_mobiledata),
-                    const SizedBox(width: 16),
-                    _buildSocialButton(Icons.apple),
+                    _buildSocialButton(
+                      child: const Text(
+                        'G',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xFFEA4335),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    _buildSocialButton(
+                      child: const Icon(Icons.apple, size: 26, color: Colors.black),
+                    ),
                   ],
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
+                // Already have an account? Login
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
                       'Already have an account? ',
                       style: TextStyle(
-                          color: AppColors.textSecondary, fontSize: 14),
+                        color: AppColors.textSecondary,
+                        fontSize: 14,
+                      ),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
@@ -200,14 +215,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Login',
                         style: TextStyle(
                           color: AppColors.primary,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w800,
                           fontSize: 14,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
               ],
             ),
           ),
@@ -216,16 +231,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildSocialButton(IconData icon) {
+  Widget _buildSocialButton({required Widget child}) {
     return Container(
-      width: 60,
-      height: 48,
+      width: 58,
+      height: 58,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        shape: BoxShape.circle,
         border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Icon(icon, size: 26, color: AppColors.textPrimary),
+      child: Center(child: child),
     );
   }
 }

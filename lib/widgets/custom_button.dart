@@ -21,8 +21,8 @@ class CustomButton extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.icon,
-    this.height = 52,
-    this.borderRadius = 14,
+    this.height = 54,
+    this.borderRadius = 28, // Matches the rounded pill style from mockup
   });
 
   @override
@@ -63,10 +63,10 @@ class CustomButton extends StatelessWidget {
   Widget _buildContent(Color color) {
     if (isLoading) {
       return SizedBox(
-        height: 20,
-        width: 20,
+        height: 22,
+        width: 22,
         child: CircularProgressIndicator(
-          strokeWidth: 2,
+          strokeWidth: 2.5,
           valueColor: AlwaysStoppedAnimation<Color>(color),
         ),
       );
@@ -82,7 +82,7 @@ class CustomButton extends StatelessWidget {
             text,
             style: TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
               color: color,
             ),
           ),
@@ -94,7 +94,7 @@ class CustomButton extends StatelessWidget {
       text,
       style: TextStyle(
         fontSize: 16,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: color,
       ),
     );

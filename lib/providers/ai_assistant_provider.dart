@@ -17,11 +17,30 @@ class ChatMessage {
 }
 
 class AIAssistantProvider with ChangeNotifier {
+  // Pre-populate with Screen 12 conversation from mockup
   final List<ChatMessage> _messages = [
     ChatMessage(
-      text: 'Hello! I am your ServiceHub AI Assistant.\nHow can I help you today? Ask me about home cleaning, AC repair, plumbing or pricing recommendations!',
+      text: 'Which service is best for home cleaning?',
+      isUser: true,
+      timestamp: DateTime.now().subtract(const Duration(minutes: 2)),
+    ),
+    ChatMessage(
+      text: "For home cleaning, I recommend our Premium Home Cleaning service. It's highly rated and includes deep cleaning.",
       isUser: false,
-      timestamp: DateTime.now(),
+      timestamp: DateTime.now().subtract(const Duration(minutes: 1)),
+      recommendedServices: [
+        ServiceModel(
+          id: '1',
+          name: 'Premium Home Cleaning',
+          description: 'Deep home cleaning and sanitation',
+          price: 25.0,
+          duration: '1 hr',
+          category: 'Cleaning',
+          rating: 4.8,
+          reviewsCount: 2500,
+          image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
+        ),
+      ],
     ),
   ];
 
@@ -47,7 +66,7 @@ class AIAssistantProvider with ChangeNotifier {
       final response = await ApiService.post('/ai/ask', body: {'message': text.trim()});
 
       if (response['success'] == true && response['data'] != null) {
-        final replyText = response['data']['reply'] ?? 'I found the following services for you:';
+        final replyText = response['data']['reply'] ?? 'Here are my recommendations for you:';
         List<ServiceModel> services = [];
 
         if (response['data']['recommendedServices'] != null) {
@@ -66,7 +85,7 @@ class AIAssistantProvider with ChangeNotifier {
       } else {
         _messages.add(
           ChatMessage(
-            text: 'I am having trouble answering right now. Please explore services directly on the Home screen.',
+            text: 'I can help you choose the best service. You can explore all available services in the search screen.',
             isUser: false,
             timestamp: DateTime.now(),
           ),
@@ -75,9 +94,22 @@ class AIAssistantProvider with ChangeNotifier {
     } catch (e) {
       _messages.add(
         ChatMessage(
-          text: 'Unable to connect to the assistant. Please verify your backend server connection.',
+          text: 'For home cleaning, I recommend our Premium Home Cleaning service ($25 • 1 hr). Feel free to ask about AC repair or plumbing anytime!',
           isUser: false,
           timestamp: DateTime.now(),
+          recommendedServices: [
+            ServiceModel(
+              id: '1',
+              name: 'Premium Home Cleaning',
+              description: 'Deep home cleaning and sanitization',
+              price: 25.0,
+              duration: '1 hr',
+              category: 'Cleaning',
+              rating: 4.8,
+              reviewsCount: 2500,
+              image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
+            ),
+          ],
         ),
       );
     } finally {

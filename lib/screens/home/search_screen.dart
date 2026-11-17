@@ -18,12 +18,12 @@ class _SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   late String _selectedCategory;
 
+  // Categories in Screen 6 mockup: All, Cleaning, Repair, Beauty
   final List<String> _categories = [
     'All',
     'Cleaning',
     'Repair',
     'Beauty',
-    'Electric'
   ];
 
   @override
@@ -65,19 +65,24 @@ class _SearchScreenState extends State<SearchScreen> {
     final serviceProvider = Provider.of<ServiceProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FAF3),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: AppColors.textPrimary, size: 20),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          },
         ),
         title: const Text(
           'Search Services',
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,
           ),
         ),
@@ -86,92 +91,104 @@ class _SearchScreenState extends State<SearchScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            // Search Input Pill
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-              child: TextField(
-                controller: _searchController,
-                onChanged: _onSearchChanged,
-                decoration: InputDecoration(
-                  hintText: 'Search for services...',
-                  hintStyle:
-                      const TextStyle(color: AppColors.textLight, fontSize: 14),
-                  prefixIcon: const Icon(Icons.search,
-                      color: AppColors.textSecondary, size: 22),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear, size: 18),
-                          onPressed: () {
-                            _searchController.clear();
-                            _onSearchChanged('');
-                          },
-                        )
-                      : null,
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.border),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.border),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide:
-                        const BorderSide(color: AppColors.primary, width: 1.5),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(22),
+                  border: Border.all(color: AppColors.border),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.02),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: _onSearchChanged,
+                  style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
+                  decoration: InputDecoration(
+                    hintText: 'Search for services...',
+                    hintStyle:
+                        const TextStyle(color: AppColors.textLight, fontSize: 14),
+                    prefixIcon: const Icon(Icons.search_rounded,
+                        color: AppColors.textSecondary, size: 22),
+                    suffixIcon: _searchController.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear, size: 18),
+                            onPressed: () {
+                              _searchController.clear();
+                              _onSearchChanged('');
+                            },
+                          )
+                        : null,
+                    border: InputBorder.none,
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   ),
                 ),
               ),
             ),
+            const SizedBox(height: 6),
+            // Screen 6 Category Filter Chips: All, Cleaning, Repair, Beauty
             SizedBox(
-              height: 44,
+              height: 42,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 itemCount: _categories.length,
                 itemBuilder: (context, index) {
                   final cat = _categories[index];
                   final isSelected = _selectedCategory == cat;
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: ChoiceChip(
-                      label: Text(cat),
-                      selected: isSelected,
-                      onSelected: (selected) {
-                        if (selected) _onCategorySelected(cat);
-                      },
-                      selectedColor: AppColors.primary,
-                      backgroundColor: Colors.white,
-                      labelStyle: TextStyle(
-                        color:
-                            isSelected ? Colors.white : AppColors.textPrimary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: BorderSide(
-                          color:
-                              isSelected ? AppColors.primary : AppColors.border,
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: GestureDetector(
+                      onTap: () => _onCategorySelected(cat),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: isSelected ? AppColors.primary : Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: isSelected ? AppColors.primary : AppColors.border,
+                          ),
+                          boxShadow: isSelected
+                              ? [
+                                  BoxShadow(
+                                    color: AppColors.primary.withValues(alpha: 0.25),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ]
+                              : [],
+                        ),
+                        child: Center(
+                          child: Text(
+                            cat,
+                            style: TextStyle(
+                              color: isSelected ? Colors.white : AppColors.textPrimary,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
+                            ),
+                          ),
                         ),
                       ),
-                      showCheckmark: false,
                     ),
                   );
                 },
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
+            // Services List
             Expanded(
               child: serviceProvider.isLoading
                   ? const Center(
                       child: CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
                       ),
                     )
                   : serviceProvider.services.isEmpty
@@ -186,23 +203,21 @@ class _SearchScreenState extends State<SearchScreen> {
                                 'No services found',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w700,
                                   color: AppColors.textPrimary,
                                 ),
                               ),
                               SizedBox(height: 4),
                               Text(
-                                'Try searching for something else or change filter.',
+                                'Try selecting another category or clear search.',
                                 style: TextStyle(
-                                    fontSize: 13,
-                                    color: AppColors.textSecondary),
+                                    fontSize: 13, color: AppColors.textSecondary),
                               ),
                             ],
                           ),
                         )
                       : ListView.builder(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                           itemCount: serviceProvider.services.length,
                           itemBuilder: (context, index) {
                             final service = serviceProvider.services[index];

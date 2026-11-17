@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/service_provider.dart';
+import '../../widgets/app_illustrations.dart';
 import '../../widgets/service_card.dart';
 import '../service/service_details_screen.dart';
 import 'search_screen.dart';
@@ -15,12 +16,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Screen 5 Categories exactly matching mockup: Cleaning, Repair, Beauty, Health
   final List<Map<String, dynamic>> _categories = [
-    {'name': 'All', 'icon': Icons.grid_view_rounded},
-    {'name': 'Cleaning', 'icon': Icons.cleaning_services_outlined},
-    {'name': 'Repair', 'icon': Icons.handyman_outlined},
-    {'name': 'Beauty', 'icon': Icons.face_retouching_natural_outlined},
-    {'name': 'Health', 'icon': Icons.favorite_border_rounded},
+    {'name': 'Cleaning', 'icon': Icons.cleaning_services_rounded},
+    {'name': 'Repair', 'icon': Icons.handyman_rounded},
+    {'name': 'Beauty', 'icon': Icons.content_cut_rounded},
+    {'name': 'Health', 'icon': Icons.favorite_rounded},
   ];
 
   @override
@@ -34,73 +35,61 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final serviceProvider = Provider.of<ServiceProvider>(context);
-    final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FAF3),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: RefreshIndicator(
           color: AppColors.primary,
           onRefresh: () => serviceProvider.fetchServices(),
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Screen 5 Top App Bar: ServiceHub logo on left, Bell icon with dot on right
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
+                    const ServiceHubLogo(
+                      iconSize: 32,
+                      fontSize: 20,
+                      isHorizontal: true,
+                    ),
+                    Stack(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryUltraLight,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: AppColors.primaryLight
-                                    .withValues(alpha: 0.3)),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.notifications_none_rounded,
+                            color: AppColors.textPrimary,
+                            size: 26,
                           ),
-                          child: const Icon(Icons.home_repair_service_rounded,
-                              size: 22, color: AppColors.primary),
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('You are all caught up! No new notifications.'),
+                              ),
+                            );
+                          },
                         ),
-                        const SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'ServiceHub',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.primary,
-                              ),
+                        Positioned(
+                          right: 12,
+                          top: 10,
+                          child: Container(
+                            width: 8,
+                            height: 8,
+                            decoration: const BoxDecoration(
+                              color: AppColors.primary,
+                              shape: BoxShape.circle,
                             ),
-                            if (authProvider.currentUser != null)
-                              Text(
-                                'Hello, ${authProvider.currentUser!.name.split(' ').first}',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.textSecondary,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.notifications_none_outlined,
-                          color: AppColors.textPrimary),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('No new notifications')),
-                        );
-                      },
-                    ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
+                // Screen 5: Search Bar pill
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -109,82 +98,122 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(22),
                       border: Border.all(color: AppColors.border),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.02),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.search,
-                            color: AppColors.textLight, size: 22),
+                        Icon(Icons.search_rounded, color: AppColors.textLight, size: 22),
                         SizedBox(width: 10),
                         Text(
                           'Search services...',
                           style: TextStyle(
-                              color: AppColors.textLight, fontSize: 14),
+                            color: AppColors.textLight,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
+                // Screen 5 Hero Banner: "Premium Services For a Better Life"
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                   decoration: BoxDecoration(
                     color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(22),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.25),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      const Text(
-                        'Premium Services\nFor a Better Life',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          height: 1.3,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Premium Services\nFor a Better Life',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w800,
+                                height: 1.25,
+                              ),
+                            ),
+                            const SizedBox(height: 14),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const SearchScreen()),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 14, vertical: 7),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: const Text(
+                                  'Book Now →',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w800,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 14),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const SearchScreen()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: AppColors.primary,
-                          elevation: 0,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                      const SizedBox(width: 10),
+                      // House graphic on right side of banner
+                      Container(
+                        height: 72,
+                        width: 90,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Text(
-                          'Book Now  →',
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.w700),
+                        child: const Center(
+                          child: Icon(Icons.cottage_rounded,
+                              size: 46, color: Colors.white),
                         ),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 24),
+                // Screen 5: "Popular Services" with "See All →"
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
                       'Popular Services',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary,
                       ),
@@ -198,11 +227,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                       child: const Text(
-                        'See All  →',
+                        'See All →',
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ),
@@ -211,18 +240,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 12),
                 if (serviceProvider.isLoading)
                   const SizedBox(
-                    height: 150,
+                    height: 140,
                     child: Center(
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
                       ),
                     ),
                   )
                 else if (serviceProvider.services.isEmpty)
                   Container(
-                    height: 100,
+                    height: 90,
                     alignment: Alignment.center,
                     child: const Text(
                       'No services available right now.',
@@ -231,17 +259,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 else
                   SizedBox(
-                    height: 160,
+                    height: 152,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
+                      clipBehavior: Clip.none,
                       itemCount: serviceProvider.popularServices.isNotEmpty
                           ? serviceProvider.popularServices.length
                           : serviceProvider.services.length,
                       itemBuilder: (context, index) {
-                        final service =
-                            serviceProvider.popularServices.isNotEmpty
-                                ? serviceProvider.popularServices[index]
-                                : serviceProvider.services[index];
+                        final service = serviceProvider.popularServices.isNotEmpty
+                            ? serviceProvider.popularServices[index]
+                            : serviceProvider.services[index];
                         return ServiceCard(
                           service: service,
                           isHorizontal: true,
@@ -258,14 +286,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                   ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 26),
+                // Screen 5: "Categories" with "See All →"
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
                       'Categories',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary,
                       ),
@@ -279,25 +308,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                       child: const Text(
-                        'See All  →',
+                        'See All →',
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
+                          color: AppColors.textSecondary,
                         ),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 14),
+                // Categories 4 circles: Cleaning, Repair, Beauty, Health
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: _categories.map((cat) {
-                    final isSelected =
-                        serviceProvider.selectedCategory == cat['name'];
                     return GestureDetector(
                       onTap: () {
-                        serviceProvider.setCategory(cat['name']);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -309,30 +336,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: [
                           Container(
-                            height: 56,
-                            width: 56,
+                            height: 60,
+                            width: 60,
                             decoration: BoxDecoration(
-                              color:
-                                  isSelected ? AppColors.primary : Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: AppColors.border),
+                              color: const Color(0xFFE9F1E7),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.02),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
                             ),
                             child: Icon(
                               cat['icon'] as IconData,
-                              color:
-                                  isSelected ? Colors.white : AppColors.primary,
+                              color: AppColors.primary,
                               size: 26,
                             ),
                           ),
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 8),
                           Text(
                             cat['name'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: isSelected
-                                  ? AppColors.primary
-                                  : AppColors.textSecondary,
+                              color: AppColors.textPrimary,
                             ),
                           ),
                         ],
@@ -340,7 +369,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 24),
               ],
             ),
           ),

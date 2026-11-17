@@ -20,59 +20,169 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FAF3),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(height: 16),
+              // Top decorative leaves
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Opacity(
+                    opacity: 0.7,
+                    child: Icon(Icons.eco_outlined, color: AppColors.accent, size: 28),
+                  ),
+                  Opacity(
+                    opacity: 0.5,
+                    child: Icon(Icons.spa_outlined, color: AppColors.accent, size: 24),
+                  ),
+                ],
+              ),
               const Spacer(),
+              // Screen 2 Center Illustration: Cozy booking with phone, calendar checkmark & plants
               Container(
-                height: 260,
+                height: 270,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryUltraLight,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: AppColors.border),
+                  color: AppColors.primaryUltraLight.withValues(alpha: 0.6),
+                  borderRadius: BorderRadius.circular(32),
                 ),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Icon(Icons.calendar_month_outlined, size: 80, color: AppColors.primary),
-                    SizedBox(height: 16),
-                    Icon(Icons.verified_user_outlined, size: 40, color: AppColors.accent),
+                    // Floating Calendar with checkmark
+                    Positioned(
+                      top: 24,
+                      right: 36,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.06),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.calendar_today_rounded, size: 18, color: AppColors.primary),
+                            SizedBox(width: 6),
+                            Icon(Icons.check_circle_rounded, size: 18, color: AppColors.statusConfirmed),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // Plant on right
+                    Positioned(
+                      bottom: 24,
+                      right: 28,
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.05),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                        child: const Icon(Icons.potted_plant_outlined, size: 28, color: AppColors.primary),
+                      ),
+                    ),
+                    // Central Persona Icon in beanbag
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 110,
+                          width: 110,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColors.accent.withValues(alpha: 0.3), width: 3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.06),
+                                blurRadius: 14,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: const Center(
+                            child: Icon(Icons.person_pin_circle_rounded, size: 68, color: AppColors.primary),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: AppColors.border),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.touch_app_rounded, size: 16, color: AppColors.primary),
+                              SizedBox(width: 6),
+                              Text(
+                                'Easy 1-Click Booking',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-              const SizedBox(height: 36),
+              const SizedBox(height: 32),
+              // Title
               const Text(
                 'Book Services\nwith Ease',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 26,
                   fontWeight: FontWeight.w800,
                   color: AppColors.textPrimary,
-                  height: 1.2,
+                  height: 1.25,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
+              // Subtitle
               const Text(
-                'Find, book and manage your\nfavorite home services effortlessly.',
+                'Find, book and manage your\nfavorite services effortlessly.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
                   color: AppColors.textSecondary,
-                  height: 1.4,
+                  height: 1.45,
                 ),
               ),
               const SizedBox(height: 24),
+              // Page indicator dots (active pill + 2 small dots)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 20,
-                    height: 8,
+                    width: 22,
+                    height: 7,
                     decoration: BoxDecoration(
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(4),
@@ -80,18 +190,18 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
+                    width: 7,
+                    height: 7,
+                    decoration: BoxDecoration(
                       color: AppColors.border,
                       shape: BoxShape.circle,
                     ),
                   ),
                   const SizedBox(width: 6),
                   Container(
-                    width: 8,
-                    height: 8,
-                    decoration: const BoxDecoration(
+                    width: 7,
+                    height: 7,
+                    decoration: BoxDecoration(
                       color: AppColors.border,
                       shape: BoxShape.circle,
                     ),
@@ -99,17 +209,19 @@ class OnboardingScreen extends StatelessWidget {
                 ],
               ),
               const Spacer(),
+              // Primary Button
               CustomButton(
                 text: 'Get Started  →',
                 onPressed: () => _completeOnboarding(context),
               ),
               const SizedBox(height: 12),
+              // Skip text button
               TextButton(
                 onPressed: () => _completeOnboarding(context),
                 child: const Text(
                   'Skip',
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textSecondary,
                   ),

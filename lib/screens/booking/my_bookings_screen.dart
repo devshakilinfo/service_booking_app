@@ -33,15 +33,25 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> with SingleTickerPr
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Cancel Appointment?'),
-        content: const Text('Are you sure you want to cancel this booking? This action cannot be undone.'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text(
+          'Cancel Appointment?',
+          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18),
+        ),
+        content: const Text(
+          'Are you sure you want to cancel this booking? This slot will become available for others.',
+          style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('No, Keep It'),
+            child: const Text('No, Keep It', style: TextStyle(color: AppColors.textSecondary)),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.statusCancelled,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            ),
             onPressed: () async {
               Navigator.pop(ctx);
               final provider = Provider.of<BookingProvider>(context, listen: false);
@@ -50,12 +60,12 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> with SingleTickerPr
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(success ? 'Booking cancelled' : (provider.errorMessage ?? 'Failed to cancel')),
-                    backgroundColor: success ? AppColors.success : AppColors.error,
+                    backgroundColor: success ? AppColors.statusConfirmed : AppColors.statusCancelled,
                   ),
                 );
               }
             },
-            child: const Text('Yes, Cancel', style: TextStyle(color: Colors.white)),
+            child: const Text('Yes, Cancel', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
           ),
         ],
       ),
@@ -67,91 +77,117 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> with SingleTickerPr
     final bookingProvider = Provider.of<BookingProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FAF3),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: AppColors.textPrimary, size: 20),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
+          },
+        ),
         title: const Text(
           'My Bookings',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,
           ),
         ),
         centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.border),
-            ),
-            child: TabBar(
-              controller: _tabController,
-              indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppColors.primary,
-              ),
-              labelColor: Colors.white,
-              unselectedLabelColor: AppColors.textSecondary,
-              labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-              tabs: const [
-                Tab(text: 'Upcoming'),
-                Tab(text: 'Past'),
-              ],
-            ),
-          ),
-        ),
       ),
       body: SafeArea(
-        child: TabBarView(
-          controller: _tabController,
+        child: Column(
           children: [
-            RefreshIndicator(
-              color: AppColors.primary,
-              onRefresh: () => bookingProvider.fetchMyBookings(),
-              child: bookingProvider.isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                      ),
-                    )
-                  : bookingProvider.upcomingBookings.isEmpty
-                      ? _buildEmptyState('No upcoming appointments', 'Book a new service from the Home tab!')
-                      : ListView.builder(
-                          padding: const EdgeInsets.all(20),
-                          itemCount: bookingProvider.upcomingBookings.length,
-                          itemBuilder: (context, index) {
-                            final booking = bookingProvider.upcomingBookings[index];
-                            return BookingCard(
-                              booking: booking,
-                              onCancel: () => _showCancelDialog(booking.id),
-                            );
-                          },
-                        ),
+            // Screen 10 Segmented Control: "Upcoming" | "Past"
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: AppColors.primary,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: Colors.transparent,
+                labelColor: Colors.white,
+                unselectedLabelColor: AppColors.textSecondary,
+                labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                tabs: const [
+                  Tab(text: 'Upcoming'),
+                  Tab(text: 'Past'),
+                ],
+              ),
             ),
-            RefreshIndicator(
-              color: AppColors.primary,
-              onRefresh: () => bookingProvider.fetchMyBookings(),
-              child: bookingProvider.isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                      ),
-                    )
-                  : bookingProvider.pastBookings.isEmpty
-                      ? _buildEmptyState('No past bookings', 'Your completed and cancelled history will appear here.')
-                      : ListView.builder(
-                          padding: const EdgeInsets.all(20),
-                          itemCount: bookingProvider.pastBookings.length,
-                          itemBuilder: (context, index) {
-                            final booking = bookingProvider.pastBookings[index];
-                            return BookingCard(booking: booking);
-                          },
-                        ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // Upcoming Bookings List
+                  RefreshIndicator(
+                    color: AppColors.primary,
+                    onRefresh: () => bookingProvider.fetchMyBookings(),
+                    child: bookingProvider.isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                            ),
+                          )
+                        : bookingProvider.upcomingBookings.isEmpty
+                            ? _buildEmptyState('No upcoming appointments', 'Book a new service from the Home tab!')
+                            : ListView.builder(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                                itemCount: bookingProvider.upcomingBookings.length,
+                                itemBuilder: (context, index) {
+                                  final booking = bookingProvider.upcomingBookings[index];
+                                  return BookingCard(
+                                    booking: booking,
+                                    onCancel: () => _showCancelDialog(booking.id),
+                                  );
+                                },
+                              ),
+                  ),
+                  // Past Bookings List
+                  RefreshIndicator(
+                    color: AppColors.primary,
+                    onRefresh: () => bookingProvider.fetchMyBookings(),
+                    child: bookingProvider.isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                            ),
+                          )
+                        : bookingProvider.pastBookings.isEmpty
+                            ? _buildEmptyState('No past bookings', 'Your completed and cancelled history will appear here.')
+                            : ListView.builder(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                                itemCount: bookingProvider.pastBookings.length,
+                                itemBuilder: (context, index) {
+                                  final booking = bookingProvider.pastBookings[index];
+                                  return BookingCard(booking: booking);
+                                },
+                              ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -166,8 +202,8 @@ class _MyBookingsScreenState extends State<MyBookingsScreen> with SingleTickerPr
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.calendar_today_outlined, size: 64, color: AppColors.textLight),
-            const SizedBox(height: 16),
+            const Icon(Icons.calendar_today_outlined, size: 58, color: AppColors.textLight),
+            const SizedBox(height: 14),
             Text(
               title,
               style: const TextStyle(

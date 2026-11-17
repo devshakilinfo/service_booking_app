@@ -19,7 +19,7 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
   late DateTime _selectedDate;
-  String? _selectedTimeSlot;
+  String? _selectedTimeSlot = '10:00 AM'; // Default to 10:00 AM matching Screen 8 mockup
   final TextEditingController _notesController = TextEditingController();
   List<Map<String, dynamic>> _slotAvailability = [];
   bool _isLoadingSlots = false;
@@ -45,7 +45,6 @@ class _BookingScreenState extends State<BookingScreen> {
   Future<void> _fetchSlotsForDate(DateTime date) async {
     setState(() {
       _isLoadingSlots = true;
-      _selectedTimeSlot = null;
     });
 
     final formattedDate = DateFormat('yyyy-MM-dd').format(date);
@@ -95,7 +94,7 @@ class _BookingScreenState extends State<BookingScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(bookingProvider.errorMessage ?? 'Booking failed. Slot may already be taken.'),
-          backgroundColor: AppColors.error,
+          backgroundColor: AppColors.statusCancelled,
         ),
       );
     }
@@ -106,19 +105,20 @@ class _BookingScreenState extends State<BookingScreen> {
     final bookingProvider = Provider.of<BookingProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FAF3),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: AppColors.textPrimary, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Book Appointment',
           style: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,
           ),
         ),
@@ -133,17 +133,25 @@ class _BookingScreenState extends State<BookingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Screen 8 Service summary mini-card
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(18),
                         border: Border.all(color: AppColors.border),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.02),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
                       child: Row(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(12),
                             child: Image.network(
                               widget.service.image,
                               height: 60,
@@ -153,7 +161,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                 height: 60,
                                 width: 60,
                                 color: AppColors.primaryUltraLight,
-                                child: const Icon(Icons.cleaning_services, color: AppColors.primary),
+                                child: const Icon(Icons.cleaning_services_rounded,
+                                    color: AppColors.primary),
                               ),
                             ),
                           ),
@@ -166,7 +175,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   widget.service.name,
                                   style: const TextStyle(
                                     fontSize: 16,
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w800,
                                     color: AppColors.textPrimary,
                                   ),
                                 ),
@@ -176,7 +185,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                   style: const TextStyle(
                                     fontSize: 13,
                                     color: AppColors.textSecondary,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ],
@@ -186,11 +195,12 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
+                    // Screen 8 Section: Select Date
                     const Text(
                       'Select Date',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary,
                       ),
                     ),
@@ -217,10 +227,19 @@ class _BookingScreenState extends State<BookingScreen> {
                               margin: const EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
                                 color: isSelected ? AppColors.primary : Colors.white,
-                                borderRadius: BorderRadius.circular(14),
+                                borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
                                   color: isSelected ? AppColors.primary : AppColors.border,
                                 ),
+                                boxShadow: isSelected
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.primary.withValues(alpha: 0.25),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ]
+                                    : [],
                               ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -233,12 +252,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                       color: isSelected ? Colors.white70 : AppColors.textSecondary,
                                     ),
                                   ),
-                                  const SizedBox(height: 6),
+                                  const SizedBox(height: 4),
                                   Text(
                                     DateFormat('d').format(date),
                                     style: TextStyle(
                                       fontSize: 17,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w800,
                                       color: isSelected ? Colors.white : AppColors.textPrimary,
                                     ),
                                   ),
@@ -250,11 +269,12 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
+                    // Screen 8 Section: Available Slots
                     const Text(
                       'Available Slots',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w800,
                         color: AppColors.textPrimary,
                       ),
                     ),
@@ -271,8 +291,8 @@ class _BookingScreenState extends State<BookingScreen> {
                       )
                     else
                       Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
+                        spacing: 12,
+                        runSpacing: 12,
                         children: _slotAvailability.map((slotData) {
                           final slot = slotData['time'] as String;
                           final isAvailable = slotData['isAvailable'] as bool;
@@ -287,25 +307,34 @@ class _BookingScreenState extends State<BookingScreen> {
                                   }
                                 : null,
                             child: Container(
-                              width: (MediaQuery.of(context).size.width - 60) / 3,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              width: (MediaQuery.of(context).size.width - 64) / 3,
+                              padding: const EdgeInsets.symmetric(vertical: 14),
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? AppColors.primary
-                                    : (isAvailable ? Colors.white : const Color(0xFFF0F0F0)),
-                                borderRadius: BorderRadius.circular(12),
+                                    : (isAvailable ? Colors.white : const Color(0xFFF3F4F1)),
+                                borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
                                   color: isSelected
                                       ? AppColors.primary
                                       : (isAvailable ? AppColors.border : Colors.transparent),
                                 ),
+                                boxShadow: isSelected
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.primary.withValues(alpha: 0.25),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ]
+                                    : [],
                               ),
                               child: Center(
                                 child: Text(
                                   slot,
                                   style: TextStyle(
                                     fontSize: 13,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w700,
                                     color: isSelected
                                         ? Colors.white
                                         : (isAvailable
@@ -323,26 +352,25 @@ class _BookingScreenState extends State<BookingScreen> {
                       'Special Instructions (Optional)',
                       style: TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    TextField(
-                      controller: _notesController,
-                      maxLines: 2,
-                      decoration: InputDecoration(
-                        hintText: 'e.g. Please bring eco-friendly cleaning detergents',
-                        hintStyle: const TextStyle(color: AppColors.textLight, fontSize: 13),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: AppColors.border),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: AppColors.border),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: TextField(
+                        controller: _notesController,
+                        maxLines: 2,
+                        decoration: const InputDecoration(
+                          hintText: 'e.g. Please bring eco-friendly cleaning supplies',
+                          hintStyle: TextStyle(color: AppColors.textLight, fontSize: 13),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(14),
                         ),
                       ),
                     ),
@@ -350,6 +378,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
             ),
+            // Screen 8 Bottom Button: Confirm Booking
             Container(
               padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(

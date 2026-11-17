@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../core/constants.dart';
 import '../../models/booking_model.dart';
+import '../../widgets/app_illustrations.dart';
 import '../../widgets/custom_button.dart';
 import '../main_navigation_screen.dart';
 
@@ -11,57 +13,73 @@ class BookingConfirmedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Format date nicely like "Wed, 19 Nov 2026"
+    String formattedDate = booking.date;
+    try {
+      final parsed = DateTime.parse(booking.date);
+      formattedDate = DateFormat('EEE, d MMM yyyy').format(parsed);
+    } catch (_) {}
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF6FAF3),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(),
+              const Spacer(flex: 2),
+              // Screen 9: Big green circle with checkmark
               Container(
-                height: 96,
-                width: 96,
+                height: 92,
+                width: 92,
                 decoration: BoxDecoration(
                   color: AppColors.primary,
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.25),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+                      color: AppColors.primary.withValues(alpha: 0.3),
+                      blurRadius: 18,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
-                child: const Icon(Icons.check, size: 54, color: Colors.white),
+                child: const Icon(Icons.check_rounded, size: 52, color: Colors.white),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 22),
               const Text(
                 'Booking Confirmed!',
                 style: TextStyle(
-                  fontSize: 26,
+                  fontSize: 24,
                   fontWeight: FontWeight.w800,
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               const Text(
                 'Your appointment has been\nsuccessfully booked.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 14,
                   color: AppColors.textSecondary,
                   height: 1.4,
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 28),
+              // Mini booking summary card
               Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: AppColors.border),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
@@ -70,14 +88,14 @@ class BookingConfirmedScreen extends StatelessWidget {
                       child: Image.network(
                         booking.service?.image ??
                             'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
-                        height: 60,
-                        width: 60,
+                        height: 56,
+                        width: 56,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
-                          height: 60,
-                          width: 60,
+                          height: 56,
+                          width: 56,
                           color: AppColors.primaryUltraLight,
-                          child: const Icon(Icons.cleaning_services,
+                          child: const Icon(Icons.cleaning_services_rounded,
                               color: AppColors.primary),
                         ),
                       ),
@@ -88,27 +106,28 @@ class BookingConfirmedScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            booking.service?.name ?? 'Service Appointment',
+                            booking.service?.name ?? 'Home Cleaning',
                             style: const TextStyle(
                               fontSize: 15,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w800,
                               color: AppColors.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 3),
                           Text(
-                            '${booking.date}, ${booking.timeSlot}',
+                            formattedDate,
                             style: const TextStyle(
                               fontSize: 13,
+                              fontWeight: FontWeight.w500,
                               color: AppColors.textSecondary,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 2),
                           Text(
-                            '\$${booking.totalPrice.toStringAsFixed(0)} • ${booking.status}',
+                            booking.timeSlot,
                             style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
                               color: AppColors.primary,
                             ),
                           ),
@@ -118,7 +137,14 @@ class BookingConfirmedScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 20),
+              // Screen 9: Cute Village House with trees illustration
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: HouseWithGardenIllustration(height: 120),
+              ),
+              const Spacer(flex: 2),
+              // Back to Home Button
               CustomButton(
                 text: 'Back to Home',
                 onPressed: () {
