@@ -45,7 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(authProvider.errorMessage ?? 'Login failed. Please check credentials.'),
+          content: Text(authProvider.errorMessage ??
+              'Login failed. Please check credentials.'),
           backgroundColor: AppColors.error,
         ),
       );
@@ -73,9 +74,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: BoxDecoration(
                     color: AppColors.primaryUltraLight,
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.primaryLight.withOpacity(0.3)),
+                    border: Border.all(
+                        color: AppColors.primaryLight.withValues(alpha: 0.3)),
                   ),
-                  child: const Icon(Icons.home_repair_service_rounded, size: 34, color: AppColors.primary),
+                  child: const Icon(Icons.home_repair_service_rounded,
+                      size: 34, color: AppColors.primary),
                 ),
                 const SizedBox(height: 10),
                 const Text(
@@ -117,8 +120,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   prefixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
                   validator: (val) {
-                    if (val == null || val.trim().isEmpty) return 'Please enter your email';
-                    if (!val.contains('@') || !val.contains('.')) return 'Please enter a valid email address';
+                    if (val == null || val.trim().isEmpty)
+                      return 'Please enter your email';
+                    if (!val.contains('@') || !val.contains('.'))
+                      return 'Please enter a valid email address';
                     return null;
                   },
                 ),
@@ -130,8 +135,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   prefixIcon: Icons.lock_outline,
                   isPassword: true,
                   validator: (val) {
-                    if (val == null || val.isEmpty) return 'Please enter your password';
-                    if (val.length < 6) return 'Password must be at least 6 characters';
+                    if (val == null || val.isEmpty)
+                      return 'Please enter your password';
+                    if (val.length < 6)
+                      return 'Password must be at least 6 characters';
                     return null;
                   },
                 ),
@@ -140,12 +147,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextButton(
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Password reset link will be sent to your email.')),
+                        const SnackBar(
+                            content: Text(
+                                'Password reset link will be sent to your email.')),
                       );
                     },
                     child: const Text(
                       'Forgot Password?',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                      style: TextStyle(
+                          color: AppColors.textSecondary, fontSize: 13),
                     ),
                   ),
                 ),
@@ -175,13 +185,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     const Text(
                       "Don't have an account? ",
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+                      style: TextStyle(
+                          color: AppColors.textSecondary, fontSize: 14),
                     ),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const RegisterScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => const RegisterScreen()),
                         );
                       },
                       child: const Text(

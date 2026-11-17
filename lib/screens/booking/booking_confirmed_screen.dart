@@ -28,7 +28,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.25),
+                      color: AppColors.primary.withValues(alpha: 0.25),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -68,7 +68,8 @@ class BookingConfirmedScreen extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                        booking.service?.image ?? 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
+                        booking.service?.image ??
+                            'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
                         height: 60,
                         width: 60,
                         fit: BoxFit.cover,
@@ -76,7 +77,8 @@ class BookingConfirmedScreen extends StatelessWidget {
                           height: 60,
                           width: 60,
                           color: AppColors.primaryUltraLight,
-                          child: const Icon(Icons.cleaning_services, color: AppColors.primary),
+                          child: const Icon(Icons.cleaning_services,
+                              color: AppColors.primary),
                         ),
                       ),
                     ),
@@ -122,7 +124,8 @@ class BookingConfirmedScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+                    MaterialPageRoute(
+                        builder: (_) => const MainNavigationScreen()),
                     (route) => false,
                   );
                 },

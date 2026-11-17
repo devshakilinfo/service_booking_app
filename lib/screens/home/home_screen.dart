@@ -57,9 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           decoration: BoxDecoration(
                             color: AppColors.primaryUltraLight,
                             shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.primaryLight.withOpacity(0.3)),
+                            border: Border.all(
+                                color: AppColors.primaryLight
+                                    .withValues(alpha: 0.3)),
                           ),
-                          child: const Icon(Icons.home_repair_service_rounded, size: 22, color: AppColors.primary),
+                          child: const Icon(Icons.home_repair_service_rounded,
+                              size: 22, color: AppColors.primary),
                         ),
                         const SizedBox(width: 8),
                         Column(
@@ -87,7 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     IconButton(
-                      icon: const Icon(Icons.notifications_none_outlined, color: AppColors.textPrimary),
+                      icon: const Icon(Icons.notifications_none_outlined,
+                          color: AppColors.textPrimary),
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('No new notifications')),
@@ -105,7 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(14),
@@ -113,11 +118,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.search, color: AppColors.textLight, size: 22),
+                        Icon(Icons.search,
+                            color: AppColors.textLight, size: 22),
                         SizedBox(width: 10),
                         Text(
                           'Search services...',
-                          style: TextStyle(color: AppColors.textLight, fontSize: 14),
+                          style: TextStyle(
+                              color: AppColors.textLight, fontSize: 14),
                         ),
                       ],
                     ),
@@ -147,21 +154,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const SearchScreen()),
+                            MaterialPageRoute(
+                                builder: (_) => const SearchScreen()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           foregroundColor: AppColors.primary,
                           elevation: 0,
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         child: const Text(
                           'Book Now  →',
-                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+                          style: TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.w700),
                         ),
                       ),
                     ],
@@ -183,7 +193,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const SearchScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => const SearchScreen()),
                         );
                       },
                       child: const Text(
@@ -204,7 +215,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Center(
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.primary),
                       ),
                     ),
                   )
@@ -226,9 +238,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           ? serviceProvider.popularServices.length
                           : serviceProvider.services.length,
                       itemBuilder: (context, index) {
-                        final service = serviceProvider.popularServices.isNotEmpty
-                            ? serviceProvider.popularServices[index]
-                            : serviceProvider.services[index];
+                        final service =
+                            serviceProvider.popularServices.isNotEmpty
+                                ? serviceProvider.popularServices[index]
+                                : serviceProvider.services[index];
                         return ServiceCard(
                           service: service,
                           isHorizontal: true,
@@ -236,7 +249,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => ServiceDetailsScreen(service: service),
+                                builder: (_) =>
+                                    ServiceDetailsScreen(service: service),
                               ),
                             );
                           },
@@ -260,7 +274,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const SearchScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => const SearchScreen()),
                         );
                       },
                       child: const Text(
@@ -278,14 +293,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: _categories.map((cat) {
-                    final isSelected = serviceProvider.selectedCategory == cat['name'];
+                    final isSelected =
+                        serviceProvider.selectedCategory == cat['name'];
                     return GestureDetector(
                       onTap: () {
                         serviceProvider.setCategory(cat['name']);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => SearchScreen(initialCategory: cat['name']),
+                            builder: (_) =>
+                                SearchScreen(initialCategory: cat['name']),
                           ),
                         );
                       },
@@ -295,13 +312,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 56,
                             width: 56,
                             decoration: BoxDecoration(
-                              color: isSelected ? AppColors.primary : Colors.white,
+                              color:
+                                  isSelected ? AppColors.primary : Colors.white,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(color: AppColors.border),
                             ),
                             child: Icon(
                               cat['icon'] as IconData,
-                              color: isSelected ? Colors.white : AppColors.primary,
+                              color:
+                                  isSelected ? Colors.white : AppColors.primary,
                               size: 26,
                             ),
                           ),
@@ -311,7 +330,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                              color: isSelected
+                                  ? AppColors.primary
+                                  : AppColors.textSecondary,
                             ),
                           ),
                         ],

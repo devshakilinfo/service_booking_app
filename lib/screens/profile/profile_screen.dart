@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
-import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 import '../auth/login_screen.dart';
 
@@ -52,13 +51,17 @@ class ProfileScreen extends StatelessWidget {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(success ? 'Profile updated successfully' : 'Failed to update profile'),
-                    backgroundColor: success ? AppColors.success : AppColors.error,
+                    content: Text(success
+                        ? 'Profile updated successfully'
+                        : 'Failed to update profile'),
+                    backgroundColor:
+                        success ? AppColors.success : AppColors.error,
                   ),
                 );
               }
             },
-            child: const Text('Save Changes', style: TextStyle(color: Colors.white)),
+            child: const Text('Save Changes',
+                style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -102,7 +105,9 @@ class ProfileScreen extends StatelessWidget {
             onPressed: () async {
               if (newPasswordController.text.length < 6) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('New password must be at least 6 characters')),
+                  const SnackBar(
+                      content:
+                          Text('New password must be at least 6 characters')),
                 );
                 return;
               }
@@ -114,8 +119,11 @@ class ProfileScreen extends StatelessWidget {
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(success ? 'Password updated successfully' : (authProvider.errorMessage ?? 'Update failed')),
-                    backgroundColor: success ? AppColors.success : AppColors.error,
+                    content: Text(success
+                        ? 'Password updated successfully'
+                        : (authProvider.errorMessage ?? 'Update failed')),
+                    backgroundColor:
+                        success ? AppColors.success : AppColors.error,
                   ),
                 );
               }
@@ -197,13 +205,14 @@ class ProfileScreen extends StatelessWidget {
                                 : 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
                           ),
                         ),
-                        Positioned(
+                        const Positioned(
                           bottom: 0,
                           right: 0,
                           child: CircleAvatar(
                             radius: 16,
                             backgroundColor: AppColors.primary,
-                            child: const Icon(Icons.camera_alt, size: 16, color: Colors.white),
+                            child: Icon(Icons.camera_alt,
+                                size: 16, color: Colors.white),
                           ),
                         ),
                       ],
@@ -254,7 +263,8 @@ class ProfileScreen extends StatelessWidget {
                       title: 'App Settings',
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('App Version: 1.0.0 (Build 1)')),
+                          const SnackBar(
+                              content: Text('App Version: 1.0.0 (Build 1)')),
                         );
                       },
                     ),
@@ -264,7 +274,9 @@ class ProfileScreen extends StatelessWidget {
                       title: 'Help & Support',
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Support email: support@servicehub.com')),
+                          const SnackBar(
+                              content: Text(
+                                  'Support email: support@servicehub.com')),
                         );
                       },
                     ),
@@ -308,12 +320,18 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       trailing: showArrow
-          ? const Icon(Icons.chevron_right, color: AppColors.textLight, size: 20)
+          ? const Icon(Icons.chevron_right,
+              color: AppColors.textLight, size: 20)
           : null,
     );
   }
 
   Widget _buildDivider() {
-    return const Divider(height: 1, thickness: 1, color: AppColors.divider, indent: 16, endIndent: 16);
+    return const Divider(
+        height: 1,
+        thickness: 1,
+        color: AppColors.divider,
+        indent: 16,
+        endIndent: 16);
   }
 }

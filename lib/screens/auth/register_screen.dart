@@ -48,7 +48,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(authProvider.errorMessage ?? 'Registration failed. Try again.'),
+          content: Text(
+              authProvider.errorMessage ?? 'Registration failed. Try again.'),
           backgroundColor: AppColors.error,
         ),
       );
@@ -83,9 +84,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: BoxDecoration(
                     color: AppColors.primaryUltraLight,
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.primaryLight.withOpacity(0.3)),
+                    border: Border.all(
+                        color: AppColors.primaryLight.withValues(alpha: 0.3)),
                   ),
-                  child: const Icon(Icons.home_repair_service_rounded, size: 32, color: AppColors.primary),
+                  child: const Icon(Icons.home_repair_service_rounded,
+                      size: 32, color: AppColors.primary),
                 ),
                 const SizedBox(height: 8),
                 const Text(
@@ -126,7 +129,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   hint: 'Full Name',
                   prefixIcon: Icons.person_outline,
                   validator: (val) {
-                    if (val == null || val.trim().isEmpty) return 'Please enter your full name';
+                    if (val == null || val.trim().isEmpty)
+                      return 'Please enter your full name';
                     if (val.trim().length < 2) return 'Name is too short';
                     return null;
                   },
@@ -139,8 +143,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   prefixIcon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
                   validator: (val) {
-                    if (val == null || val.trim().isEmpty) return 'Please enter your email';
-                    if (!val.contains('@') || !val.contains('.')) return 'Please enter a valid email address';
+                    if (val == null || val.trim().isEmpty)
+                      return 'Please enter your email';
+                    if (!val.contains('@') || !val.contains('.'))
+                      return 'Please enter a valid email address';
                     return null;
                   },
                 ),
@@ -152,8 +158,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   prefixIcon: Icons.lock_outline,
                   isPassword: true,
                   validator: (val) {
-                    if (val == null || val.isEmpty) return 'Please enter a password';
-                    if (val.length < 6) return 'Password must be at least 6 characters';
+                    if (val == null || val.isEmpty)
+                      return 'Please enter a password';
+                    if (val.length < 6)
+                      return 'Password must be at least 6 characters';
                     return null;
                   },
                 ),
@@ -183,7 +191,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     const Text(
                       'Already have an account? ',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+                      style: TextStyle(
+                          color: AppColors.textSecondary, fontSize: 14),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),

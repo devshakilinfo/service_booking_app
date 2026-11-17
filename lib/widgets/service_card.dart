@@ -32,7 +32,8 @@ class ServiceCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(15)),
                 child: Image.network(
                   service.image,
                   height: 90,
@@ -42,7 +43,8 @@ class ServiceCard extends StatelessWidget {
                     height: 90,
                     width: 130,
                     color: AppColors.primaryUltraLight,
-                    child: const Icon(Icons.cleaning_services, color: AppColors.primary),
+                    child: const Icon(Icons.cleaning_services,
+                        color: AppColors.primary),
                   ),
                 ),
               ),
@@ -92,7 +94,7 @@ class ServiceCard extends StatelessWidget {
           border: Border.all(color: AppColors.border),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -111,7 +113,8 @@ class ServiceCard extends StatelessWidget {
                   height: 70,
                   width: 70,
                   color: AppColors.primaryUltraLight,
-                  child: const Icon(Icons.build_circle_outlined, color: AppColors.primary),
+                  child: const Icon(Icons.build_circle_outlined,
+                      color: AppColors.primary),
                 ),
               ),
             ),
@@ -133,7 +136,8 @@ class ServiceCard extends StatelessWidget {
                     service.description,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                    style: const TextStyle(
+                        fontSize: 12, color: AppColors.textSecondary),
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -149,7 +153,8 @@ class ServiceCard extends StatelessWidget {
                       const SizedBox(width: 6),
                       Text(
                         '• ${service.duration}',
-                        style: const TextStyle(fontSize: 12, color: AppColors.textLight),
+                        style: const TextStyle(
+                            fontSize: 12, color: AppColors.textLight),
                       ),
                     ],
                   ),

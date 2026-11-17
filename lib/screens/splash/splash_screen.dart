@@ -29,7 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
     final isAuthenticated = await authProvider.tryAutoLogin();
 
     final prefs = await SharedPreferences.getInstance();
-    final hasSeenOnboarding = prefs.getBool(AppConstants.onboardingSeenKey) ?? false;
+    final hasSeenOnboarding =
+        prefs.getBool(AppConstants.onboardingSeenKey) ?? false;
 
     if (!mounted) return;
 
@@ -67,9 +68,12 @@ class _SplashScreenState extends State<SplashScreen> {
                 decoration: BoxDecoration(
                   color: AppColors.primaryUltraLight,
                   shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.primaryLight.withOpacity(0.3), width: 2),
+                  border: Border.all(
+                      color: AppColors.primaryLight.withValues(alpha: 0.3),
+                      width: 2),
                 ),
-                child: const Icon(Icons.home_repair_service_rounded, size: 54, color: AppColors.primary),
+                child: const Icon(Icons.home_repair_service_rounded,
+                    size: 54, color: AppColors.primary),
               ),
               const SizedBox(height: 20),
               const Text(

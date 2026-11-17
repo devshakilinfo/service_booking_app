@@ -18,7 +18,13 @@ class _SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   late String _selectedCategory;
 
-  final List<String> _categories = ['All', 'Cleaning', 'Repair', 'Beauty', 'Electric'];
+  final List<String> _categories = [
+    'All',
+    'Cleaning',
+    'Repair',
+    'Beauty',
+    'Electric'
+  ];
 
   @override
   void initState() {
@@ -81,14 +87,17 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
               child: TextField(
                 controller: _searchController,
                 onChanged: _onSearchChanged,
                 decoration: InputDecoration(
                   hintText: 'Search for services...',
-                  hintStyle: const TextStyle(color: AppColors.textLight, fontSize: 14),
-                  prefixIcon: const Icon(Icons.search, color: AppColors.textSecondary, size: 22),
+                  hintStyle:
+                      const TextStyle(color: AppColors.textLight, fontSize: 14),
+                  prefixIcon: const Icon(Icons.search,
+                      color: AppColors.textSecondary, size: 22),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
                           icon: const Icon(Icons.clear, size: 18),
@@ -100,7 +109,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       : null,
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
                     borderSide: const BorderSide(color: AppColors.border),
@@ -111,7 +121,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+                    borderSide:
+                        const BorderSide(color: AppColors.primary, width: 1.5),
                   ),
                 ),
               ),
@@ -136,14 +147,16 @@ class _SearchScreenState extends State<SearchScreen> {
                       selectedColor: AppColors.primary,
                       backgroundColor: Colors.white,
                       labelStyle: TextStyle(
-                        color: isSelected ? Colors.white : AppColors.textPrimary,
+                        color:
+                            isSelected ? Colors.white : AppColors.textPrimary,
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                         side: BorderSide(
-                          color: isSelected ? AppColors.primary : AppColors.border,
+                          color:
+                              isSelected ? AppColors.primary : AppColors.border,
                         ),
                       ),
                       showCheckmark: false,
@@ -157,17 +170,19 @@ class _SearchScreenState extends State<SearchScreen> {
               child: serviceProvider.isLoading
                   ? const Center(
                       child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.primary),
                       ),
                     )
                   : serviceProvider.services.isEmpty
-                      ? Center(
+                      ? const Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.search_off_rounded, size: 64, color: AppColors.textLight),
-                              const SizedBox(height: 12),
-                              const Text(
+                              Icon(Icons.search_off_rounded,
+                                  size: 64, color: AppColors.textLight),
+                              SizedBox(height: 12),
+                              Text(
                                 'No services found',
                                 style: TextStyle(
                                   fontSize: 16,
@@ -175,16 +190,19 @@ class _SearchScreenState extends State<SearchScreen> {
                                   color: AppColors.textPrimary,
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                              const Text(
+                              SizedBox(height: 4),
+                              Text(
                                 'Try searching for something else or change filter.',
-                                style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.textSecondary),
                               ),
                             ],
                           ),
                         )
                       : ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 8),
                           itemCount: serviceProvider.services.length,
                           itemBuilder: (context, index) {
                             final service = serviceProvider.services[index];
@@ -194,7 +212,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => ServiceDetailsScreen(service: service),
+                                    builder: (_) =>
+                                        ServiceDetailsScreen(service: service),
                                   ),
                                 );
                               },

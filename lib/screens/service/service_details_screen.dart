@@ -32,7 +32,8 @@ class ServiceDetailsScreen extends StatelessWidget {
                           height: 280,
                           width: double.infinity,
                           color: AppColors.primaryUltraLight,
-                          child: const Icon(Icons.cleaning_services, size: 80, color: AppColors.primary),
+                          child: const Icon(Icons.cleaning_services,
+                              size: 80, color: AppColors.primary),
                         ),
                       ),
                       Positioned(
@@ -41,7 +42,8 @@ class ServiceDetailsScreen extends StatelessWidget {
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
                           child: IconButton(
-                            icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary, size: 20),
+                            icon: const Icon(Icons.arrow_back,
+                                color: AppColors.textPrimary, size: 20),
                             onPressed: () => Navigator.pop(context),
                           ),
                         ),
@@ -52,10 +54,12 @@ class ServiceDetailsScreen extends StatelessWidget {
                         child: CircleAvatar(
                           backgroundColor: Colors.white,
                           child: IconButton(
-                            icon: const Icon(Icons.favorite_border, color: AppColors.error, size: 20),
+                            icon: const Icon(Icons.favorite_border,
+                                color: AppColors.error, size: 20),
                             onPressed: () {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Saved to favorites!')),
+                                const SnackBar(
+                                    content: Text('Saved to favorites!')),
                               );
                             },
                           ),
@@ -79,7 +83,8 @@ class ServiceDetailsScreen extends StatelessWidget {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            const Icon(Icons.star, color: Colors.amber, size: 18),
+                            const Icon(Icons.star,
+                                color: Colors.amber, size: 18),
                             const SizedBox(width: 4),
                             Text(
                               service.rating.toString(),
@@ -113,7 +118,8 @@ class ServiceDetailsScreen extends StatelessWidget {
                             const SizedBox(width: 8),
                             Row(
                               children: [
-                                const Icon(Icons.access_time, size: 16, color: AppColors.textSecondary),
+                                const Icon(Icons.access_time,
+                                    size: 16, color: AppColors.textSecondary),
                                 const SizedBox(width: 4),
                                 Text(
                                   service.duration,
@@ -149,9 +155,12 @@ class ServiceDetailsScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            _buildFeatureBadge(Icons.person_pin_outlined, 'Experienced\nStaff'),
-                            _buildFeatureBadge(Icons.eco_outlined, 'Eco-Friendly\nProducts'),
-                            _buildFeatureBadge(Icons.verified_outlined, '100%\nSatisfaction'),
+                            _buildFeatureBadge(Icons.person_pin_outlined,
+                                'Experienced\nStaff'),
+                            _buildFeatureBadge(
+                                Icons.eco_outlined, 'Eco-Friendly\nProducts'),
+                            _buildFeatureBadge(
+                                Icons.verified_outlined, '100%\nSatisfaction'),
                           ],
                         ),
                       ],
@@ -165,13 +174,15 @@ class ServiceDetailsScreen extends StatelessWidget {
               left: 0,
               right: 0,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: const Border(top: BorderSide(color: AppColors.border)),
+                  border:
+                      const Border(top: BorderSide(color: AppColors.border)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
+                      color: Colors.black.withValues(alpha: 0.04),
                       blurRadius: 10,
                       offset: const Offset(0, -3),
                     ),
@@ -202,7 +213,9 @@ class ServiceDetailsScreen extends StatelessWidget {
                         isOutlined: true,
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Service link copied to clipboard!')),
+                            const SnackBar(
+                                content:
+                                    Text('Service link copied to clipboard!')),
                           );
                         },
                       ),
@@ -225,7 +238,8 @@ class ServiceDetailsScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: AppColors.primaryUltraLight,
             shape: BoxShape.circle,
-            border: Border.all(color: AppColors.primaryLight.withOpacity(0.3)),
+            border: Border.all(
+                color: AppColors.primaryLight.withValues(alpha: 0.3)),
           ),
           child: Icon(icon, color: AppColors.primary, size: 24),
         ),
