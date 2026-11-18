@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/app_illustrations.dart';
+import '../admin/admin_dashboard_screen.dart';
 import '../auth/login_screen.dart';
 import '../main_navigation_screen.dart';
 import '../onboarding/onboarding_screen.dart';
@@ -36,10 +37,17 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!mounted) return;
 
     if (isAuthenticated) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
-      );
+      if (authProvider.isAdmin) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AdminDashboardScreen()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+        );
+      }
     } else if (!hasSeenOnboarding) {
       Navigator.pushReplacement(
         context,

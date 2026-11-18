@@ -14,6 +14,7 @@ class AuthProvider with ChangeNotifier {
   UserModel? get currentUser => _currentUser;
   String? get token => _token;
   bool get isAuthenticated => _token != null && _currentUser != null;
+  bool get isAdmin => _currentUser?.role.toLowerCase() == 'admin';
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 

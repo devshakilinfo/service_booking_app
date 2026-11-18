@@ -6,6 +6,8 @@ import '../../models/service_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/service_provider.dart';
 import '../../widgets/app_illustrations.dart';
+import '../auth/login_screen.dart';
+import '../main_navigation_screen.dart';
 import 'admin_add_service_screen.dart';
 import 'admin_booking_details_screen.dart';
 import 'admin_edit_service_screen.dart';
@@ -210,10 +212,21 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textPrimary, size: 20),
-          onPressed: () => Navigator.pop(context),
-        ),
+        leading: Navigator.canPop(context)
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textPrimary, size: 20),
+                onPressed: () => Navigator.pop(context),
+              )
+            : IconButton(
+                icon: const Icon(Icons.storefront_outlined, color: AppColors.primary, size: 22),
+                tooltip: 'Customer App View',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+                  );
+                },
+              ),
         title: const Text(
           'Admin Dashboard',
           style: TextStyle(
@@ -224,14 +237,27 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         ),
         centerTitle: true,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.logout_rounded, color: AppColors.error, size: 22),
+            tooltip: 'Logout',
+            onPressed: () async {
+              await auth.logout();
+              if (!mounted) return;
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
+                (route) => false,
+              );
+            },
+          ),
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 14.0),
             child: CircleAvatar(
-              radius: 18,
+              radius: 16,
               backgroundColor: const Color(0xFF1E3827),
               child: Text(
                 user?.name.isNotEmpty == true ? user!.name[0].toUpperCase() : 'A',
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 14),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 13),
               ),
             ),
           ),
@@ -1184,6 +1210,58 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   child: const Text(
                     'Save Configuration',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.storefront_outlined, color: AppColors.primary, size: 20),
+                  label: const Text(
+                    'Switch to Customer App',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.primary),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: AppColors.primary, width: 1.5),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: OutlinedButton.icon(
+                  onPressed: () async {
+                    final auth = Provider.of<AuthProvider>(context, listen: false);
+                    await auth.logout();
+                    if (!mounted) return;
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                      (route) => false,
+                    );
+                  },
+                  icon: const Icon(Icons.logout_rounded, color: AppColors.error, size: 20),
+                  label: const Text(
+                    'Logout Admin',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.error),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: AppColors.error, width: 1.5),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                 ),
               ),
