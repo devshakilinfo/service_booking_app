@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../providers/service_provider.dart';
 import '../../widgets/app_illustrations.dart';
-import '../ai_assistant/ai_assistant_screen.dart';
 import '../service/service_details_screen.dart';
 import 'search_screen.dart';
 import 'widgets/home_promo_banner.dart';

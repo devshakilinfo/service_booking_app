@@ -94,7 +94,7 @@ class _AdminAddServiceScreenState extends State<AdminAddServiceScreen> {
     final List<String> tags = _tagsController.text
         .split(',')
         .map((t) => t.trim())
-        .filter((t) => t.isNotEmpty)
+        .where((t) => t.isNotEmpty)
         .toList();
 
     final serviceProvider = Provider.of<ServiceProvider>(context, listen: false);

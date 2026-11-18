@@ -126,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final bookingsCount = bookingProvider.bookings.length;
     final totalSpent = bookingProvider.bookings.fold<double>(
       0.0,
-      (sum, b) => sum + b.totalAmount,
+      (sum, b) => sum + b.totalPrice,
     );
 
     return Scaffold(

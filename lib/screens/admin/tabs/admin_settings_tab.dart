@@ -196,7 +196,7 @@ class _AdminSettingsTabState extends State<AdminSettingsTab> {
                   onPressed: () async {
                     final auth = Provider.of<AuthProvider>(context, listen: false);
                     await auth.logout();
-                    if (!mounted) return;
+                    if (!context.mounted) return;
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (_) => const LoginScreen()),

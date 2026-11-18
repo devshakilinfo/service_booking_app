@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/service_model.dart';
 import '../../providers/ai_assistant_provider.dart';
-import '../booking/booking_screen.dart';
 import 'widgets/chat_message_bubble.dart';
 
 class AIAssistantScreen extends StatefulWidget {
