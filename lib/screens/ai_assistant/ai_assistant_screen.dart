@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../core/constants.dart';
+import '../../models/service_model.dart';
 import '../../providers/ai_assistant_provider.dart';
 import '../booking/booking_screen.dart';
-import '../service/service_details_screen.dart';
 
 class AIAssistantScreen extends StatefulWidget {
   const AIAssistantScreen({super.key});
@@ -56,89 +55,112 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
     final aiProvider = Provider.of<AIAssistantProvider>(context);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textPrimary, size: 20),
-          onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            }
-          },
-        ),
-        title: Row(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryUltraLight,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.smart_toy_rounded, color: AppColors.primary, size: 22),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    width: 11,
-                    height: 11,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF22C55E),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(width: 10),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'ServiceHub AI Assistant',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                Text(
-                  'Online • Powered by Gemini AI',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF16A34A),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh_rounded, color: AppColors.textSecondary, size: 22),
-            onPressed: () => aiProvider.clearChat(),
-            tooltip: 'Clear Chat',
-          ),
-        ],
-      ),
+      backgroundColor: const Color(0xFFF9FAF6),
       body: SafeArea(
         child: Column(
           children: [
-            // Chat list
+            // Top Header matching media_1794987683573_11b1d3df.jpg
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  bottom: BorderSide(color: Color(0xFFE8EEE4), width: 1),
+                ),
+              ),
+              child: Row(
+                children: [
+                  // Green Circle Robot Icon
+                  Container(
+                    width: 46,
+                    height: 46,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF427E2B),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.smart_toy_rounded,
+                        color: Colors.white,
+                        size: 26,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // Title & Online Status
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'ServiceHub AI Assistant',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFF142E18),
+                            letterSpacing: -0.2,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Row(
+                          children: [
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF55A630),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            const Text(
+                              'Online • Powered by Gemini AI',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF4C8C32),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Right Close / Reset Button
+                  GestureDetector(
+                    onTap: () {
+                      if (Navigator.canPop(context)) {
+                        Navigator.pop(context);
+                      } else {
+                        aiProvider.clearChat();
+                      }
+                    },
+                    child: Container(
+                      width: 34,
+                      height: 34,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF1F5EE),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 18,
+                          color: Color(0xFF4A5D4B),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Chat Messages Stream
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 itemCount: aiProvider.messages.length,
                 itemBuilder: (context, index) {
                   final msg = aiProvider.messages[index];
@@ -153,11 +175,12 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                 child: Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: const Color(0xFFE6ECE2)),
                       ),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
@@ -165,11 +188,17 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                           SizedBox(
                             width: 12,
                             height: 12,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Color(0xFF285428),
+                            ),
                           ),
                           SizedBox(width: 8),
-                          Text('AI is researching recommendations...',
-                              style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                          Text(
+                            'Thinking...',
+                            style: TextStyle(
+                                fontSize: 12, color: Color(0xFF5A6D5B)),
+                          ),
                         ],
                       ),
                     ),
@@ -177,98 +206,101 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                 ),
               ),
 
-            // Quick Prompt Pills
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: _quickPrompts.map((prompt) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: ActionChip(
-                      backgroundColor: Colors.white,
-                      elevation: 0,
-                      side: BorderSide(color: AppColors.primary.withValues(alpha: 0.25)),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                      label: Text(
-                        prompt,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                      onPressed: () => _sendMessage(prompt),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-
-            // Input Bar (matches media_1794987683573_11b1d3df)
+            // Bottom Composer Area (Quick Chips + Rounded Input Bar)
             Container(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
+              padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
+              decoration: const BoxDecoration(
+                color: Color(0xFFF9FAF6),
+                border: Border(
+                  top: BorderSide(color: Color(0xFFE8EEE4), width: 1),
+                ),
               ),
-              child: Row(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF4F6F2),
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: AppColors.border),
-                      ),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 14),
-                          Expanded(
-                            child: TextField(
-                              controller: _messageController,
-                              style: const TextStyle(fontSize: 14, color: AppColors.textPrimary),
-                              decoration: const InputDecoration(
-                                hintText: 'Ask AI anything about services...',
-                                hintStyle: TextStyle(fontSize: 13, color: AppColors.textLight),
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.symmetric(vertical: 12),
+                  // Quick Prompt Pills
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: _quickPrompts.map((prompt) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: GestureDetector(
+                            onTap: () => _sendMessage(prompt),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFE6F1E1),
+                                borderRadius: BorderRadius.circular(20),
+                                border:
+                                    Border.all(color: const Color(0xFFCDE1C4)),
                               ),
-                              onSubmitted: (val) => _sendMessage(),
+                              child: Text(
+                                prompt,
+                                style: const TextStyle(
+                                  fontSize: 12.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xFF1E4620),
+                                ),
+                              ),
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.mic_none_rounded, color: AppColors.textSecondary, size: 22),
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Listening... (Speech Recognition active)')),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                        );
+                      }).toList(),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () => _sendMessage(),
-                    child: Container(
-                      width: 44,
-                      height: 44,
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Center(
-                        child: Icon(Icons.send_rounded, color: Colors.white, size: 20),
-                      ),
+                  const SizedBox(height: 10),
+                  // Input Pill with embedded green send circle
+                  Container(
+                    height: 50,
+                    padding: const EdgeInsets.only(left: 18, right: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(28),
+                      border: Border.all(color: const Color(0xFFDCE4D8)),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _messageController,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF142E18),
+                            ),
+                            decoration: const InputDecoration(
+                              hintText: 'Ask about services or prices...',
+                              hintStyle: TextStyle(
+                                fontSize: 13.5,
+                                color: Color(0xFF7A8B7B),
+                              ),
+                              border: InputBorder.none,
+                              isDense: true,
+                            ),
+                            onSubmitted: (_) => _sendMessage(),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => _sendMessage(),
+                          child: Container(
+                            width: 38,
+                            height: 38,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF285428),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.send_rounded,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -283,47 +315,35 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
   Widget _buildMessageItem(ChatMessage msg) {
     if (msg.isUser) {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Flexible(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(4),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.15),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Text(
-                  msg.text,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                    height: 1.35,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+        padding: const EdgeInsets.only(bottom: 16, left: 48),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+            decoration: const BoxDecoration(
+              color: Color(0xFF285428),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(18),
+                topRight: Radius.circular(4),
+                bottomLeft: Radius.circular(18),
+                bottomRight: Radius.circular(18),
               ),
             ),
-          ],
+            child: Text(
+              msg.text,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+                height: 1.4,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
         ),
       );
     }
 
-    // Bot Response
+    // Bot Response Bubble + Recommended Service Card
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -332,210 +352,182 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Small Bot Avatar Circle
               Container(
-                width: 32,
-                height: 32,
+                width: 34,
+                height: 34,
                 margin: const EdgeInsets.only(right: 10, top: 2),
-                decoration: const BoxDecoration(
-                  color: Color(0xFFE8F5E9),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEBF3E8),
                   shape: BoxShape.circle,
+                  border: Border.all(color: const Color(0xFFD5E4CF)),
                 ),
                 child: const Center(
-                  child: Icon(Icons.smart_toy_rounded, size: 18, color: AppColors.primary),
+                  child: Text('🤖', style: TextStyle(fontSize: 16)),
                 ),
               ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(4),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    border: Border.all(color: AppColors.border),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.02),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: const Color(0xFFE6ECE2)),
                   ),
-                  child: Text(
-                    msg.text,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textPrimary,
-                      height: 1.4,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  child: _buildFormattedBotText(msg.text),
                 ),
               ),
             ],
           ),
-
-          // Recommended Service Cards
           if (msg.recommendedServices.isNotEmpty)
-            ...msg.recommendedServices.map((service) => _buildRecommendedServiceCard(service)),
+            ...msg.recommendedServices
+                .map((s) => _buildRecommendedServiceCard(s)),
         ],
       ),
     );
   }
 
-  Widget _buildRecommendedServiceCard(dynamic service) {
-    return Container(
-      margin: const EdgeInsets.only(left: 42, top: 12, right: 8),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.06),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+  Widget _buildFormattedBotText(String text) {
+    const highlight = 'AC Repair & Diagnostics';
+    if (text.contains(highlight)) {
+      final parts = text.split(highlight);
+      return RichText(
+        text: TextSpan(
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF1F2E21),
+            height: 1.45,
+            fontWeight: FontWeight.w400,
           ),
-        ],
+          children: [
+            TextSpan(text: parts[0]),
+            const TextSpan(
+              text: highlight,
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                color: Color(0xFF142E18),
+              ),
+            ),
+            if (parts.length > 1)
+              TextSpan(text: parts.sublist(1).join(highlight)),
+          ],
+        ),
+      );
+    }
+
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: 14,
+        color: Color(0xFF1F2E21),
+        height: 1.45,
+        fontWeight: FontWeight.w400,
+      ),
+    );
+  }
+
+  Widget _buildRecommendedServiceCard(ServiceModel service) {
+    final reviewsLabel = service.reviewsCount >= 1000
+        ? '${(service.reviewsCount / 1000).toStringAsFixed(1)}k'
+        : '${service.reviewsCount}';
+
+    return Container(
+      margin: const EdgeInsets.only(left: 44, top: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3F9F0),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFC5DFBC), width: 1.2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Top Row: RECOMMENDED SERVICE + Rating
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryUltraLight,
-                  borderRadius: BorderRadius.circular(8),
+              const Text(
+                'RECOMMENDED SERVICE',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF4C8C32),
+                  letterSpacing: 0.4,
                 ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.star_rounded, size: 14, color: AppColors.primary),
-                    SizedBox(width: 4),
-                    Text(
-                      'RECOMMENDED SERVICE',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.primary,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
+              ),
+              Text(
+                '${service.rating} ★ ($reviewsLabel)',
+                style: const TextStyle(
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFFD98218),
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 6),
+          // Service Title
+          Text(
+            service.name,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w800,
+              color: Color(0xFF142E18),
+            ),
           ),
           const SizedBox(height: 10),
+          const Divider(height: 1, color: Color(0xFFE0EDE0)),
+          const SizedBox(height: 10),
+          // Bottom Row: Price • Duration + Quick Book Button
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Image.network(
-                  service.image,
-                  width: 64,
-                  height: 64,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    width: 64,
-                    height: 64,
-                    color: AppColors.primaryUltraLight,
-                    child: const Icon(Icons.home_repair_service_rounded, color: AppColors.primary),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              RichText(
+                text: TextSpan(
                   children: [
-                    Text(
-                      service.name,
+                    TextSpan(
+                      text: '\$${service.price.toStringAsFixed(0)}',
                       style: const TextStyle(
-                        fontSize: 15,
+                        fontSize: 19,
                         fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
+                        color: Color(0xFF1E4620),
                       ),
                     ),
-                    const SizedBox(height: 3),
-                    Row(
-                      children: [
-                        const Icon(Icons.star_rounded, size: 14, color: Color(0xFFF59E0B)),
-                        const SizedBox(width: 3),
-                        Text(
-                          '${service.rating} (${service.reviewsCount} reviews)',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 3),
-                    Text(
-                      '\$${service.price.toStringAsFixed(0)} • ${service.duration}',
+                    TextSpan(
+                      text: ' • ${service.duration}',
                       style: const TextStyle(
                         fontSize: 13,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.primary,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF5A6D5B),
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ServiceDetailsScreen(service: service),
-                      ),
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppColors.border),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                  ),
-                  child: const Text(
-                    'Details',
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.textPrimary),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BookingScreen(service: service),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    elevation: 0,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BookingScreen(service: service),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF285428),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Text(
                     'Quick Book →',
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

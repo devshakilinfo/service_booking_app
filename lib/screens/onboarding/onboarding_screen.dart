@@ -34,11 +34,13 @@ class OnboardingScreen extends StatelessWidget {
                 children: [
                   Opacity(
                     opacity: 0.7,
-                    child: Icon(Icons.eco_outlined, color: AppColors.accent, size: 28),
+                    child: Icon(Icons.eco_outlined,
+                        color: AppColors.accent, size: 28),
                   ),
                   Opacity(
                     opacity: 0.5,
-                    child: Icon(Icons.spa_outlined, color: AppColors.accent, size: 24),
+                    child: Icon(Icons.spa_outlined,
+                        color: AppColors.accent, size: 24),
                   ),
                 ],
               ),
@@ -74,9 +76,11 @@ class OnboardingScreen extends StatelessWidget {
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.calendar_today_rounded, size: 18, color: AppColors.primary),
+                            Icon(Icons.calendar_today_rounded,
+                                size: 18, color: AppColors.primary),
                             SizedBox(width: 6),
-                            Icon(Icons.check_circle_rounded, size: 18, color: AppColors.statusConfirmed),
+                            Icon(Icons.check_circle_rounded,
+                                size: 18, color: AppColors.statusConfirmed),
                           ],
                         ),
                       ),
@@ -97,7 +101,8 @@ class OnboardingScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: const Icon(Icons.local_florist_outlined, size: 28, color: AppColors.primary),
+                        child: const Icon(Icons.local_florist_outlined,
+                            size: 28, color: AppColors.primary),
                       ),
                     ),
                     // Central Persona Icon in beanbag
@@ -110,7 +115,9 @@ class OnboardingScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.accent.withValues(alpha: 0.3), width: 3),
+                            border: Border.all(
+                                color: AppColors.accent.withValues(alpha: 0.3),
+                                width: 3),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withValues(alpha: 0.06),
@@ -120,12 +127,14 @@ class OnboardingScreen extends StatelessWidget {
                             ],
                           ),
                           child: const Center(
-                            child: Icon(Icons.person_pin_circle_rounded, size: 68, color: AppColors.primary),
+                            child: Icon(Icons.person_pin_circle_rounded,
+                                size: 68, color: AppColors.primary),
                           ),
                         ),
                         const SizedBox(height: 12),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 6),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
@@ -134,7 +143,8 @@ class OnboardingScreen extends StatelessWidget {
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.touch_app_rounded, size: 16, color: AppColors.primary),
+                              Icon(Icons.touch_app_rounded,
+                                  size: 16, color: AppColors.primary),
                               SizedBox(width: 6),
                               Text(
                                 'Easy 1-Click Booking',

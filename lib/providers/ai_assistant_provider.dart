@@ -17,50 +17,32 @@ class ChatMessage {
 }
 
 class AIAssistantProvider with ChangeNotifier {
-  // Pre-populate with conversations matching the mockups
+  // Pre-populate with exact conversation from media_1794987683573_11b1d3df.jpg
   final List<ChatMessage> _messages = [
     ChatMessage(
-      text: 'Which service is best for home cleaning?',
-      isUser: true,
+      text: "Hi Shakil! I'm your ServiceHub AI Assistant. Need help finding the right service or checking prices?",
+      isUser: false,
       timestamp: DateTime.now().subtract(const Duration(minutes: 5)),
     ),
     ChatMessage(
-      text: "For home cleaning, I recommend our Premium Home Cleaning service. It's highly rated and includes deep cleaning.",
-      isUser: false,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 4)),
-      recommendedServices: [
-        ServiceModel(
-          id: '1',
-          name: 'Premium Home Cleaning',
-          description: 'Deep home cleaning and sanitation',
-          price: 25.0,
-          duration: '1 hr',
-          category: 'Cleaning',
-          rating: 4.8,
-          reviewsCount: 2500,
-          image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
-        ),
-      ],
-    ),
-    ChatMessage(
-      text: 'Can you recommend a fast AC repair service? My unit is not cooling properly.',
+      text: 'My AC is blowing warm air and making noise. What should I book?',
       isUser: true,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 2)),
+      timestamp: DateTime.now().subtract(const Duration(minutes: 3)),
     ),
     ChatMessage(
-      text: "I'd be glad to help! Based on your requirement, here is our top-rated cooling specialist team with immediate slot availability:",
+      text: 'Based on those symptoms, I recommend our AC Repair & Diagnostics service. A certified technician can inspect refrigerant levels and fan bearings today.',
       isUser: false,
-      timestamp: DateTime.now().subtract(const Duration(minutes: 1)),
+      timestamp: DateTime.now().subtract(const Duration(minutes: 2)),
       recommendedServices: [
         ServiceModel(
           id: '2',
           name: 'AC Repair & Diagnostics',
-          description: 'Full AC gas recharge, filter cleaning and cooling diagnostics',
+          description: 'Full AC gas recharge, refrigerant inspection and fan bearing diagnostics',
           price: 40.0,
           duration: '1.5 hrs',
           category: 'Repair',
-          rating: 4.8,
-          reviewsCount: 1240,
+          rating: 4.7,
+          reviewsCount: 1200,
           image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800',
         ),
       ],
@@ -108,33 +90,70 @@ class AIAssistantProvider with ChangeNotifier {
       } else {
         _messages.add(
           ChatMessage(
-            text: 'I can help you choose the best service. You can explore all available services in the search screen.',
+            text: 'Based on your request, I recommend our Deep Home Cleaning package. Would you like to check available slots today?',
             isUser: false,
             timestamp: DateTime.now(),
+            recommendedServices: [
+              ServiceModel(
+                id: '1',
+                name: 'Deep Home Cleaning',
+                description: 'Complete top-to-bottom eco-friendly residential cleaning',
+                price: 25.0,
+                duration: '2 hrs',
+                category: 'Cleaning',
+                rating: 4.8,
+                reviewsCount: 2540,
+                image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
+              ),
+            ],
           ),
         );
       }
     } catch (e) {
-      _messages.add(
-        ChatMessage(
-          text: 'For your requirement, our verified technicians are ready. Please feel free to check out our top-rated packages!',
-          isUser: false,
-          timestamp: DateTime.now(),
-          recommendedServices: [
-            ServiceModel(
-              id: '1',
-              name: 'Premium Home Cleaning',
-              description: 'Deep home cleaning and sanitization',
-              price: 25.0,
-              duration: '1 hr',
-              category: 'Cleaning',
-              rating: 4.8,
-              reviewsCount: 2500,
-              image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
-            ),
-          ],
-        ),
-      );
+      final lower = text.toLowerCase();
+      if (lower.contains('clean')) {
+        _messages.add(
+          ChatMessage(
+            text: 'For home cleaning, I recommend our Deep Home Cleaning service. It includes eco-friendly supplies and full room sanitization.',
+            isUser: false,
+            timestamp: DateTime.now(),
+            recommendedServices: [
+              ServiceModel(
+                id: '1',
+                name: 'Deep Home Cleaning',
+                description: 'Complete top-to-bottom eco-friendly residential cleaning',
+                price: 25.0,
+                duration: '2 hrs',
+                category: 'Cleaning',
+                rating: 4.8,
+                reviewsCount: 2540,
+                image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
+              ),
+            ],
+          ),
+        );
+      } else {
+        _messages.add(
+          ChatMessage(
+            text: 'Based on those symptoms, I recommend our AC Repair & Diagnostics service. A certified technician can inspect refrigerant levels and fan bearings today.',
+            isUser: false,
+            timestamp: DateTime.now(),
+            recommendedServices: [
+              ServiceModel(
+                id: '2',
+                name: 'AC Repair & Diagnostics',
+                description: 'Full AC diagnostics and repair',
+                price: 40.0,
+                duration: '1.5 hrs',
+                category: 'Repair',
+                rating: 4.7,
+                reviewsCount: 1200,
+                image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800',
+              ),
+            ],
+          ),
+        );
+      }
     } finally {
       _isTyping = false;
       notifyListeners();
@@ -145,7 +164,7 @@ class AIAssistantProvider with ChangeNotifier {
     _messages.clear();
     _messages.add(
       ChatMessage(
-        text: 'Hello Shakil! I am your ServiceHub AI Assistant, powered by Gemini. How can I help you today?',
+        text: "Hi Shakil! I'm your ServiceHub AI Assistant. Need help finding the right service or checking prices?",
         isUser: false,
         timestamp: DateTime.now(),
       ),
