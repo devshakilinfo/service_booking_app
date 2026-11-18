@@ -94,7 +94,7 @@ class AIAssistantProvider with ChangeNotifier {
     } catch (e) {
       _messages.add(
         ChatMessage(
-          text: 'For home cleaning, I recommend our Premium Home Cleaning service ($25 • 1 hr). Feel free to ask about AC repair or plumbing anytime!',
+          text: 'For home cleaning, I recommend our Premium Home Cleaning service (\$25 • 1 hr). Feel free to ask about AC repair or plumbing anytime!',
           isUser: false,
           timestamp: DateTime.now(),
           recommendedServices: [

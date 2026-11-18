@@ -97,7 +97,7 @@ class OnboardingScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: const Icon(Icons.potted_plant_outlined, size: 28, color: AppColors.primary),
+                        child: const Icon(Icons.local_florist_outlined, size: 28, color: AppColors.primary),
                       ),
                     ),
                     // Central Persona Icon in beanbag

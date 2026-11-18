@@ -140,7 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Password reset instructions sent to your email.'),
+                          content: Text(
+                              'Password reset instructions sent to your email.'),
                         ),
                       );
                     },
@@ -165,7 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Divider with text "or continue with"
                 Row(
                   children: [
-                    Expanded(child: Divider(color: AppColors.border, thickness: 1)),
+                    Expanded(
+                        child: Divider(color: AppColors.border, thickness: 1)),
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 14.0),
                       child: Text(
@@ -177,7 +179,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    Expanded(child: Divider(color: AppColors.border, thickness: 1)),
+                    Expanded(
+                        child: Divider(color: AppColors.border, thickness: 1)),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -197,7 +200,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(width: 20),
                     _buildSocialButton(
-                      child: const Icon(Icons.apple, size: 26, color: Colors.black),
+                      child: const Icon(Icons.apple,
+                          size: 26, color: Colors.black),
                     ),
                   ],
                 ),
