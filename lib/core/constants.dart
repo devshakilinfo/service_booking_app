@@ -40,7 +40,7 @@ class AppConstants {
   static const String appName = 'ServiceHub';
   static const String appTagline = 'Book • Manage • Live Better';
 
-  static const String defaultBaseUrl = 'http://10.0.2.2:5000/api';
+  static const String defaultBaseUrl = 'https://service-booking-backend-es6d.onrender.com/api';
 
   static const String tokenKey = 'servicehub_jwt_token';
   static const String userKey = 'servicehub_user_profile';
