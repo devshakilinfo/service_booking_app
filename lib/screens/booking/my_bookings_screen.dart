@@ -130,7 +130,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
       body: SafeArea(
         child: Column(
           children: [
-            // 4 Tabs: All, Upcoming, Completed, Cancelled
+            
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
               padding: const EdgeInsets.all(4),
@@ -263,7 +263,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Icon Container
+              
               Container(
                 height: 52,
                 width: 52,
@@ -310,7 +310,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                   ],
                 ),
               ),
-              // Status Pill
+              
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(

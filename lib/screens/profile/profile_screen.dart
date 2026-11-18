@@ -120,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.fromLTRB(18, 12, 18, 28),
           child: Column(
             children: [
-              // 1. Top Dark Green Profile Banner Card (matches media_1794987683593_65ab019b.jpg)
+              
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
@@ -140,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Rounded Square "SA" Badge with light green border
+                        
                         Container(
                           width: 72,
                           height: 72,
@@ -165,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         const SizedBox(width: 16),
-                        // Name, Verified Pill, Email & Phone
+                        
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,7 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.white.withValues(alpha: 0.14),
                     ),
                     const SizedBox(height: 16),
-                    // 3 Stats Row: 12 Bookings | 4 Favorites | $340 Total Spent
+                    
                     Row(
                       children: [
                         Expanded(
@@ -260,7 +260,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               const SizedBox(height: 18),
 
-              // 2. Personal Information Card (Editable)
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
@@ -317,7 +316,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 6),
                     _buildRoundedInput(_addressController),
                     const SizedBox(height: 18),
-                    // Save Changes Soft Green Button
+                    
                     SizedBox(
                       width: double.infinity,
                       height: 48,
@@ -347,7 +346,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               const SizedBox(height: 18),
 
-              // 3. Bottom Menu List Card
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),

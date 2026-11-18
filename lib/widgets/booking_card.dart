@@ -46,7 +46,6 @@ class BookingCard extends StatelessWidget {
     final service = booking.service;
     final isCancellable = (booking.status == 'Pending' || booking.status == 'Confirmed');
 
-    // Format date nicely like "Wed, 19 Nov, 10:00 AM"
     String dateDisplay = '${booking.date}, ${booking.timeSlot}';
     try {
       final parsed = DateTime.parse(booking.date);

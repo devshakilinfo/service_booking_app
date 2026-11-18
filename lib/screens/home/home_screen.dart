@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final serviceProvider = Provider.of<ServiceProvider>(context);
 
-    // Split services for Featured and Popular sections
     final services = serviceProvider.services;
     final featuredServices = services.take(2).toList();
     final popularServices = services.skip(2).take(2).toList();
@@ -50,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Top App Bar: Brand Logo & Notification bell with alert dot
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -81,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 10,
                             height: 10,
                             decoration: const BoxDecoration(
-                              color: Color(0xFFEF4444), // Red alert dot
+                              color: Color(0xFFEF4444), 
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -91,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const SizedBox(height: 14),
-                // Search Bar with Filter Icon
+                
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -133,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Hero Banner
+                
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(18),
@@ -198,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      // House illustration
+                      
                       Container(
                         height: 95,
                         width: 105,
@@ -214,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(height: 22),
-                // Categories Row (Cleaning, Repair, Beauty, Health)
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: _categories.map((cat) {
@@ -264,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }).toList(),
                 ),
                 const SizedBox(height: 24),
-                // Featured Services Header
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -295,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                // Featured Services 2-Column Cards
+                
                 if (serviceProvider.isLoading)
                   const SizedBox(
                     height: 140,
@@ -329,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 const SizedBox(height: 24),
-                // Popular Services Header
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -360,7 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                // Popular Services 2-Column Cards
+                
                 if (popularServices.isNotEmpty)
                   Row(
                     children: [
@@ -384,7 +383,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 const SizedBox(height: 24),
-                // AI Assistant Banner: "Need Help? Ask our AI Assistant"
+                
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
@@ -488,7 +487,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image with popular tag
+            
             Stack(
               children: [
                 ClipRRect(

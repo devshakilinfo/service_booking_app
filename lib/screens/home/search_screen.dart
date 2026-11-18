@@ -103,7 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Search Input Pill
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 6),
               child: Container(
@@ -146,7 +146,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             const SizedBox(height: 6),
-            // Category Filter Chips
+            
             SizedBox(
               height: 40,
               child: ListView.builder(
@@ -186,7 +186,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            // Filter Bar: "$20 - $100" | "4.5+ ★" | "6 Found"
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
@@ -242,7 +242,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            // 2-Column Grid of Services
+            
             Expanded(
               child: serviceProvider.isLoading
                   ? const Center(
@@ -314,7 +314,7 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image with Popular Badge
+            
             Stack(
               children: [
                 ClipRRect(

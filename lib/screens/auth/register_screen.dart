@@ -72,14 +72,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 12),
-                // Screen 3: ServiceHub Brand Logo
+                
                 const ServiceHubLogo(
                   iconSize: 42,
                   fontSize: 22,
                   showTagline: false,
                 ),
                 const SizedBox(height: 28),
-                // Create Your Account
+                
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -103,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                // Full Name
+                
                 CustomTextField(
                   controller: _nameController,
                   hint: 'Full Name',
@@ -117,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                // Email Address
+                
                 CustomTextField(
                   controller: _emailController,
                   hint: 'Email Address',
@@ -134,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                // Password
+                
                 CustomTextField(
                   controller: _passwordController,
                   hint: 'Password',
@@ -151,14 +151,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 const SizedBox(height: 24),
-                // Register Button
+                
                 CustomButton(
                   text: 'Register',
                   isLoading: authProvider.isLoading,
                   onPressed: _submit,
                 ),
                 const SizedBox(height: 24),
-                // Divider "or continue with"
+                
                 const Row(
                   children: [
                     Expanded(child: Divider(color: AppColors.border, thickness: 1)),
@@ -177,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                // Social Login Buttons
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -198,7 +198,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 const SizedBox(height: 32),
-                // Already have an account? Login
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

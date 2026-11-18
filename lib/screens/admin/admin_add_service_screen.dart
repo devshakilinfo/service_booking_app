@@ -94,7 +94,7 @@ class _AdminAddServiceScreenState extends State<AdminAddServiceScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Cover Photo Upload Box (matches media_1794987683673_f52c099d)
+              
               Container(
                 width: double.infinity,
                 height: 160,
@@ -146,7 +146,6 @@ class _AdminAddServiceScreenState extends State<AdminAddServiceScreen> {
 
               const SizedBox(height: 20),
 
-              // Form Card
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(

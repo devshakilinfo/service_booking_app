@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/constants.dart';
 
-/// Modern ServiceHub Brand Logo (House with cradle leaf + text)
 class ServiceHubLogo extends StatelessWidget {
   final double iconSize;
   final double fontSize;
@@ -51,7 +50,7 @@ class ServiceHubLogo extends StatelessWidget {
               style: TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.w800,
-                color: const Color(0xFF65A30D), // Fresh Vibrant Green
+                color: const Color(0xFF65A30D), 
                 letterSpacing: -0.4,
               ),
             ),
@@ -116,14 +115,12 @@ class _HouseCradleLeafPainter extends CustomPainter {
       ..color = const Color(0xFF65A30D)
       ..style = PaintingStyle.fill;
 
-    // Roof
     final roof = Path();
     roof.moveTo(w * 0.15, h * 0.45);
     roof.lineTo(w * 0.50, h * 0.18);
     roof.lineTo(w * 0.85, h * 0.45);
     canvas.drawPath(roof, strokePaint);
 
-    // Walls
     final walls = Path();
     walls.moveTo(w * 0.25, h * 0.45);
     walls.lineTo(w * 0.25, h * 0.70);
@@ -131,11 +128,9 @@ class _HouseCradleLeafPainter extends CustomPainter {
     walls.lineTo(w * 0.75, h * 0.45);
     canvas.drawPath(walls, strokePaint);
 
-    // Windows (4 Panes in center)
     final winRect = Rect.fromCenter(center: Offset(w * 0.5, h * 0.52), width: w * 0.22, height: h * 0.22);
     canvas.drawRRect(RRect.fromRectAndRadius(winRect, const Radius.circular(2)), strokePaint);
 
-    // Cradle Leaf supporting the base of the house
     final leaf = Path();
     leaf.moveTo(w * 0.15, h * 0.74);
     leaf.quadraticBezierTo(w * 0.5, h * 0.95, w * 0.95, h * 0.55);
@@ -148,7 +143,6 @@ class _HouseCradleLeafPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-/// Charming House on Grassy Hill Illustration
 class HouseWithGardenIllustration extends StatelessWidget {
   final double height;
   final double width;
@@ -177,7 +171,6 @@ class _HouseGardenPainter extends CustomPainter {
     final w = size.width;
     final h = size.height;
 
-    // Soft Green Hill Background
     final hillPaint = Paint()
       ..color = const Color(0xFFD6E8D2)
       ..style = PaintingStyle.fill;
@@ -191,7 +184,6 @@ class _HouseGardenPainter extends CustomPainter {
     hill.close();
     canvas.drawPath(hill, hillPaint);
 
-    // Foreground Darker Hill with winding pathway
     final fgHillPaint = Paint()
       ..color = const Color(0xFFBEDABE)
       ..style = PaintingStyle.fill;
@@ -205,7 +197,6 @@ class _HouseGardenPainter extends CustomPainter {
     fgHill.close();
     canvas.drawPath(fgHill, fgHillPaint);
 
-    // Pathway
     final pathPaint = Paint()
       ..color = const Color(0xFFF3ECE0)
       ..style = PaintingStyle.fill;
@@ -217,18 +208,15 @@ class _HouseGardenPainter extends CustomPainter {
     pathway.close();
     canvas.drawPath(pathway, pathPaint);
 
-    // Trees
     _drawTree(canvas, Offset(w * 0.18, h * 0.55), 26, const Color(0xFF5A8E62));
     _drawTree(canvas, Offset(w * 0.10, h * 0.64), 18, const Color(0xFF436E49));
     _drawTree(canvas, Offset(w * 0.80, h * 0.58), 26, const Color(0xFF5A8E62));
     _drawTree(canvas, Offset(w * 0.90, h * 0.66), 20, const Color(0xFF385A3D));
 
-    // House in Center
     final houseCenter = Offset(w * 0.5, h * 0.60);
     const houseW = 76.0;
     const houseH = 50.0;
 
-    // Walls
     final wallPaint = Paint()..color = const Color(0xFFFFFDF8);
     final wallRect = Rect.fromCenter(
       center: Offset(houseCenter.dx, houseCenter.dy + 8),
@@ -237,7 +225,6 @@ class _HouseGardenPainter extends CustomPainter {
     );
     canvas.drawRRect(RRect.fromRectAndRadius(wallRect, const Radius.circular(4)), wallPaint);
 
-    // Roof
     final roofPaint = Paint()..color = const Color(0xFF547A57);
     final roof = Path();
     roof.moveTo(houseCenter.dx - houseW * 0.62, houseCenter.dy - 14);
@@ -246,7 +233,6 @@ class _HouseGardenPainter extends CustomPainter {
     roof.close();
     canvas.drawPath(roof, roofPaint);
 
-    // Chimney
     final chimneyPaint = Paint()..color = const Color(0xFF4C6A50);
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -256,7 +242,6 @@ class _HouseGardenPainter extends CustomPainter {
       chimneyPaint,
     );
 
-    // Door
     final doorPaint = Paint()..color = const Color(0xFF88634B);
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -266,7 +251,6 @@ class _HouseGardenPainter extends CustomPainter {
       doorPaint,
     );
 
-    // Windows
     final winPaint = Paint()..color = const Color(0xFF89BFDE);
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -299,7 +283,6 @@ class _HouseGardenPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-/// Cute 3D Robot Assistant Illustration with glowing green headphones
 class RobotAssistantIllustration extends StatelessWidget {
   final double size;
 
@@ -323,13 +306,11 @@ class _RobotPainter extends CustomPainter {
     final center = Offset(size.width * 0.5, size.height * 0.52);
     final r = size.width * 0.38;
 
-    // Glowing circle halo background
     final haloPaint = Paint()
       ..color = const Color(0x334ADE80)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12);
     canvas.drawCircle(center, r * 1.15, haloPaint);
 
-    // Headphones
     final earPaint = Paint()..color = const Color(0xFF2E6342);
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -346,7 +327,6 @@ class _RobotPainter extends CustomPainter {
       earPaint,
     );
 
-    // Headband
     final headBandPaint = Paint()
       ..color = const Color(0xFF2E6342)
       ..style = PaintingStyle.stroke
@@ -357,7 +337,6 @@ class _RobotPainter extends CustomPainter {
     bandPath.quadraticBezierTo(center.dx, center.dy - r * 1.25, center.dx + r * 0.95, center.dy - r * 0.1);
     canvas.drawPath(bandPath, headBandPaint);
 
-    // Head
     final headPaint = Paint()..color = Colors.white;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -367,7 +346,6 @@ class _RobotPainter extends CustomPainter {
       headPaint,
     );
 
-    // Visor
     final visorPaint = Paint()..color = const Color(0xFF13221A);
     final visorRect = RRect.fromRectAndRadius(
       Rect.fromCenter(center: Offset(center.dx, center.dy + 4), width: r * 1.45, height: r * 0.95),
@@ -375,7 +353,6 @@ class _RobotPainter extends CustomPainter {
     );
     canvas.drawRRect(visorRect, visorPaint);
 
-    // Eyes
     final eyePaint = Paint()..color = const Color(0xFF4ADE80);
     canvas.drawRRect(
       RRect.fromRectAndRadius(
@@ -397,14 +374,12 @@ class _RobotPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-/// Admin Weekly Revenue Bar Chart Painter
 class AdminWeeklyBarChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final h = size.height;
 
-    // Days: Mon, Tue, Wed, Thu, Fri, Sat (peak), Sun
     final values = [0.35, 0.55, 0.50, 0.70, 0.65, 0.95, 0.60];
     final barW = (w / values.length) * 0.55;
     final gap = w / values.length;
@@ -414,7 +389,7 @@ class AdminWeeklyBarChartPainter extends CustomPainter {
       final x = (i * gap) + (gap - barW) / 2;
       final y = h - barH;
 
-      final isPeak = i == 5; // Sat is dark green peak
+      final isPeak = i == 5; 
       final barPaint = Paint()
         ..color = isPeak ? const Color(0xFF2D4F38) : const Color(0xFF86EFAC)
         ..style = PaintingStyle.fill;
@@ -431,14 +406,12 @@ class AdminWeeklyBarChartPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-/// Admin Monthly Revenue Line Chart Painter
 class AdminMonthlyLineChartPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width;
     final h = size.height;
 
-    // Jul, Aug, Sep, Oct, Nov
     final points = [
       Offset(0, h * 0.75),
       Offset(w * 0.25, h * 0.62),

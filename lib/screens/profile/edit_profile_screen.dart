@@ -105,7 +105,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Avatar with camera change button
+                
                 Stack(
                   alignment: Alignment.bottomRight,
                   children: [
@@ -159,7 +159,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                 ),
                 const SizedBox(height: 28),
-                // Full Name
+                
                 CustomTextField(
                   controller: _nameController,
                   label: 'Full Name',
@@ -176,7 +176,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   },
                 ),
                 const SizedBox(height: 18),
-                // Email (Read-only / verified)
+                
                 CustomTextField(
                   controller: _emailController,
                   label: 'Email Address',
@@ -186,7 +186,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   validator: (val) => null,
                 ),
                 const SizedBox(height: 18),
-                // Phone Number
+                
                 CustomTextField(
                   controller: _phoneController,
                   label: 'Phone Number',
@@ -195,7 +195,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   keyboardType: TextInputType.phone,
                 ),
                 const SizedBox(height: 36),
-                // Save Changes Button
+                
                 CustomButton(
                   text: 'Save Changes',
                   isLoading: _isLoading,

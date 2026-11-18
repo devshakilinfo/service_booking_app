@@ -8,7 +8,7 @@ class AIFeaturesIntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1B3828), // Deep Forest Green from Screen 14
+      backgroundColor: const Color(0xFF1B3828), 
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 20),
@@ -16,7 +16,7 @@ class AIFeaturesIntroScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(flex: 2),
-              // Screen 14 Title
+              
               const Text(
                 'Features That Make\nYour Life Easier',
                 textAlign: TextAlign.center,
@@ -28,19 +28,19 @@ class AIFeaturesIntroScreen extends StatelessWidget {
                 ),
               ),
               const Spacer(flex: 2),
-              // Screen 14 Center 3D Robot Illustration with Glow
+              
               const Center(
                 child: RobotAssistantIllustration(size: 160),
               ),
               const Spacer(flex: 2),
-              // 3 Feature Checkmark items
+              
               _buildFeatureCheckItem('Get service recommendations'),
               const SizedBox(height: 14),
               _buildFeatureCheckItem('Ask about services'),
               const SizedBox(height: 14),
               _buildFeatureCheckItem('Find the best option for you'),
               const Spacer(flex: 2),
-              // Start Chat Button (Rounded White pill button)
+              
               SizedBox(
                 width: double.infinity,
                 height: 54,

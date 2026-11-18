@@ -38,7 +38,7 @@ class ServiceCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image
+              
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(17)),
                 child: Image.network(
@@ -88,7 +88,6 @@ class ServiceCard extends StatelessWidget {
       );
     }
 
-    // Standard vertical list card (Matches Screen 6 in mockup)
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(18),

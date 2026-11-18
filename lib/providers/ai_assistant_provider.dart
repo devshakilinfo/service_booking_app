@@ -17,7 +17,7 @@ class ChatMessage {
 }
 
 class AIAssistantProvider with ChangeNotifier {
-  // Pre-populate with exact conversation from media_1794987683573_11b1d3df.jpg
+  
   final List<ChatMessage> _messages = [
     ChatMessage(
       text: "Hi Shakil! I'm your ServiceHub AI Assistant. Need help finding the right service or checking prices?",

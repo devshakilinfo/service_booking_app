@@ -20,7 +20,6 @@ class ServiceProvider with ChangeNotifier {
     fetchServices(category: category);
   }
 
-  // Fetch all services with optional filters
   Future<void> fetchServices({String? category, String? search}) async {
     _isLoading = true;
     _errorMessage = null;
@@ -52,7 +51,6 @@ class ServiceProvider with ChangeNotifier {
     }
   }
 
-  // Fetch slot availability for specific service & date
   Future<List<Map<String, dynamic>>> fetchAvailability(String serviceId, String date) async {
     try {
       final response = await ApiService.get(

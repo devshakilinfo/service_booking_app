@@ -27,7 +27,6 @@ class ApiService {
     return headers;
   }
 
-  // GET Request
   static Future<dynamic> get(String endpoint, {bool requireAuth = false, Map<String, String>? queryParams}) async {
     try {
       var uri = Uri.parse('$baseUrl$endpoint');
@@ -46,7 +45,6 @@ class ApiService {
     }
   }
 
-  // POST Request
   static Future<dynamic> post(String endpoint, {Map<String, dynamic>? body, bool requireAuth = false}) async {
     try {
       final uri = Uri.parse('$baseUrl$endpoint');
@@ -63,7 +61,6 @@ class ApiService {
     }
   }
 
-  // PUT Request
   static Future<dynamic> put(String endpoint, {Map<String, dynamic>? body, bool requireAuth = false}) async {
     try {
       final uri = Uri.parse('$baseUrl$endpoint');

@@ -59,7 +59,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Top Header matching media_1794987683573_11b1d3df.jpg
+            
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
               decoration: const BoxDecoration(
@@ -70,7 +70,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
               ),
               child: Row(
                 children: [
-                  // Green Circle Robot Icon
+                  
                   Container(
                     width: 46,
                     height: 46,
@@ -87,7 +87,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  // Title & Online Status
+                  
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +126,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                       ],
                     ),
                   ),
-                  // Right Close / Reset Button
+                  
                   GestureDetector(
                     onTap: () {
                       if (Navigator.canPop(context)) {
@@ -155,7 +155,6 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
               ),
             ),
 
-            // Chat Messages Stream
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
@@ -206,7 +205,6 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                 ),
               ),
 
-            // Bottom Composer Area (Quick Chips + Rounded Input Bar)
             Container(
               padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
               decoration: const BoxDecoration(
@@ -218,7 +216,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Quick Prompt Pills
+                  
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -251,7 +249,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  // Input Pill with embedded green send circle
+                  
                   Container(
                     height: 50,
                     padding: const EdgeInsets.only(left: 18, right: 6),
@@ -343,7 +341,6 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
       );
     }
 
-    // Bot Response Bubble + Recommended Service Card
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -352,7 +349,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Small Bot Avatar Circle
+              
               Container(
                 width: 34,
                 height: 34,
@@ -443,7 +440,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top Row: RECOMMENDED SERVICE + Rating
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -467,7 +464,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
             ],
           ),
           const SizedBox(height: 6),
-          // Service Title
+          
           Text(
             service.name,
             style: const TextStyle(
@@ -479,7 +476,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> {
           const SizedBox(height: 10),
           const Divider(height: 1, color: Color(0xFFE0EDE0)),
           const SizedBox(height: 10),
-          // Bottom Row: Price • Duration + Quick Book Button
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

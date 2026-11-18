@@ -20,13 +20,11 @@ class AdminDashboardScreen extends StatefulWidget {
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   int _currentTabIndex = 0;
 
-  // Search and filter states
   String _serviceSearch = '';
   String _bookingSearch = '';
   int _selectedBookingFilterIndex = 0;
   final List<String> _bookingFilters = ['All', 'Pending', 'Confirmed', 'Completed', 'Cancelled'];
 
-  // Admin Settings states
   bool _autoConfirmBookings = true;
   final _platformNameCtrl = TextEditingController(text: 'ServiceHub');
   final _commissionRateCtrl = TextEditingController(text: '15%');
@@ -34,7 +32,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   final _slotBufferCtrl = TextEditingController(text: '30 mins');
   final _cancellationWindowCtrl = TextEditingController(text: '2 hours before');
 
-  // Fallback demo bookings for Admin view
   final List<BookingModel> _demoAdminBookings = [
     BookingModel(
       id: 'SH-8492',
@@ -139,7 +136,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  // Dark Green Custom Admin Bottom Bar (matches media_1794987721709_7c9dc661 & media_1794987721751_4327c882)
   Widget _buildAdminBottomBar() {
     return Container(
       decoration: const BoxDecoration(
@@ -205,9 +201,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  // -------------------------------------------------------------
-  // TAB 0: OVERVIEW (matches media_1794987683685_3cb1c6b0)
-  // -------------------------------------------------------------
   Widget _buildOverviewTab() {
     final auth = Provider.of<AuthProvider>(context);
     final user = auth.currentUser;
@@ -250,7 +243,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 4 Stat Cards in 2x2 Grid
+              
               Row(
                 children: [
                   Expanded(
@@ -305,7 +298,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
               const SizedBox(height: 22),
 
-              // Weekly Revenue Bar Chart Card
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: _whiteCardDecoration(),
@@ -363,7 +355,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
               const SizedBox(height: 24),
 
-              // Recent Bookings Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -400,9 +391,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  // -------------------------------------------------------------
-  // TAB 1: SERVICES (matches media_1794987683720_5b9f5634)
-  // -------------------------------------------------------------
   Widget _buildServicesTab() {
     final serviceProvider = Provider.of<ServiceProvider>(context);
     final allServices = serviceProvider.services;
@@ -591,9 +579,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  // -------------------------------------------------------------
-  // TAB 2: ALL BOOKINGS (matches media_1794987683670_f215391a)
-  // -------------------------------------------------------------
   Widget _buildBookingsTab() {
     final filtered = _demoAdminBookings.where((b) {
       final statusMatch = _selectedBookingFilterIndex == 0 ||
@@ -627,7 +612,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Search Input
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               child: Container(
@@ -650,7 +635,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ),
             ),
 
-            // Status Filter Chips
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -682,7 +666,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ),
             ),
 
-            // Bookings List
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
@@ -808,9 +791,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  // -------------------------------------------------------------
-  // TAB 3: REPORTS & ANALYTICS (matches media_1794987721709_7c9dc661)
-  // -------------------------------------------------------------
   Widget _buildAnalyticsTab() {
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -857,7 +837,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Dark Green Total Net Earnings Banner Card
+              
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
@@ -928,7 +908,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
               const SizedBox(height: 20),
 
-              // Monthly Revenue Growth Line Chart Card
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: _whiteCardDecoration(),
@@ -977,7 +956,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
               const SizedBox(height: 20),
 
-              // Top Performing Services
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: _whiteCardDecoration(),
@@ -1006,7 +984,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
               const SizedBox(height: 22),
 
-              // Export CSV / PDF Report Button
               SizedBox(
                 width: double.infinity,
                 height: 52,
@@ -1062,9 +1039,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  // -------------------------------------------------------------
-  // TAB 4: ADMIN SETTINGS (matches media_1794987721751_4327c882)
-  // -------------------------------------------------------------
   Widget _buildAdminSettingsTab() {
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -1105,7 +1079,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Business & Platform Config
+              
               _buildSettingsCard(
                 title: 'Business & Platform Config',
                 children: [
@@ -1123,7 +1097,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
               const SizedBox(height: 18),
 
-              // Booking Rules
               _buildSettingsCard(
                 title: 'Booking Rules',
                 children: [
@@ -1157,7 +1130,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
               const SizedBox(height: 18),
 
-              // Backend & AI Integrations
               _buildSettingsCard(
                 title: 'Backend & AI Integrations',
                 children: [
@@ -1265,9 +1237,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  // -------------------------------------------------------------
-  // Helpers
-  // -------------------------------------------------------------
   BoxDecoration _whiteCardDecoration() {
     return BoxDecoration(
       color: Colors.white,

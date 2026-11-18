@@ -31,7 +31,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Hero Image with Badges & Navigation Buttons
+                  
                   Stack(
                     children: [
                       Image.network(
@@ -47,7 +47,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                               size: 80, color: AppColors.primary),
                         ),
                       ),
-                      // Popular Service badge
+                      
                       Positioned(
                         top: MediaQuery.of(context).padding.top + 55,
                         left: 18,
@@ -74,7 +74,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                           ),
                         ),
                       ),
-                      // Duration Pill on bottom-left of hero
+                      
                       Positioned(
                         bottom: 16,
                         left: 18,
@@ -108,7 +108,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                           ),
                         ),
                       ),
-                      // Top Back Button
+                      
                       Positioned(
                         top: MediaQuery.of(context).padding.top + 10,
                         left: 16,
@@ -132,7 +132,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                           ),
                         ),
                       ),
-                      // Top Favorite Button
+                      
                       Positioned(
                         top: MediaQuery.of(context).padding.top + 10,
                         right: 16,
@@ -165,13 +165,13 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                       ),
                     ],
                   ),
-                  // Content Section
+                  
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Category Tag
+                        
                         Text(
                           '${service.category.toUpperCase()} & SANITIZATION',
                           style: const TextStyle(
@@ -182,7 +182,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                           ),
                         ),
                         const SizedBox(height: 6),
-                        // Title & Price Badge Row
+                        
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -217,7 +217,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                                 ],
                               ),
                             ),
-                            // Price Badge
+                            
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                               decoration: BoxDecoration(
@@ -248,7 +248,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                           ],
                         ),
                         const SizedBox(height: 14),
-                        // Description
+                        
                         Text(
                           service.description,
                           style: const TextStyle(
@@ -258,7 +258,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        // "What's Included" Card
+                        
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.all(16),
@@ -290,7 +290,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        // Provider Card: GreenClean Pro
+                        
                         Container(
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
@@ -387,7 +387,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                 ],
               ),
             ),
-            // Bottom Action Bar: Total Price + Book Appointment
+            
             Positioned(
               bottom: 0,
               left: 0,

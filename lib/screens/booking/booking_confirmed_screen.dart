@@ -21,7 +21,7 @@ class BookingConfirmedScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(flex: 2),
-              // Big Checkmark with Leaves Halo
+              
               Container(
                 height: 96,
                 width: 96,
@@ -65,7 +65,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 28),
-              // Booking Receipt Card
+              
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
@@ -159,7 +159,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                 ),
               ),
               const Spacer(flex: 2),
-              // View My Bookings Primary Button
+              
               SizedBox(
                 width: double.infinity,
                 height: 52,
@@ -191,7 +191,7 @@ class BookingConfirmedScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              // Back to Home Link
+              
               TextButton(
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(

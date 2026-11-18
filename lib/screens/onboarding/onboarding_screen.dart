@@ -28,7 +28,7 @@ class OnboardingScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 16),
-              // Top decorative leaves
+              
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -45,7 +45,7 @@ class OnboardingScreen extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              // Screen 2 Center Illustration: Cozy booking with phone, calendar checkmark & plants
+              
               Container(
                 height: 270,
                 width: double.infinity,
@@ -56,7 +56,7 @@ class OnboardingScreen extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // Floating Calendar with checkmark
+                    
                     Positioned(
                       top: 24,
                       right: 36,
@@ -85,7 +85,7 @@ class OnboardingScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Plant on right
+                    
                     Positioned(
                       bottom: 24,
                       right: 28,
@@ -105,7 +105,7 @@ class OnboardingScreen extends StatelessWidget {
                             size: 28, color: AppColors.primary),
                       ),
                     ),
-                    // Central Persona Icon in beanbag
+                    
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -163,7 +163,7 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              // Title
+              
               const Text(
                 'Book Services\nwith Ease',
                 textAlign: TextAlign.center,
@@ -175,7 +175,7 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              // Subtitle
+              
               const Text(
                 'Find, book and manage your\nfavorite services effortlessly.',
                 textAlign: TextAlign.center,
@@ -186,7 +186,7 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              // Page indicator dots (active pill + 2 small dots)
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -219,13 +219,13 @@ class OnboardingScreen extends StatelessWidget {
                 ],
               ),
               const Spacer(),
-              // Primary Button
+              
               CustomButton(
                 text: 'Get Started  →',
                 onPressed: () => _completeOnboarding(context),
               ),
               const SizedBox(height: 12),
-              // Skip text button
+              
               TextButton(
                 onPressed: () => _completeOnboarding(context),
                 child: const Text(

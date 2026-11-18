@@ -24,7 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top Header with circular back button and centered "Settings" title
+              
               Stack(
                 alignment: Alignment.center,
                 children: [
@@ -63,7 +63,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               const SizedBox(height: 24),
 
-              // 1. NOTIFICATIONS SECTION
               _buildSectionHeader('NOTIFICATIONS'),
               const SizedBox(height: 8),
               Container(
@@ -97,7 +96,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               const SizedBox(height: 24),
 
-              // 2. PREFERENCES SECTION
               _buildSectionHeader('PREFERENCES'),
               const SizedBox(height: 8),
               Container(
@@ -155,7 +153,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               const SizedBox(height: 24),
 
-              // 3. SECURITY & ACCOUNT SECTION
               _buildSectionHeader('SECURITY & ACCOUNT'),
               const SizedBox(height: 8),
               Container(

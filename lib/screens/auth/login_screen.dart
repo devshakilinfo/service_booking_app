@@ -69,14 +69,14 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 12),
-                // Screen 4: Top ServiceHub Brand Logo
+                
                 const ServiceHubLogo(
                   iconSize: 42,
                   fontSize: 22,
                   showTagline: false,
                 ),
                 const SizedBox(height: 32),
-                // Welcome Back!
+                
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                // Email field
+                
                 CustomTextField(
                   controller: _emailController,
                   hint: 'Email Address',
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                // Password field
+                
                 CustomTextField(
                   controller: _passwordController,
                   hint: 'Password',
@@ -156,14 +156,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                // Login Button
+                
                 CustomButton(
                   text: 'Login',
                   isLoading: authProvider.isLoading,
                   onPressed: _submit,
                 ),
                 const SizedBox(height: 28),
-                // Divider with text "or continue with"
+                
                 const Row(
                   children: [
                     Expanded(
@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                // Social Login Buttons (Google and Apple circular cards)
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -206,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 36),
-                // Don't have an account? Register
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

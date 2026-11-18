@@ -17,7 +17,7 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
   late DateTime _selectedDate;
-  String _selectedTimeSlot = '11:30 AM'; // Default to 11:30 AM matching screenshot
+  String _selectedTimeSlot = '11:30 AM'; 
   final TextEditingController _addressController =
       TextEditingController(text: 'House 14, Road 7, Dhanmondi, Dhaka');
   final TextEditingController _notesController = TextEditingController();
@@ -27,7 +27,6 @@ class _BookingScreenState extends State<BookingScreen> {
     (index) => DateTime(2026, 11, 18).add(Duration(days: index)),
   );
 
-  // Time slots matching screenshot
   final List<Map<String, dynamic>> _slots = [
     {'time': '09:00 AM', 'status': 'available'},
     {'time': '11:30 AM', 'status': 'available'},
@@ -40,7 +39,7 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = _dates[1]; // Thu 19 Nov
+    _selectedDate = _dates[1]; 
   }
 
   @override
@@ -115,7 +114,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header Service Summary Card
+                    
                     Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
@@ -170,7 +169,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ),
                     const SizedBox(height: 22),
-                    // Section: Select Date
+                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -256,7 +255,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    // Section: Select Time Slot
+                    
                     const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -279,7 +278,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    // 2-Column Slot Cards
+                    
                     GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -374,7 +373,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       },
                     ),
                     const SizedBox(height: 22),
-                    // Service Address Card
+                    
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -458,7 +457,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
             ),
-            // Bottom Button: Confirm Booking ($25) ✓
+            
             Container(
               padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(

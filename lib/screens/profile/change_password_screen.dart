@@ -123,7 +123,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 28),
-                // Current Password
+                
                 CustomTextField(
                   controller: _currentPasswordController,
                   label: 'Current Password',
@@ -138,7 +138,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   },
                 ),
                 const SizedBox(height: 18),
-                // New Password
+                
                 CustomTextField(
                   controller: _newPasswordController,
                   label: 'New Password',
@@ -156,7 +156,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   },
                 ),
                 const SizedBox(height: 18),
-                // Confirm New Password
+                
                 CustomTextField(
                   controller: _confirmPasswordController,
                   label: 'Confirm New Password',
@@ -174,7 +174,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   },
                 ),
                 const SizedBox(height: 36),
-                // Update Password Button
+                
                 CustomButton(
                   text: 'Update Password',
                   isLoading: _isLoading,

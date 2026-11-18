@@ -22,7 +22,7 @@ class CustomButton extends StatelessWidget {
     this.textColor,
     this.icon,
     this.height = 54,
-    this.borderRadius = 28, // Matches the rounded pill style from mockup
+    this.borderRadius = 28, 
   });
 
   @override

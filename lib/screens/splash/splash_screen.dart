@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            // Top-left decorative leaf sprigs
+            
             Positioned(
               top: 8,
               left: 10,
@@ -74,14 +74,14 @@ class _SplashScreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Spacer(flex: 2),
-                  // Modern ServiceHub Logo
+                  
                   ServiceHubLogo(
                     iconSize: 56,
                     fontSize: 28,
                     showTagline: true,
                   ),
                   Spacer(flex: 2),
-                  // Charming House on Grassy Hill with winding path
+                  
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: HouseWithGardenIllustration(height: 160),
@@ -108,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   Spacer(flex: 2),
-                  // Circular loading indicator
+                  
                   SizedBox(
                     width: 28,
                     height: 28,

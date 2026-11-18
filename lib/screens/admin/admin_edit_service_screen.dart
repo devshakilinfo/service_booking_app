@@ -99,7 +99,7 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Cover Photo with Edit Pill (matches media_1794987683727_830a47ac)
+              
               Stack(
                 children: [
                   ClipRRect(
@@ -144,7 +144,6 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
 
               const SizedBox(height: 20),
 
-              // Form Details
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(

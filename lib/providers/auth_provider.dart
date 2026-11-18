@@ -17,7 +17,6 @@ class AuthProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
-  // Initialize and check saved persistent session
   Future<bool> tryAutoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey(AppConstants.tokenKey)) return false;
@@ -37,7 +36,6 @@ class AuthProvider with ChangeNotifier {
     return false;
   }
 
-  // Register
   Future<bool> register(String name, String email, String password) async {
     _isLoading = true;
     _errorMessage = null;
@@ -75,7 +73,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Login
   Future<bool> login(String email, String password) async {
     _isLoading = true;
     _errorMessage = null;
@@ -112,7 +109,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Update Profile
   Future<bool> updateProfile({
     String? name,
     String? phone,
@@ -158,7 +154,6 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Logout
   Future<void> logout() async {
     _token = null;
     _currentUser = null;

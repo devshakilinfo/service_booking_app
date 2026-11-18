@@ -74,7 +74,7 @@ class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Status Card (matches media_1794987683679_64e2420a)
+              
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 decoration: BoxDecoration(
@@ -130,7 +130,6 @@ class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
 
               const SizedBox(height: 18),
 
-              // Customer Information Card
               _buildSectionCard(
                 title: 'Customer Information',
                 icon: Icons.person_outline_rounded,
@@ -145,7 +144,6 @@ class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
 
               const SizedBox(height: 16),
 
-              // Service Information Card
               _buildSectionCard(
                 title: 'Service & Schedule',
                 icon: Icons.cleaning_services_outlined,
@@ -160,7 +158,6 @@ class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
 
               const SizedBox(height: 16),
 
-              // Payment Details Card
               _buildSectionCard(
                 title: 'Payment Details',
                 icon: Icons.receipt_long_outlined,
@@ -175,7 +172,6 @@ class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
 
               const SizedBox(height: 24),
 
-              // Admin Action Buttons
               if (!isCompleted && !isCancelled) ...[
                 SizedBox(
                   width: double.infinity,

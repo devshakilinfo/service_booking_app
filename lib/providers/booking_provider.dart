@@ -16,7 +16,6 @@ class BookingProvider with ChangeNotifier {
   String? get errorMessage => _errorMessage;
   BookingModel? get lastCreatedBooking => _lastCreatedBooking;
 
-  // Create appointment booking
   Future<bool> createBooking({
     required String serviceId,
     required String date,
@@ -59,7 +58,6 @@ class BookingProvider with ChangeNotifier {
     }
   }
 
-  // Fetch bookings for current user
   Future<void> fetchMyBookings() async {
     _isLoading = true;
     _errorMessage = null;
@@ -86,7 +84,6 @@ class BookingProvider with ChangeNotifier {
     }
   }
 
-  // Cancel booking
   Future<bool> cancelBooking(String bookingId, {String reason = ''}) async {
     _isLoading = true;
     notifyListeners();
