@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import '../../core/constants.dart';
 import '../../models/service_model.dart';
-import '../../widgets/custom_button.dart';
+import '../ai_assistant/ai_assistant_screen.dart';
 import '../booking/booking_screen.dart';
 
-class ServiceDetailsScreen extends StatelessWidget {
+class ServiceDetailsScreen extends StatefulWidget {
   final ServiceModel service;
 
   const ServiceDetailsScreen({super.key, required this.service});
 
   @override
+  State<ServiceDetailsScreen> createState() => _ServiceDetailsScreenState();
+}
+
+class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
+  bool _isFavorite = true;
+
+  @override
   Widget build(BuildContext context) {
+    final service = widget.service;
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -22,24 +31,86 @@ class ServiceDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Hero Image with back and heart chips
+                  // Hero Image with Badges & Navigation Buttons
                   Stack(
                     children: [
                       Image.network(
                         service.image,
-                        height: 290,
+                        height: 310,
                         width: double.infinity,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
-                          height: 290,
+                          height: 310,
                           width: double.infinity,
                           color: AppColors.primaryUltraLight,
                           child: const Icon(Icons.cleaning_services_rounded,
                               size: 80, color: AppColors.primary),
                         ),
                       ),
+                      // Popular Service badge
                       Positioned(
-                        top: MediaQuery.of(context).padding.top + 12,
+                        top: MediaQuery.of(context).padding.top + 55,
+                        left: 18,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF22C55E),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.star, color: Colors.white, size: 12),
+                              SizedBox(width: 4),
+                              Text(
+                                'Popular Service',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Duration Pill on bottom-left of hero
+                      Positioned(
+                        bottom: 16,
+                        left: 18,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 6,
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.access_time_rounded,
+                                  size: 14, color: AppColors.textPrimary),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${service.duration} Est.',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      // Top Back Button
+                      Positioned(
+                        top: MediaQuery.of(context).padding.top + 10,
                         left: 16,
                         child: Container(
                           width: 42,
@@ -61,8 +132,9 @@ class ServiceDetailsScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      // Top Favorite Button
                       Positioned(
-                        top: MediaQuery.of(context).padding.top + 12,
+                        top: MediaQuery.of(context).padding.top + 10,
                         right: 16,
                         child: Container(
                           width: 42,
@@ -78,117 +150,236 @@ class ServiceDetailsScreen extends StatelessWidget {
                             ],
                           ),
                           child: IconButton(
-                            icon: const Icon(Icons.favorite_rounded,
-                                color: AppColors.statusCancelled, size: 20),
+                            icon: Icon(
+                              _isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                              color: AppColors.statusCancelled,
+                              size: 20,
+                            ),
                             onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Saved to your favorites!')),
-                              );
+                              setState(() {
+                                _isFavorite = !_isFavorite;
+                              });
                             },
                           ),
                         ),
                       ),
                     ],
                   ),
-                  // Content Container
-                  Container(
-                    transform: Matrix4.translationValues(0, -20, 0),
-                    decoration: const BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+                  // Content Section
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Category Tag
                         Text(
-                          service.name,
+                          '${service.category.toUpperCase()} & SANITIZATION',
                           style: const TextStyle(
-                            fontSize: 24,
+                            fontSize: 12,
                             fontWeight: FontWeight.w800,
-                            color: AppColors.textPrimary,
+                            color: Color(0xFF4A7C3F),
+                            letterSpacing: 0.5,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 6),
+                        // Title & Price Badge Row
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Icon(Icons.star, color: Colors.amber, size: 18),
-                            const SizedBox(width: 4),
-                            Text(
-                              service.rating.toString(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
-                                color: AppColors.textPrimary,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    service.name,
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.star, color: Colors.amber, size: 16),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        '${service.rating} (${service.reviewsCount} verified reviews)',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 13,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(width: 6),
-                            Text(
-                              '(${service.reviewsCount} reviews)',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: AppColors.textSecondary,
+                            // Price Badge
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFE8F3E6),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    '\$${service.price.toStringAsFixed(0)}',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w900,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  const Text(
+                                    'per session',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: AppColors.textSecondary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 14),
-                        Row(
-                          children: [
-                            Text(
-                              '\$${service.price.toStringAsFixed(0)}',
-                              style: const TextStyle(
-                                fontSize: 26,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Row(
-                              children: [
-                                const Icon(Icons.access_time_rounded,
-                                    size: 16, color: AppColors.textSecondary),
-                                const SizedBox(width: 4),
-                                Text(
-                                  service.duration,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.textSecondary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
+                        // Description
                         Text(
                           service.description,
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             height: 1.5,
                             color: AppColors.textSecondary,
                           ),
                         ),
-                        const SizedBox(height: 24),
-                        // 3 Feature Badges from Screen 7
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _buildFeatureBadge(
-                              Icons.person_outline_rounded,
-                              'Experienced\nStaff',
-                            ),
-                            _buildFeatureBadge(
-                              Icons.eco_outlined,
-                              'Eco-Friendly\nProducts',
-                            ),
-                            _buildFeatureBadge(
-                              Icons.verified_outlined,
-                              '100%\nSatisfaction',
-                            ),
-                          ],
+                        const SizedBox(height: 20),
+                        // "What's Included" Card
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: AppColors.border),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "What's Included",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              _buildCheckItem('Eco-friendly & pet-safe cleaning supplies'),
+                              const SizedBox(height: 8),
+                              _buildCheckItem('Kitchen countertops, sink & appliance wipe'),
+                              const SizedBox(height: 8),
+                              _buildCheckItem('Bathroom deep scrub & floor sanitization'),
+                              const SizedBox(height: 8),
+                              _buildCheckItem('Living area dusting, vacuuming & mopping'),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        // Provider Card: GreenClean Pro
+                        Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: AppColors.border),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 44,
+                                height: 44,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.primary,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    'GC',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'GreenClean Pro',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w800,
+                                            color: AppColors.textPrimary,
+                                          ),
+                                        ),
+                                        SizedBox(width: 6),
+                                        Text(
+                                          '✓ Verified',
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xFF22C55E),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 2),
+                                    Text(
+                                      '98% Positive • 420+ Jobs Done',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (_) => const AIAssistantScreen()),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE8F3E6),
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
+                                  child: const Text(
+                                    'Ask AI',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -196,7 +387,7 @@ class ServiceDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // Bottom Action Bar: Book Now (70%) + Share (30%)
+            // Bottom Action Bar: Total Price + Book Appointment
             Positioned(
               bottom: 0,
               left: 0,
@@ -216,33 +407,57 @@ class ServiceDetailsScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Expanded(
-                      flex: 3,
-                      child: CustomButton(
-                        text: 'Book Now',
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BookingScreen(service: service),
-                            ),
-                          );
-                        },
-                      ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Total Price',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                        Text(
+                          '\$${service.price.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 20),
                     Expanded(
-                      flex: 2,
-                      child: CustomButton(
-                        text: 'Share',
-                        icon: Icons.share_rounded,
-                        isOutlined: true,
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Service link copied to clipboard!')),
-                          );
-                        },
+                      child: SizedBox(
+                        height: 52,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => BookingScreen(service: service),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(26),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: const Text(
+                            'Book Appointment →',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -255,45 +470,23 @@ class ServiceDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFeatureBadge(IconData icon, String text) {
-    return Container(
-      width: 100,
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: Color(0xFFE9F1E7),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: AppColors.primary, size: 22),
-          ),
-          const SizedBox(height: 8),
-          Text(
+  Widget _buildCheckItem(String text) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Icon(Icons.check_rounded, color: Color(0xFF22C55E), size: 18),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
             text,
-            textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
               color: AppColors.textPrimary,
-              height: 1.25,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../core/constants.dart';
 import '../../models/booking_model.dart';
-import '../../widgets/app_illustrations.dart';
-import '../../widgets/custom_button.dart';
 import '../main_navigation_screen.dart';
 
 class BookingConfirmedScreen extends StatelessWidget {
@@ -13,12 +10,7 @@ class BookingConfirmedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Format date nicely like "Wed, 19 Nov 2026"
-    String formattedDate = booking.date;
-    try {
-      final parsed = DateTime.parse(booking.date);
-      formattedDate = DateFormat('EEE, d MMM yyyy').format(parsed);
-    } catch (_) {}
+    final bookingId = '#SH-${(booking.id.hashCode.abs() % 9000 + 1000)}';
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -29,24 +21,28 @@ class BookingConfirmedScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(flex: 2),
-              // Screen 9: Big green circle with checkmark
+              // Big Checkmark with Leaves Halo
               Container(
-                height: 92,
-                width: 92,
+                height: 96,
+                width: 96,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: const Color(0xFFE8F5E9),
                   shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.3),
-                      blurRadius: 18,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
+                  border: Border.all(color: const Color(0xFFC8E6C9), width: 3),
                 ),
-                child: const Icon(Icons.check_rounded, size: 52, color: Colors.white),
+                child: Center(
+                  child: Container(
+                    height: 64,
+                    width: 64,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.check_rounded, size: 40, color: Colors.white),
+                  ),
+                ),
               ),
-              const SizedBox(height: 22),
+              const SizedBox(height: 20),
               const Text(
                 'Booking Confirmed!',
                 style: TextStyle(
@@ -56,111 +52,194 @@ class BookingConfirmedScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 6),
-              const Text(
-                'Your appointment has been\nsuccessfully booked.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textSecondary,
-                  height: 1.4,
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  'Your appointment has been scheduled successfully. Our specialist will arrive on time.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
                 ),
               ),
               const SizedBox(height: 28),
-              // Mini booking summary card
+              // Booking Receipt Card
               Container(
-                padding: const EdgeInsets.all(14),
+                padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(22),
                   border: Border.all(color: AppColors.border),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
-                child: Row(
+                child: Column(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        booking.service?.image ??
-                            'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
-                        height: 56,
-                        width: 56,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          height: 56,
-                          width: 56,
-                          color: AppColors.primaryUltraLight,
-                          child: const Icon(Icons.cleaning_services_rounded,
-                              color: AppColors.primary),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'BOOKING ID',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textSecondary,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              bookingId,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w900,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            booking.service?.name ?? 'Home Cleaning',
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.textPrimary,
-                            ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFE8F5E9),
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          const SizedBox(height: 3),
-                          Text(
-                            formattedDate,
-                            style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            booking.timeSlot,
-                            style: const TextStyle(
-                              fontSize: 13,
+                          child: const Text(
+                            '• Confirmed',
+                            style: TextStyle(
+                              fontSize: 11,
                               fontWeight: FontWeight.w700,
-                              color: AppColors.primary,
+                              color: Color(0xFF22C55E),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    ),
+                    const Divider(height: 24, color: AppColors.divider),
+                    _buildReceiptRow('Service', booking.service?.name ?? 'Deep Home Cleaning'),
+                    const SizedBox(height: 10),
+                    _buildReceiptRow('Date & Time', '${booking.date} • ${booking.timeSlot}'),
+                    const SizedBox(height: 10),
+                    _buildReceiptRow('Estimated Duration', booking.service?.duration ?? '2 Hours'),
+                    const SizedBox(height: 10),
+                    _buildReceiptRow('Payment Method', 'Pay After Service'),
+                    const Divider(height: 24, color: AppColors.divider),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Total Amount',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        Text(
+                          '\$${booking.totalPrice.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: 20),
-              // Screen 9: Cute Village House with trees illustration
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                child: HouseWithGardenIllustration(height: 120),
               ),
               const Spacer(flex: 2),
-              // Back to Home Button
-              CustomButton(
-                text: 'Back to Home',
+              // View My Bookings Primary Button
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const MainNavigationScreen(initialIndex: 1),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    'View My Bookings',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              // Back to Home Link
+              TextButton(
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => const MainNavigationScreen()),
+                      builder: (_) => const MainNavigationScreen(initialIndex: 0),
+                    ),
                     (route) => false,
                   );
                 },
+                child: const Text(
+                  'Back to Home',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildReceiptRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          ),
+        ),
+      ],
     );
   }
 }

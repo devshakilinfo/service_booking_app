@@ -51,4 +51,10 @@ class BookingModel {
           : null,
     );
   }
+
+  String get serviceName => service?.name ?? 'Deep Home Cleaning';
+  String get time => timeSlot.isNotEmpty ? timeSlot : '11:30 AM';
+  String get customerName => user?.name ?? 'Shakil Ahamed';
+  String get customerPhone => user?.phone ?? '+880 1712-345678';
+  String get address => user?.address ?? 'House 14, Road 7, Dhanmondi, Dhaka';
 }

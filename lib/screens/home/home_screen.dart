@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
-import '../../providers/auth_provider.dart';
 import '../../providers/service_provider.dart';
 import '../../widgets/app_illustrations.dart';
-import '../../widgets/service_card.dart';
+import '../ai_assistant/ai_assistant_screen.dart';
 import '../service/service_details_screen.dart';
 import 'search_screen.dart';
 
@@ -16,11 +15,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Screen 5 Categories exactly matching mockup: Cleaning, Repair, Beauty, Health
   final List<Map<String, dynamic>> _categories = [
     {'name': 'Cleaning', 'icon': Icons.cleaning_services_rounded},
     {'name': 'Repair', 'icon': Icons.handyman_rounded},
-    {'name': 'Beauty', 'icon': Icons.content_cut_rounded},
+    {'name': 'Beauty', 'icon': Icons.spa_rounded},
     {'name': 'Health', 'icon': Icons.favorite_rounded},
   ];
 
@@ -36,6 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final serviceProvider = Provider.of<ServiceProvider>(context);
 
+    // Split services for Featured and Popular sections
+    final services = serviceProvider.services;
+    final featuredServices = services.take(2).toList();
+    final popularServices = services.skip(2).take(2).toList();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -43,43 +46,42 @@ class _HomeScreenState extends State<HomeScreen> {
           color: AppColors.primary,
           onRefresh: () => serviceProvider.fetchServices(),
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Screen 5 Top App Bar: ServiceHub logo on left, Bell icon with dot on right
+                // Top App Bar: Brand Logo & Notification bell with alert dot
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const ServiceHubLogo(
-                      iconSize: 32,
-                      fontSize: 20,
+                      iconSize: 34,
+                      fontSize: 22,
                       isHorizontal: true,
                     ),
                     Stack(
                       children: [
-                        IconButton(
-                          icon: const Icon(
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColors.border),
+                          ),
+                          child: const Icon(
                             Icons.notifications_none_rounded,
                             color: AppColors.textPrimary,
-                            size: 26,
+                            size: 24,
                           ),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('You are all caught up! No new notifications.'),
-                              ),
-                            );
-                          },
                         ),
                         Positioned(
-                          right: 12,
-                          top: 10,
+                          right: 4,
+                          top: 4,
                           child: Container(
-                            width: 8,
-                            height: 8,
+                            width: 10,
+                            height: 10,
                             decoration: const BoxDecoration(
-                              color: AppColors.primary,
+                              color: Color(0xFFEF4444), // Red alert dot
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -89,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const SizedBox(height: 14),
-                // Screen 5: Search Bar pill
+                // Search Bar with Filter Icon
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -115,33 +117,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Icon(Icons.search_rounded, color: AppColors.textLight, size: 22),
                         SizedBox(width: 10),
-                        Text(
-                          'Search services...',
-                          style: TextStyle(
-                            color: AppColors.textLight,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                        Expanded(
+                          child: Text(
+                            'Search services...',
+                            style: TextStyle(
+                              color: AppColors.textLight,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
+                        Icon(Icons.tune_rounded, color: AppColors.textPrimary, size: 20),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 18),
-                // Screen 5 Hero Banner: "Premium Services For a Better Life"
+                const SizedBox(height: 16),
+                // Hero Banner
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                  padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(22),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.25),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFEAF5E5), Color(0xFFF7FBF4)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: const Color(0xFFDCEAD6)),
                   ),
                   child: Row(
                     children: [
@@ -150,37 +153,43 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Premium Services\nFor a Better Life',
+                              'Find & Book\nYour Favorite\nServices Easily',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
+                                color: AppColors.textPrimary,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w800,
                                 height: 1.25,
                               ),
                             ),
-                            const SizedBox(height: 14),
+                            const SizedBox(height: 6),
+                            const Text(
+                              'Professional services,\nat your fingertips.',
+                              style: TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 12,
+                                height: 1.3,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
                             InkWell(
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (_) => const SearchScreen()),
+                                  MaterialPageRoute(builder: (_) => const SearchScreen()),
                                 );
                               },
-                              borderRadius: BorderRadius.circular(20),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 14, vertical: 7),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: AppColors.primary,
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: const Text(
                                   'Book Now →',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
                                   ),
                                 ),
                               ),
@@ -188,138 +197,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      // House graphic on right side of banner
+                      const SizedBox(width: 8),
+                      // House illustration
                       Container(
-                        height: 72,
-                        width: 90,
+                        height: 95,
+                        width: 105,
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.white.withValues(alpha: 0.8),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                         child: const Center(
-                          child: Icon(Icons.cottage_rounded,
-                              size: 46, color: Colors.white),
+                          child: Icon(Icons.cottage_rounded, size: 58, color: AppColors.primary),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                // Screen 5: "Popular Services" with "See All →"
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Popular Services',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const SearchScreen()),
-                        );
-                      },
-                      child: const Text(
-                        'See All →',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                if (serviceProvider.isLoading)
-                  const SizedBox(
-                    height: 140,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                      ),
-                    ),
-                  )
-                else if (serviceProvider.services.isEmpty)
-                  Container(
-                    height: 90,
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'No services available right now.',
-                      style: TextStyle(color: AppColors.textSecondary),
-                    ),
-                  )
-                else
-                  SizedBox(
-                    height: 152,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      clipBehavior: Clip.none,
-                      itemCount: serviceProvider.popularServices.isNotEmpty
-                          ? serviceProvider.popularServices.length
-                          : serviceProvider.services.length,
-                      itemBuilder: (context, index) {
-                        final service = serviceProvider.popularServices.isNotEmpty
-                            ? serviceProvider.popularServices[index]
-                            : serviceProvider.services[index];
-                        return ServiceCard(
-                          service: service,
-                          isHorizontal: true,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    ServiceDetailsScreen(service: service),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                const SizedBox(height: 26),
-                // Screen 5: "Categories" with "See All →"
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Categories',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const SearchScreen()),
-                        );
-                      },
-                      child: const Text(
-                        'See All →',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                // Categories 4 circles: Cleaning, Repair, Beauty, Health
+                const SizedBox(height: 22),
+                // Categories Row (Cleaning, Repair, Beauty, Health)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: _categories.map((cat) {
@@ -328,8 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) =>
-                                SearchScreen(initialCategory: cat['name']),
+                            builder: (_) => SearchScreen(initialCategory: cat['name']),
                           ),
                         );
                       },
@@ -339,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 60,
                             width: 60,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFE9F1E7),
+                              color: const Color(0xFFE9F3E6),
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
@@ -360,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             cat['name'],
                             style: const TextStyle(
                               fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w700,
                               color: AppColors.textPrimary,
                             ),
                           ),
@@ -370,9 +264,332 @@ class _HomeScreenState extends State<HomeScreen> {
                   }).toList(),
                 ),
                 const SizedBox(height: 24),
+                // Featured Services Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Featured Services',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const SearchScreen()),
+                        );
+                      },
+                      child: const Text(
+                        'See All →',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Featured Services 2-Column Cards
+                if (serviceProvider.isLoading)
+                  const SizedBox(
+                    height: 140,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                      ),
+                    ),
+                  )
+                else
+                  Row(
+                    children: [
+                      for (int i = 0; i < featuredServices.length; i++) ...[
+                        if (i > 0) const SizedBox(width: 14),
+                        Expanded(
+                          child: _buildGridServiceCard(
+                            service: featuredServices[i],
+                            isPopular: true,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ServiceDetailsScreen(service: featuredServices[i]),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                const SizedBox(height: 24),
+                // Popular Services Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Popular Services',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const SearchScreen()),
+                        );
+                      },
+                      child: const Text(
+                        'See All →',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Popular Services 2-Column Cards
+                if (popularServices.isNotEmpty)
+                  Row(
+                    children: [
+                      for (int i = 0; i < popularServices.length; i++) ...[
+                        if (i > 0) const SizedBox(width: 14),
+                        Expanded(
+                          child: _buildGridServiceCard(
+                            service: popularServices[i],
+                            isPopular: false,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ServiceDetailsScreen(service: popularServices[i]),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                const SizedBox(height: 24),
+                // AI Assistant Banner: "Need Help? Ask our AI Assistant"
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF3B6E47), Color(0xFF284C31)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(22),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.25),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      const RobotAssistantIllustration(size: 52),
+                      const SizedBox(width: 14),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Need Help?',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'Ask our AI Assistant for instant recommendations',
+                              style: TextStyle(
+                                color: Color(0xFFDCFCE7),
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const AIAssistantScreen()),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: const Text(
+                            'Chat Now →',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridServiceCard({
+    required dynamic service,
+    required bool isPopular,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.border),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.02),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image with popular tag
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(19)),
+                  child: Image.network(
+                    service.image,
+                    height: 105,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      height: 105,
+                      color: AppColors.primaryUltraLight,
+                      child: const Icon(Icons.cleaning_services_rounded, color: AppColors.primary),
+                    ),
+                  ),
+                ),
+                if (isPopular)
+                  Positioned(
+                    top: 8,
+                    left: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF22C55E),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.star, color: Colors.white, size: 10),
+                          SizedBox(width: 3),
+                          Text(
+                            'Popular',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    service.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 3),
+                  Row(
+                    children: [
+                      const Icon(Icons.star, size: 13, color: Colors.amber),
+                      const SizedBox(width: 2),
+                      Text(
+                        '${service.rating} (${service.reviewsCount})',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '\$${service.price.toStringAsFixed(0)}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE8F3E6),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(Icons.chevron_right_rounded, size: 16, color: AppColors.primary),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -12,8 +12,10 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notificationsEnabled = true;
-  bool _darkModeEnabled = false;
+  bool _pushNotifications = true;
+  bool _bookingReminders = true;
+  bool _promotionalOffers = false;
+  bool _darkMode = false;
 
   void _handleLogout() {
     showDialog(
@@ -58,8 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded,
-              color: AppColors.textPrimary, size: 20),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: AppColors.textPrimary, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -74,174 +75,267 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // NOTIFICATIONS SECTION
+              _buildSectionHeader('NOTIFICATIONS'),
+              const SizedBox(height: 8),
               Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.border),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.02),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                decoration: _cardDecoration(),
+                child: Column(
+                  children: [
+                    _buildSwitchTile(
+                      title: 'Push Notifications',
+                      subtitle: 'Receive instant alerts on booking updates',
+                      value: _pushNotifications,
+                      onChanged: (val) => setState(() => _pushNotifications = val),
+                    ),
+                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
+                    _buildSwitchTile(
+                      title: 'Booking Reminders',
+                      subtitle: 'Get notified 2 hours before scheduled slot',
+                      value: _bookingReminders,
+                      onChanged: (val) => setState(() => _bookingReminders = val),
+                    ),
+                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
+                    _buildSwitchTile(
+                      title: 'Promotional Offers',
+                      subtitle: 'Discounts, seasonal deals and vouchers',
+                      value: _promotionalOffers,
+                      onChanged: (val) => setState(() => _promotionalOffers = val),
                     ),
                   ],
                 ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // PREFERENCES SECTION
+              _buildSectionHeader('PREFERENCES'),
+              const SizedBox(height: 8),
+              Container(
+                decoration: _cardDecoration(),
                 child: Column(
                   children: [
-                    // Notifications Switch
-                    ListTile(
-                      leading: const Icon(Icons.notifications_none_rounded,
-                          color: AppColors.textPrimary, size: 22),
-                      title: const Text(
-                        'Notifications',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      trailing: Switch(
-                        value: _notificationsEnabled,
-                        activeColor: AppColors.primary,
-                        onChanged: (val) {
-                          setState(() {
-                            _notificationsEnabled = val;
-                          });
-                        },
-                      ),
-                    ),
-                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
-                    // Dark Mode Switch
-                    ListTile(
-                      leading: const Icon(Icons.nightlight_outlined,
-                          color: AppColors.textPrimary, size: 22),
-                      title: const Text(
-                        'Dark Mode',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      trailing: Switch(
-                        value: _darkModeEnabled,
-                        activeColor: AppColors.primary,
-                        onChanged: (val) {
-                          setState(() {
-                            _darkModeEnabled = val;
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Dark Mode will be available in the next release.')),
-                          );
-                        },
-                      ),
-                    ),
-                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
-                    // Language
-                    ListTile(
+                    _buildValueTile(
+                      title: 'Language',
+                      value: 'English (US)',
+                      icon: Icons.language_rounded,
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Selected language: English')),
+                          const SnackBar(content: Text('Language: English (US) selected')),
                         );
                       },
-                      leading: const Icon(Icons.language_rounded,
-                          color: AppColors.textPrimary, size: 22),
+                    ),
+                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
+                    _buildValueTile(
+                      title: 'Currency',
+                      value: 'USD (\$)',
+                      icon: Icons.monetization_on_outlined,
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Currency: USD (\$) active')),
+                        );
+                      },
+                    ),
+                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
+                    _buildSwitchTile(
+                      title: 'Dark Mode',
+                      subtitle: 'Switch between light and dark theme',
+                      value: _darkMode,
+                      onChanged: (val) {
+                        setState(() => _darkMode = val);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Dark Mode will be available in next update')),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // SECURITY & ACCOUNT SECTION
+              _buildSectionHeader('SECURITY & ACCOUNT'),
+              const SizedBox(height: 8),
+              Container(
+                decoration: _cardDecoration(),
+                child: Column(
+                  children: [
+                    ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                       title: const Text(
-                        'Language',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
+                        'Two-Factor Auth',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
                       ),
-                      trailing: const Row(
+                      trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            'English',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors.textSecondary,
-                              fontWeight: FontWeight.w500,
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: AppColors.statusConfirmedBg,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Text(
+                              'Enabled',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.statusConfirmed,
+                              ),
                             ),
                           ),
-                          SizedBox(width: 4),
-                          Icon(Icons.chevron_right_rounded,
-                              color: AppColors.textLight, size: 20),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColors.textLight),
                         ],
                       ),
-                    ),
-                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
-                    // Privacy & Security
-                    ListTile(
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Privacy Policy & Security standards: 256-bit encryption.')),
+                          const SnackBar(content: Text('Two-Factor Authentication is currently active')),
                         );
                       },
-                      leading: const Icon(Icons.shield_outlined,
-                          color: AppColors.textPrimary, size: 22),
-                      title: const Text(
-                        'Privacy & Security',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      trailing: const Icon(Icons.chevron_right_rounded,
-                          color: AppColors.textLight, size: 20),
                     ),
                     const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
-                    // About App
-                    ListTile(
+                    _buildValueTile(
+                      title: 'Privacy Policy',
+                      value: '',
+                      icon: Icons.privacy_tip_outlined,
                       onTap: () {
-                        showAboutDialog(
-                          context: context,
-                          applicationName: 'ServiceHub',
-                          applicationVersion: '1.0.0',
-                          applicationLegalese: '© 2026 ServiceHub Inc. All rights reserved.',
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('ServiceHub complies with GDPR & privacy safety standards')),
                         );
                       },
-                      leading: const Icon(Icons.info_outline_rounded,
-                          color: AppColors.textPrimary, size: 22),
-                      title: const Text(
-                        'About App',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      trailing: const Icon(Icons.chevron_right_rounded,
-                          color: AppColors.textLight, size: 20),
                     ),
                     const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
-                    // Logout
-                    ListTile(
-                      onTap: _handleLogout,
-                      leading: const Icon(Icons.logout_rounded,
-                          color: AppColors.statusCancelled, size: 22),
-                      title: const Text(
-                        'Logout',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.statusCancelled,
-                        ),
+                    const ListTile(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                      title: Text(
+                        'App Version',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                      ),
+                      trailing: Text(
+                        'v1.2.0 (Build 42)',
+                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textSecondary),
                       ),
                     ),
                   ],
                 ),
               ),
+
+              const SizedBox(height: 28),
+
+              // Logout Button
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: OutlinedButton.icon(
+                  onPressed: _handleLogout,
+                  icon: const Icon(Icons.logout_rounded, color: AppColors.statusCancelled, size: 20),
+                  label: const Text(
+                    'Logout',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.statusCancelled,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AppColors.statusCancelled.withValues(alpha: 0.3)),
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 32),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  BoxDecoration _cardDecoration() {
+    return BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(18),
+      border: Border.all(color: AppColors.border),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.02),
+          blurRadius: 6,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 4),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+          color: AppColors.textLight,
+          letterSpacing: 0.8,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSwitchTile({
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return SwitchListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+      ),
+      value: value,
+      activeColor: AppColors.primary,
+      onChanged: onChanged,
+    );
+  }
+
+  Widget _buildValueTile({
+    required String title,
+    required String value,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (value.isNotEmpty)
+            Text(
+              value,
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: AppColors.textSecondary),
+            ),
+          const SizedBox(width: 8),
+          const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColors.textLight),
+        ],
+      ),
+      onTap: onTap,
     );
   }
 }

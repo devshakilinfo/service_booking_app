@@ -3,7 +3,6 @@ import '../core/constants.dart';
 import 'ai_assistant/ai_assistant_screen.dart';
 import 'booking/my_bookings_screen.dart';
 import 'home/home_screen.dart';
-import 'home/search_screen.dart';
 import 'profile/profile_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -21,7 +20,6 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<Widget> _screens = const [
     HomeScreen(),
     MyBookingsScreen(),
-    SearchScreen(), // For quick center search/book
     AIAssistantScreen(),
     ProfileScreen(),
   ];
@@ -55,18 +53,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 12,
-              offset: const Offset(0, -3),
+              blurRadius: 10,
+              offset: const Offset(0, -2),
             ),
           ],
         ),
         child: SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 _buildNavItem(
                   index: 0,
@@ -80,40 +77,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   activeIcon: Icons.calendar_month_rounded,
                   label: 'Bookings',
                 ),
-                // Center Circular Floating Action Button
-                GestureDetector(
-                  onTap: () => _onItemTapped(2),
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primary.withValues(alpha: 0.35),
-                          blurRadius: 10,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.calendar_month_rounded,
-                        color: Colors.white,
-                        size: 22,
-                      ),
-                    ),
-                  ),
-                ),
                 _buildNavItem(
-                  index: 3,
+                  index: 2,
                   icon: Icons.chat_bubble_outline_rounded,
                   activeIcon: Icons.chat_bubble_rounded,
                   label: 'Chat',
                 ),
                 _buildNavItem(
-                  index: 4,
+                  index: 3,
                   icon: Icons.person_outline_rounded,
                   activeIcon: Icons.person_rounded,
                   label: 'Profile',
@@ -138,7 +109,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -148,15 +119,25 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               color: isSelected ? AppColors.primary : AppColors.textLight,
               size: 24,
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 3),
             Text(
               label,
               style: TextStyle(
                 fontSize: 11,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,
                 color: isSelected ? AppColors.primary : AppColors.textLight,
               ),
             ),
+            if (isSelected)
+              Container(
+                margin: const EdgeInsets.only(top: 2),
+                width: 14,
+                height: 2.5,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
           ],
         ),
       ),

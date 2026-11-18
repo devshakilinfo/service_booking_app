@@ -60,13 +60,13 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            // Decorative subtle leaves in corner
+            // Top-left decorative leaf sprigs
             Positioned(
-              top: 10,
+              top: 8,
               left: 10,
               child: Opacity(
-                opacity: 0.6,
-                child: Icon(Icons.eco_rounded, size: 40, color: AppColors.accent.withValues(alpha: 0.4)),
+                opacity: 0.7,
+                child: Icon(Icons.eco_rounded, size: 44, color: AppColors.accent.withValues(alpha: 0.45)),
               ),
             ),
             Center(
@@ -74,37 +74,47 @@ class _SplashScreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Spacer(flex: 2),
-                  // Screen 1: ServiceHub House-with-leaf logo + Tagline
+                  // Modern ServiceHub Logo
                   const ServiceHubLogo(
-                    iconSize: 58,
+                    iconSize: 56,
                     fontSize: 28,
                     showTagline: true,
                   ),
                   const Spacer(flex: 2),
-                  // Screen 1: Charming House with green hill and trees illustration
+                  // Charming House on Grassy Hill with winding path
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: HouseWithGardenIllustration(height: 150),
+                    child: HouseWithGardenIllustration(height: 160),
                   ),
                   const SizedBox(height: 24),
                   const Text(
                     'Your Trusted\nService Booking Partner',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
-                      height: 1.35,
-                      fontWeight: FontWeight.w700,
+                      fontSize: 18,
+                      height: 1.3,
+                      fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const Spacer(flex: 1),
-                  // Screen 1: Circular loading indicator
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Find & book the best services\nnear you with ease.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const Spacer(flex: 2),
+                  // Circular loading indicator
                   const SizedBox(
                     width: 28,
                     height: 28,
                     child: CircularProgressIndicator(
                       strokeWidth: 2.8,
-                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.accent),
+                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF86EFAC)),
                     ),
                   ),
                   const SizedBox(height: 36),
