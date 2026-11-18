@@ -10,6 +10,7 @@ class ServiceModel {
   final int reviewsCount;
   final bool isFeatured;
   final bool isPopular;
+  final bool isActive;
   final List<String> highlights;
   final List<String> availableSlots;
 
@@ -25,9 +26,44 @@ class ServiceModel {
     this.reviewsCount = 100,
     this.isFeatured = false,
     this.isPopular = false,
+    this.isActive = true,
     this.highlights = const [],
     this.availableSlots = const [],
   });
+
+  ServiceModel copyWith({
+    String? id,
+    String? name,
+    String? description,
+    String? category,
+    double? price,
+    String? duration,
+    String? image,
+    double? rating,
+    int? reviewsCount,
+    bool? isFeatured,
+    bool? isPopular,
+    bool? isActive,
+    List<String>? highlights,
+    List<String>? availableSlots,
+  }) {
+    return ServiceModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      category: category ?? this.category,
+      price: price ?? this.price,
+      duration: duration ?? this.duration,
+      image: image ?? this.image,
+      rating: rating ?? this.rating,
+      reviewsCount: reviewsCount ?? this.reviewsCount,
+      isFeatured: isFeatured ?? this.isFeatured,
+      isPopular: isPopular ?? this.isPopular,
+      isActive: isActive ?? this.isActive,
+      highlights: highlights ?? this.highlights,
+      availableSlots: availableSlots ?? this.availableSlots,
+    );
+  }
 
   factory ServiceModel.fromJson(Map<String, dynamic> json) {
     return ServiceModel(
@@ -42,6 +78,7 @@ class ServiceModel {
       reviewsCount: json['reviewsCount'] ?? json['reviews_count'] ?? 120,
       isFeatured: json['isFeatured'] ?? json['is_featured'] ?? false,
       isPopular: json['isPopular'] ?? json['is_popular'] ?? false,
+      isActive: json['isActive'] ?? json['is_active'] ?? true,
       highlights: (json['highlights'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
       availableSlots: (json['availableSlots'] ?? json['available_slots'] as List<dynamic>?)
               ?.map((e) => e.toString())

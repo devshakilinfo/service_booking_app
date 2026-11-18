@@ -77,6 +77,22 @@ class ApiService {
     }
   }
 
+  static Future<dynamic> delete(String endpoint, {bool requireAuth = false}) async {
+    try {
+      final uri = Uri.parse('$baseUrl$endpoint');
+      final headers = await _getHeaders(requireAuth: requireAuth);
+      final response = await http
+          .delete(uri, headers: headers)
+          .timeout(const Duration(seconds: 15));
+
+      return _handleResponse(response);
+    } on SocketException {
+      throw 'Cannot reach backend server. Please check server status or connection IP.';
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   static dynamic _handleResponse(http.Response response) {
     try {
       final decoded = jsonDecode(response.body);

@@ -5,6 +5,7 @@ import '../models/booking_model.dart';
 class BookingProvider with ChangeNotifier {
   List<BookingModel> _upcomingBookings = [];
   List<BookingModel> _pastBookings = [];
+  List<BookingModel> _adminBookings = [];
   bool _isLoading = false;
   String? _errorMessage;
   BookingModel? _lastCreatedBooking;
@@ -12,6 +13,7 @@ class BookingProvider with ChangeNotifier {
   List<BookingModel> get upcomingBookings => _upcomingBookings;
   List<BookingModel> get pastBookings => _pastBookings;
   List<BookingModel> get bookings => [..._upcomingBookings, ..._pastBookings];
+  List<BookingModel> get adminBookings => _adminBookings;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   BookingModel? get lastCreatedBooking => _lastCreatedBooking;
@@ -102,6 +104,66 @@ class BookingProvider with ChangeNotifier {
         return true;
       } else {
         _errorMessage = response['message'] ?? 'Failed to cancel booking';
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<void> fetchAllBookingsAdmin({String? status}) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final queryParams = <String, String>{};
+      if (status != null && status != 'All') {
+        queryParams['status'] = status;
+      }
+
+      final response = await ApiService.get(
+        '/bookings/admin/all',
+        requireAuth: true,
+        queryParams: queryParams,
+      );
+
+      if (response['success'] == true && response['data'] != null) {
+        final List<dynamic> list = response['data'];
+        _adminBookings = list.map((item) => BookingModel.fromJson(item)).toList();
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<bool> updateBookingStatusAdmin(String bookingId, String newStatus) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await ApiService.put(
+        '/bookings/$bookingId/status',
+        requireAuth: true,
+        body: {'status': newStatus},
+      );
+
+      if (response['success'] == true) {
+        await fetchAllBookingsAdmin();
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        _errorMessage = response['message'] ?? 'Failed to update status';
         _isLoading = false;
         notifyListeners();
         return false;

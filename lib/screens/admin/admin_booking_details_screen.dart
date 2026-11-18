@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../models/booking_model.dart';
+import '../../providers/booking_provider.dart';
 
 class AdminBookingDetailsScreen extends StatefulWidget {
   final BookingModel booking;
@@ -13,6 +15,7 @@ class AdminBookingDetailsScreen extends StatefulWidget {
 
 class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
   late String _currentStatus;
+  bool _isUpdating = false;
 
   @override
   void initState() {
@@ -20,14 +23,22 @@ class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
     _currentStatus = widget.booking.status;
   }
 
-  void _updateStatus(String newStatus) {
+  Future<void> _updateStatus(String newStatus) async {
+    setState(() => _isUpdating = true);
+    final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+    final success = await bookingProvider.updateBookingStatusAdmin(widget.booking.id, newStatus);
+    if (!mounted) return;
     setState(() {
-      _currentStatus = newStatus;
+      _isUpdating = false;
+      if (success) {
+        _currentStatus = newStatus;
+      }
     });
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Booking status updated to "$newStatus"'),
-        backgroundColor: AppColors.primary,
+        content: Text(success ? 'Booking status updated to "$newStatus"' : 'Failed to update booking status'),
+        backgroundColor: success ? AppColors.primary : AppColors.error,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -173,51 +184,60 @@ class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
               const SizedBox(height: 24),
 
               if (!isCompleted && !isCancelled) ...[
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () => _updateStatus('Completed'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      elevation: 0,
+                if (_isUpdating)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: CircularProgressIndicator(color: AppColors.primary),
                     ),
-                    child: const Text(
-                      'Mark as Completed ✓',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                if (isPending)
+                  )
+                else ...[
                   SizedBox(
                     width: double.infinity,
                     height: 50,
-                    child: OutlinedButton(
-                      onPressed: () => _updateStatus('Confirmed'),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppColors.primary),
+                    child: ElevatedButton(
+                      onPressed: () => _updateStatus('Completed'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        elevation: 0,
                       ),
                       child: const Text(
-                        'Confirm Booking',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.primary),
+                        'Mark as Completed ✓',
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white),
                       ),
                     ),
                   ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: TextButton(
-                    onPressed: () => _updateStatus('Cancelled'),
-                    child: const Text(
-                      'Cancel Booking',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.statusCancelled),
+                  const SizedBox(height: 10),
+                  if (isPending)
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: OutlinedButton(
+                        onPressed: () => _updateStatus('Confirmed'),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: AppColors.primary),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        ),
+                        child: const Text(
+                          'Confirm Booking',
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.primary),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: TextButton(
+                      onPressed: () => _updateStatus('Cancelled'),
+                      child: const Text(
+                        'Cancel Booking',
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.statusCancelled),
+                      ),
                     ),
                   ),
-                ),
+                ],
               ],
 
               const SizedBox(height: 32),

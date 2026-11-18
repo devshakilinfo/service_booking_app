@@ -73,4 +73,118 @@ class ServiceProvider with ChangeNotifier {
       return [];
     }
   }
+
+  Future<bool> createService({
+    required String name,
+    required String description,
+    required String category,
+    required double price,
+    String duration = '1.5 hrs',
+    required String image,
+    bool isFeatured = false,
+    bool isPopular = false,
+    List<String>? highlights,
+    List<String>? availableSlots,
+  }) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await ApiService.post(
+        '/services',
+        requireAuth: true,
+        body: {
+          'name': name,
+          'description': description,
+          'category': category,
+          'price': price,
+          'duration': duration,
+          'image': image,
+          'isFeatured': isFeatured,
+          'isPopular': isPopular,
+          if (highlights != null) 'highlights': highlights,
+          if (availableSlots != null) 'availableSlots': availableSlots,
+        },
+      );
+
+      if (response['success'] == true) {
+        await fetchServices();
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        _errorMessage = response['message'] ?? 'Failed to create service';
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> updateService(String id, Map<String, dynamic> data) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await ApiService.put(
+        '/services/$id',
+        requireAuth: true,
+        body: data,
+      );
+
+      if (response['success'] == true) {
+        await fetchServices();
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        _errorMessage = response['message'] ?? 'Failed to update service';
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> deleteService(String id) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await ApiService.delete(
+        '/services/$id',
+        requireAuth: true,
+      );
+
+      if (response['success'] == true) {
+        await fetchServices();
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        _errorMessage = response['message'] ?? 'Failed to delete service';
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
 }

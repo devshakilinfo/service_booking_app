@@ -4,6 +4,7 @@ import '../../core/constants.dart';
 import '../../models/booking_model.dart';
 import '../../models/service_model.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/booking_provider.dart';
 import '../../providers/service_provider.dart';
 import '../../widgets/app_illustrations.dart';
 import '../auth/login_screen.dart';
@@ -33,6 +34,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   final _supportEmailCtrl = TextEditingController(text: 'support@servicehub.app');
   final _slotBufferCtrl = TextEditingController(text: '30 mins');
   final _cancellationWindowCtrl = TextEditingController(text: '2 hours before');
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      Provider.of<ServiceProvider>(context, listen: false).fetchServices();
+      Provider.of<BookingProvider>(context, listen: false).fetchAllBookingsAdmin();
+    });
+  }
 
   final List<BookingModel> _demoAdminBookings = [
     BookingModel(
@@ -206,6 +217,27 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   Widget _buildOverviewTab() {
     final auth = Provider.of<AuthProvider>(context);
     final user = auth.currentUser;
+    final bookingProvider = Provider.of<BookingProvider>(context);
+    final serviceProvider = Provider.of<ServiceProvider>(context);
+
+    final recentBookings = bookingProvider.adminBookings.isNotEmpty
+        ? bookingProvider.adminBookings
+        : _demoAdminBookings;
+    final totalBookingsStr = bookingProvider.adminBookings.isNotEmpty
+        ? '${bookingProvider.adminBookings.length}'
+        : '3,420';
+    final totalServicesStr = serviceProvider.services.isNotEmpty
+        ? '${serviceProvider.services.length}'
+        : '24';
+    final activeServicesCount = serviceProvider.services.isNotEmpty
+        ? serviceProvider.services.where((s) => s.isActive).length
+        : 22;
+    final totalRevenueVal = bookingProvider.adminBookings.isNotEmpty
+        ? bookingProvider.adminBookings
+            .where((b) => b.status.toLowerCase() != 'cancelled')
+            .fold(0.0, (acc, b) => acc + b.totalPrice)
+        : 12540.0;
+    final totalRevenueStr = '\$${totalRevenueVal.toStringAsFixed(0)}';
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -289,7 +321,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       iconBg: const Color(0xFFFEF3C7),
                       iconColor: const Color(0xFFD97706),
                       title: 'Total Bookings',
-                      value: '3,420',
+                      value: totalBookingsStr,
                       trend: '+8% this week',
                     ),
                   ),
@@ -304,8 +336,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       iconBg: const Color(0xFFE6F5EC),
                       iconColor: AppColors.statusConfirmed,
                       title: 'Total Services',
-                      value: '24',
-                      trend: '22 Active',
+                      value: totalServicesStr,
+                      trend: '$activeServicesCount Active',
                     ),
                   ),
                   const SizedBox(width: 14),
@@ -315,7 +347,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                       iconBg: const Color(0xFFFFFBEB),
                       iconColor: const Color(0xFFB45309),
                       title: 'Revenue',
-                      value: '\$12,540',
+                      value: totalRevenueStr,
                       trend: '+15.2% growth',
                     ),
                   ),
@@ -407,7 +439,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ),
               const SizedBox(height: 12),
 
-              ..._demoAdminBookings.take(3).map((b) => _buildBookingCard(b)),
+              ...recentBookings.take(3).map((b) => _buildBookingCard(b)),
 
               const SizedBox(height: 24),
             ],
@@ -492,13 +524,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                itemCount: filteredServices.length,
-                itemBuilder: (ctx, idx) {
-                  final service = filteredServices[idx];
-                  return _buildAdminServiceTile(service);
-                },
+              child: RefreshIndicator(
+                onRefresh: () => serviceProvider.fetchServices(),
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                  itemCount: filteredServices.length,
+                  itemBuilder: (ctx, idx) {
+                    final service = filteredServices[idx];
+                    return _buildAdminServiceTile(service);
+                  },
+                ),
               ),
             ),
           ],
@@ -577,10 +612,35 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete_outline_rounded, size: 20, color: AppColors.statusCancelled),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Service "${service.name}" deleted')),
+                    onPressed: () async {
+                      final confirm = await showDialog<bool>(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text('Delete Service'),
+                          content: Text('Are you sure you want to delete "${service.name}"?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(ctx, false),
+                              child: const Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () => Navigator.pop(ctx, true),
+                              style: ElevatedButton.styleFrom(backgroundColor: AppColors.statusCancelled),
+                              child: const Text('Delete', style: TextStyle(color: Colors.white)),
+                            ),
+                          ],
+                        ),
                       );
+                      if (confirm == true && mounted) {
+                        final success = await Provider.of<ServiceProvider>(context, listen: false).deleteService(service.id);
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(success ? 'Service "${service.name}" deleted' : 'Failed to delete service'),
+                            backgroundColor: success ? AppColors.primary : AppColors.error,
+                          ),
+                        );
+                      }
                     },
                     tooltip: 'Delete Service',
                   ),
@@ -589,11 +649,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
               Transform.scale(
                 scale: 0.8,
                 child: Switch(
-                  value: true,
+                  value: service.isActive,
                   activeThumbColor: AppColors.primary,
-                  onChanged: (val) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Service visibility toggled')),
+                  onChanged: (val) async {
+                    await Provider.of<ServiceProvider>(context, listen: false).updateService(
+                      service.id,
+                      {'isActive': val},
                     );
                   },
                 ),
@@ -606,7 +667,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   Widget _buildBookingsTab() {
-    final filtered = _demoAdminBookings.where((b) {
+    final bookingProvider = Provider.of<BookingProvider>(context);
+    final bookingsSource = bookingProvider.adminBookings.isNotEmpty
+        ? bookingProvider.adminBookings
+        : _demoAdminBookings;
+
+    final filtered = bookingsSource.where((b) {
       final statusMatch = _selectedBookingFilterIndex == 0 ||
           b.status.toLowerCase() == _bookingFilters[_selectedBookingFilterIndex].toLowerCase();
       final textMatch = _bookingSearch.isEmpty ||
@@ -693,10 +759,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             ),
 
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                itemCount: filtered.length,
-                itemBuilder: (ctx, idx) => _buildBookingCard(filtered[idx]),
+              child: RefreshIndicator(
+                onRefresh: () => bookingProvider.fetchAllBookingsAdmin(),
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                  itemCount: filtered.length,
+                  itemBuilder: (ctx, idx) => _buildBookingCard(filtered[idx]),
+                ),
               ),
             ),
           ],
