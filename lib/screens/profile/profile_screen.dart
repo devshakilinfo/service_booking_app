@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/booking_provider.dart';
 import '../admin/admin_dashboard_screen.dart';
 import '../auth/login_screen.dart';
 import 'change_password_screen.dart';
 import 'settings_screen.dart';
+import 'widgets/profile_header_card.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -105,6 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final bookingProvider = Provider.of<BookingProvider>(context);
     final user = authProvider.currentUser;
     final isAdmin = user?.role == 'admin';
     final displayName = (user?.name != null && user!.name.isNotEmpty) ? user.name : 'Shakil Ahamed';
@@ -113,6 +116,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final displayPhone =
         (user?.phone != null && user!.phone.isNotEmpty) ? user.phone : '+880 1712-345678';
 
+    final nameParts = displayName.trim().split(' ');
+    final initials = nameParts.length > 1
+        ? '${nameParts.first[0]}${nameParts.last[0]}'.toUpperCase()
+        : (nameParts.isNotEmpty && nameParts.first.isNotEmpty
+            ? nameParts.first.substring(0, 1).toUpperCase()
+            : 'SA');
+
+    final bookingsCount = bookingProvider.bookings.length;
+    final totalSpent = bookingProvider.bookings.fold<double>(
+      0.0,
+      (sum, b) => sum + b.totalAmount,
+    );
+
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAF6),
       body: SafeArea(
@@ -120,142 +136,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.fromLTRB(18, 12, 18, 28),
           child: Column(
             children: [
-              
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E4620),
-                  borderRadius: BorderRadius.circular(28),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF1E4620).withValues(alpha: 0.18),
-                      blurRadius: 16,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        
-                        Container(
-                          width: 72,
-                          height: 72,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF4F7F2),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: const Color(0xFF7BC64D),
-                              width: 2.5,
-                            ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'SA',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w800,
-                                color: Color(0xFF142E18),
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                spacing: 8,
-                                runSpacing: 4,
-                                children: [
-                                  Text(
-                                    displayName,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.white,
-                                      letterSpacing: -0.3,
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF6BB33B),
-                                      borderRadius: BorderRadius.circular(14),
-                                    ),
-                                    child: const Text(
-                                      '✓ Verified',
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w800,
-                                        color: Color(0xFF142E18),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                displayEmail,
-                                style: const TextStyle(
-                                  fontSize: 13.5,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFFBCD4BA),
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                displayPhone,
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF9AB898),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 18),
-                    Divider(
-                      height: 1,
-                      color: Colors.white.withValues(alpha: 0.14),
-                    ),
-                    const SizedBox(height: 16),
-                    
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildStatCol('12', 'Bookings', Colors.white),
-                        ),
-                        Container(
-                          width: 1,
-                          height: 32,
-                          color: Colors.white.withValues(alpha: 0.14),
-                        ),
-                        Expanded(
-                          child: _buildStatCol('4', 'Favorites', Colors.white),
-                        ),
-                        Container(
-                          width: 1,
-                          height: 32,
-                          color: Colors.white.withValues(alpha: 0.14),
-                        ),
-                        Expanded(
-                          child: _buildStatCol('\$340', 'Total Spent', const Color(0xFFA3E66A)),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              ProfileHeaderCard(
+                displayName: displayName,
+                displayEmail: displayEmail,
+                displayPhone: displayPhone,
+                initials: initials,
+                bookingsCount: bookingsCount > 0 ? bookingsCount : 12,
+                favoritesCount: 4,
+                totalSpent: totalSpent > 0 ? totalSpent : 340.0,
               ),
 
               const SizedBox(height: 18),
@@ -411,30 +299,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildStatCol(String value, String label, Color valueColor) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: valueColor,
-          ),
-        ),
-        const SizedBox(height: 3),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFFD0E2CE),
-          ),
-        ),
-      ],
     );
   }
 

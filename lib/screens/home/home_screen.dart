@@ -6,6 +6,8 @@ import '../../widgets/app_illustrations.dart';
 import '../ai_assistant/ai_assistant_screen.dart';
 import '../service/service_details_screen.dart';
 import 'search_screen.dart';
+import 'widgets/home_promo_banner.dart';
+import 'widgets/home_service_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -311,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       for (int i = 0; i < featuredServices.length; i++) ...[
                         if (i > 0) const SizedBox(width: 14),
                         Expanded(
-                          child: _buildGridServiceCard(
+                          child: HomeGridServiceCard(
                             service: featuredServices[i],
                             isPopular: true,
                             onTap: () {
@@ -366,7 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       for (int i = 0; i < popularServices.length; i++) ...[
                         if (i > 0) const SizedBox(width: 14),
                         Expanded(
-                          child: _buildGridServiceCard(
+                          child: HomeGridServiceCard(
                             service: popularServices[i],
                             isPopular: false,
                             onTap: () {
@@ -383,212 +385,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 const SizedBox(height: 24),
-                
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF3B6E47), Color(0xFF284C31)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(22),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.25),
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      const RobotAssistantIllustration(size: 52),
-                      const SizedBox(width: 14),
-                      const Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Need Help?',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            SizedBox(height: 2),
-                            Text(
-                              'Ask our AI Assistant for instant recommendations',
-                              style: TextStyle(
-                                color: Color(0xFFDCFCE7),
-                                fontSize: 11,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const AIAssistantScreen()),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: const Text(
-                            'Chat Now →',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                const HomePromoBanner(),
                 const SizedBox(height: 20),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGridServiceCard({
-    required dynamic service,
-    required bool isPopular,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.border),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.02),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(19)),
-                  child: Image.network(
-                    service.image,
-                    height: 105,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      height: 105,
-                      color: AppColors.primaryUltraLight,
-                      child: const Icon(Icons.cleaning_services_rounded, color: AppColors.primary),
-                    ),
-                  ),
-                ),
-                if (isPopular)
-                  Positioned(
-                    top: 8,
-                    left: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF22C55E),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.star, color: Colors.white, size: 10),
-                          SizedBox(width: 3),
-                          Text(
-                            'Popular',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    service.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 3),
-                  Row(
-                    children: [
-                      const Icon(Icons.star, size: 13, color: Colors.amber),
-                      const SizedBox(width: 2),
-                      Text(
-                        '${service.rating} (${service.reviewsCount})',
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '\$${service.price.toStringAsFixed(0)}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE8F3E6),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(Icons.chevron_right_rounded, size: 16, color: AppColors.primary),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
         ),
       ),
     );

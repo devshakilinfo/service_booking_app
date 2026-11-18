@@ -1,9 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../models/service_model.dart';
 import '../../providers/service_provider.dart';
+import 'widgets/admin_form_widgets.dart';
+import 'widgets/admin_image_picker_sheet.dart';
 
 class AdminEditServiceScreen extends StatefulWidget {
   final ServiceModel service;
@@ -33,37 +34,6 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
     'Painting',
   ];
 
-  final List<Map<String, String>> _sampleCovers = [
-    {
-      'title': 'Deep Cleaning',
-      'url': 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800',
-    },
-    {
-      'title': 'AC Servicing',
-      'url': 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800',
-    },
-    {
-      'title': 'Plumbing Faucet',
-      'url': 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=800',
-    },
-    {
-      'title': 'Beauty & Salon',
-      'url': 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800',
-    },
-    {
-      'title': 'Home Healthcare',
-      'url': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800',
-    },
-    {
-      'title': 'Smart Electrical',
-      'url': 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800',
-    },
-    {
-      'title': 'Wall Painting',
-      'url': 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=800',
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -87,137 +57,11 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
     super.dispose();
   }
 
-  void _showImagePickerDialog() {
-    final urlCtrl = TextEditingController(text: _imageUrl);
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) {
-        return Padding(
-          padding: EdgeInsets.only(
-            left: 20,
-            right: 20,
-            top: 20,
-            bottom: MediaQuery.of(ctx).viewInsets.bottom + 20,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Select Service Cover Photo',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close_rounded, size: 20),
-                    onPressed: () => Navigator.pop(ctx),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'Enter Custom Image URL:',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: 6),
-              TextField(
-                controller: urlCtrl,
-                decoration: InputDecoration(
-                  hintText: 'https://images.unsplash.com/...',
-                  hintStyle: const TextStyle(fontSize: 12, color: AppColors.textLight),
-                  filled: true,
-                  fillColor: AppColors.background,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: AppColors.border),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Or Choose from Ready Presets:',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                height: 90,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _sampleCovers.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 10),
-                  itemBuilder: (context, i) {
-                    final item = _sampleCovers[i];
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _imageUrl = item['url']!;
-                        });
-                        Navigator.pop(ctx);
-                      },
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              item['url']!,
-                              width: 65,
-                              height: 65,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            item['title']!,
-                            style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: () {
-                    final text = urlCtrl.text.trim();
-                    if (text.isNotEmpty) {
-                      setState(() {
-                        _imageUrl = text;
-                      });
-                    }
-                    Navigator.pop(ctx);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                  ),
-                  child: const Text(
-                    'Apply Image URL',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+  Future<void> _showImagePickerDialog() async {
+    final newUrl = await AdminImagePickerSheet.show(context, currentUrl: _imageUrl);
+    if (newUrl != null && mounted) {
+      setState(() => _imageUrl = newUrl);
+    }
   }
 
   void _updateService() async {
@@ -461,8 +305,8 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildLabel('SERVICE TITLE *'),
-                    _buildInputField(
+                    buildAdminLabel('SERVICE TITLE *'),
+                    buildAdminInputField(
                       controller: _titleController,
                       hint: 'e.g., Deep Home Cleaning',
                       icon: Icons.title_rounded,
@@ -475,7 +319,7 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildLabel('CATEGORY *'),
+                              buildAdminLabel('CATEGORY *'),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 3),
                                 decoration: BoxDecoration(
@@ -515,8 +359,8 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildLabel('BASE PRICE (\$) *'),
-                              _buildInputField(
+                              buildAdminLabel('BASE PRICE (\$) *'),
+                              buildAdminInputField(
                                 controller: _priceController,
                                 hint: '35',
                                 icon: Icons.attach_money_rounded,
@@ -529,15 +373,15 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    _buildLabel('ESTIMATED DURATION'),
-                    _buildInputField(
+                    buildAdminLabel('ESTIMATED DURATION'),
+                    buildAdminInputField(
                       controller: _durationController,
                       hint: 'e.g., 2 Hours',
                       icon: Icons.access_time_rounded,
                     ),
                     const SizedBox(height: 16),
 
-                    _buildLabel('DESCRIPTION'),
+                    buildAdminLabel('DESCRIPTION'),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                       decoration: BoxDecoration(
@@ -631,61 +475,6 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildLabel(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w800,
-          color: AppColors.textSecondary,
-          letterSpacing: 0.5,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInputField({
-    required TextEditingController controller,
-    required String hint,
-    required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: AppColors.primary, size: 20),
-          const SizedBox(width: 10),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              keyboardType: keyboardType,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
-              ),
-              decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: const TextStyle(fontSize: 13, color: AppColors.textLight),
-                border: InputBorder.none,
-                isDense: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

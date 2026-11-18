@@ -4,6 +4,7 @@ import '../../core/constants.dart';
 import '../../models/booking_model.dart';
 import '../../providers/booking_provider.dart';
 import 'booking_screen.dart';
+import 'widgets/booking_receipt_card.dart';
 
 class BookingDetailsScreen extends StatefulWidget {
   final BookingModel booking;
@@ -370,33 +371,13 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.border),
-                      ),
-                      child: Column(
-                        children: [
-                          _buildInfoRow(Icons.calendar_today_rounded, 'Date', _booking.date),
-                          const Divider(height: 22, color: AppColors.border),
-                          _buildInfoRow(Icons.access_time_rounded, 'Time Slot', _booking.timeSlot),
-                          const Divider(height: 22, color: AppColors.border),
-                          _buildInfoRow(Icons.location_on_outlined, 'Service Address', address),
-                          if (notes.isNotEmpty) ...[
-                            const Divider(height: 22, color: AppColors.border),
-                            _buildInfoRow(Icons.edit_note_rounded, 'Special Notes', notes),
-                          ],
-                          if (isCancelled && _booking.cancellationReason.isNotEmpty) ...[
-                            const Divider(height: 22, color: AppColors.border),
-                            _buildInfoRow(Icons.info_outline_rounded, 'Cancellation Reason', _booking.cancellationReason, isAlert: true),
-                          ],
-                        ],
-                      ),
+                    BookingAppointmentInfoCard(
+                      booking: _booking,
+                      address: address,
+                      notes: notes,
+                      isCancelled: isCancelled,
                     ),
                     const SizedBox(height: 18),
-
                     const Text(
                       'Payment Summary',
                       style: TextStyle(
@@ -406,45 +387,7 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.border),
-                      ),
-                      child: Column(
-                        children: [
-                          _buildPaymentRow('Service Rate', '\$${_booking.totalPrice.toStringAsFixed(2)}'),
-                          const SizedBox(height: 8),
-                          _buildPaymentRow('Convenience & Booking Fee', 'FREE', isGreen: true),
-                          const SizedBox(height: 8),
-                          _buildPaymentRow('Payment Method', 'Pay After Service'),
-                          const Divider(height: 22, color: AppColors.border),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Total Payable',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w900,
-                                  color: AppColors.textPrimary,
-                                ),
-                              ),
-                              Text(
-                                '\$${_booking.totalPrice.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                    BookingPaymentSummaryCard(totalPrice: _booking.totalPrice),
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -516,56 +459,6 @@ class _BookingDetailsScreenState extends State<BookingDetailsScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildInfoRow(IconData icon, String label, String value, {bool isAlert = false}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 18, color: isAlert ? AppColors.statusCancelled : AppColors.primary),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: isAlert ? AppColors.statusCancelled : AppColors.textPrimary,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPaymentRow(String label, String value, {bool isGreen = false}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 13, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
-            color: isGreen ? const Color(0xFF16A34A) : AppColors.textPrimary,
-          ),
-        ),
-      ],
     );
   }
 }
