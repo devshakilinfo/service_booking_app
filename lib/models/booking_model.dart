@@ -10,6 +10,7 @@ class BookingModel {
   final String status;
   final double totalPrice;
   final String notes;
+  final String cancellationReason;
   final DateTime? createdAt;
 
   BookingModel({
@@ -21,6 +22,7 @@ class BookingModel {
     required this.status,
     required this.totalPrice,
     this.notes = '',
+    this.cancellationReason = '',
     this.createdAt,
   });
 
@@ -46,6 +48,7 @@ class BookingModel {
           ? ((json['totalPrice'] ?? json['total_price']) as num).toDouble()
           : 0.0,
       notes: json['notes'] ?? '',
+      cancellationReason: json['cancellationReason'] ?? json['cancellation_reason'] ?? '',
       createdAt: json['createdAt'] != null || json['created_at'] != null
           ? DateTime.tryParse(json['createdAt'] ?? json['created_at'])
           : null,

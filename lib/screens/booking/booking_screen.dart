@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../core/api_service.dart';
 import '../../core/constants.dart';
 import '../../models/service_model.dart';
 import '../../providers/booking_provider.dart';
@@ -17,17 +18,21 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
   late DateTime _selectedDate;
-  String _selectedTimeSlot = '11:30 AM'; 
+  String _selectedTimeSlot = '11:30 AM';
+  bool _isLoadingSlots = false;
   final TextEditingController _addressController =
       TextEditingController(text: 'House 14, Road 7, Dhanmondi, Dhaka');
   final TextEditingController _notesController = TextEditingController();
 
-  final List<DateTime> _dates = List.generate(
-    7,
-    (index) => DateTime(2026, 11, 18).add(Duration(days: index)),
+  late final List<DateTime> _dates = List.generate(
+    14,
+    (index) {
+      final now = DateTime.now();
+      return DateTime(now.year, now.month, now.day).add(Duration(days: index));
+    },
   );
 
-  final List<Map<String, dynamic>> _slots = [
+  List<Map<String, dynamic>> _slots = [
     {'time': '09:00 AM', 'status': 'available'},
     {'time': '11:30 AM', 'status': 'available'},
     {'time': '02:00 PM', 'status': 'booked'},
@@ -39,7 +44,54 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = _dates[1]; 
+    _selectedDate = _dates[1];
+    _fetchSlotsForDate(_selectedDate);
+  }
+
+  Future<void> _fetchSlotsForDate(DateTime date) async {
+    setState(() {
+      _isLoadingSlots = true;
+    });
+
+    final formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    try {
+      final res = await ApiService.get(
+        '/services/${widget.service.id}/slots',
+        queryParams: {'date': formattedDate},
+      );
+
+      if (res['success'] == true && res['slots'] != null) {
+        final List<dynamic> rawSlots = res['slots'];
+        final List<Map<String, dynamic>> loadedSlots = rawSlots.map((s) {
+          final isAvail = s['isAvailable'] == true;
+          return {
+            'time': s['time'] as String,
+            'status': isAvail ? 'available' : 'booked',
+          };
+        }).toList();
+
+        if (loadedSlots.isNotEmpty) {
+          setState(() {
+            _slots = loadedSlots;
+            final hasSelected = _slots.any((s) => s['time'] == _selectedTimeSlot && s['status'] == 'available');
+            if (!hasSelected) {
+              final firstAvail = _slots.firstWhere(
+                (s) => s['status'] == 'available',
+                orElse: () => _slots.first,
+              );
+              _selectedTimeSlot = firstAvail['time'];
+            }
+          });
+        }
+      }
+    } catch (_) {
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingSlots = false;
+        });
+      }
+    }
   }
 
   @override
@@ -207,6 +259,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               setState(() {
                                 _selectedDate = date;
                               });
+                              _fetchSlotsForDate(date);
                             },
                             child: Container(
                               width: 62,
@@ -256,10 +309,10 @@ class _BookingScreenState extends State<BookingScreen> {
                     ),
                     const SizedBox(height: 24),
                     
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Select Time Slot',
                           style: TextStyle(
                             fontSize: 16,
@@ -267,14 +320,21 @@ class _BookingScreenState extends State<BookingScreen> {
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        Text(
-                          'Grey slots unavailable',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textSecondary,
+                        if (_isLoadingSlots)
+                          const SizedBox(
+                            width: 14,
+                            height: 14,
+                            child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+                          )
+                        else
+                          const Text(
+                            'Grey slots unavailable',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textSecondary,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     const SizedBox(height: 12),

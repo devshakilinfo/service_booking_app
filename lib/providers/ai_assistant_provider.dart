@@ -68,7 +68,7 @@ class AIAssistantProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await ApiService.post('/ai/ask', body: {'message': text.trim()});
+      final response = await ApiService.post('/ai/ask', requireAuth: true, body: {'message': text.trim()});
 
       if (response['success'] == true && response['data'] != null) {
         final replyText = response['data']['reply'] ?? 'Here are my recommendations for you:';

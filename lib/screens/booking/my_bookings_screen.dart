@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../models/booking_model.dart';
 import '../../providers/booking_provider.dart';
-import '../service/service_details_screen.dart';
+import 'booking_details_screen.dart';
+import 'booking_screen.dart';
 
 class MyBookingsScreen extends StatefulWidget {
   const MyBookingsScreen({super.key});
@@ -370,7 +371,7 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => ServiceDetailsScreen(service: booking.service!),
+                              builder: (_) => BookingScreen(service: booking.service!),
                             ),
                           );
                         }
@@ -391,17 +392,42 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
                         ),
                       ),
                     ),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BookingDetailsScreen(booking: booking),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: const Text(
+                          'Details',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ),
                   ] else ...[
                     GestureDetector(
                       onTap: () {
-                        if (booking.service != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ServiceDetailsScreen(service: booking.service!),
-                            ),
-                          );
-                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BookingDetailsScreen(booking: booking),
+                          ),
+                        );
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
