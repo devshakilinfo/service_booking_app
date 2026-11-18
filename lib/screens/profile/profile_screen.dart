@@ -2,141 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../providers/auth_provider.dart';
-import '../../widgets/custom_text_field.dart';
 import '../admin/admin_dashboard_screen.dart';
 import '../auth/login_screen.dart';
+import 'change_password_screen.dart';
+import 'edit_profile_screen.dart';
 import 'settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
-
-  void _showEditProfileDialog(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final user = authProvider.currentUser;
-    final nameController = TextEditingController(text: user?.name ?? 'Shakil Ahamed');
-    final phoneController = TextEditingController(text: user?.phone ?? '');
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Edit Profile', style: TextStyle(fontWeight: FontWeight.w800)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomTextField(
-              controller: nameController,
-              hint: 'Full Name',
-              prefixIcon: Icons.person_outline,
-            ),
-            const SizedBox(height: 12),
-            CustomTextField(
-              controller: phoneController,
-              hint: 'Phone Number',
-              prefixIcon: Icons.phone_outlined,
-              keyboardType: TextInputType.phone,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            ),
-            onPressed: () async {
-              Navigator.pop(ctx);
-              final success = await authProvider.updateProfile(
-                name: nameController.text.trim(),
-                phone: phoneController.text.trim(),
-              );
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(success ? 'Profile updated successfully' : 'Failed to update profile'),
-                    backgroundColor: success ? AppColors.statusConfirmed : AppColors.statusCancelled,
-                  ),
-                );
-              }
-            },
-            child: const Text('Save Changes', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showChangePasswordDialog(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final currentPasswordController = TextEditingController();
-    final newPasswordController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Change Password', style: TextStyle(fontWeight: FontWeight.w800)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomTextField(
-              controller: currentPasswordController,
-              hint: 'Current Password',
-              prefixIcon: Icons.lock_outline,
-              isPassword: true,
-            ),
-            const SizedBox(height: 12),
-            CustomTextField(
-              controller: newPasswordController,
-              hint: 'New Password (min 6 chars)',
-              prefixIcon: Icons.lock_reset_outlined,
-              isPassword: true,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            ),
-            onPressed: () async {
-              if (newPasswordController.text.length < 6) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('New password must be at least 6 characters')),
-                );
-                return;
-              }
-              Navigator.pop(ctx);
-              final success = await authProvider.updateProfile(
-                currentPassword: currentPasswordController.text,
-                newPassword: newPasswordController.text,
-              );
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(success
-                        ? 'Password updated successfully'
-                        : (authProvider.errorMessage ?? 'Update failed')),
-                    backgroundColor: success ? AppColors.statusConfirmed : AppColors.statusCancelled,
-                  ),
-                );
-              }
-            },
-            child: const Text('Update', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-          ),
-        ],
-      ),
-    );
-  }
 
   void _handleLogout(BuildContext context) {
     showDialog(
@@ -177,6 +50,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
     final user = authProvider.currentUser;
+    final isAdmin = user?.role == 'admin';
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -217,7 +91,8 @@ class ProfileScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.accent.withValues(alpha: 0.3), width: 2),
+                            border: Border.all(
+                                color: AppColors.accent.withValues(alpha: 0.3), width: 2),
                           ),
                           child: const CircleAvatar(
                             radius: 46,
@@ -228,13 +103,23 @@ class ProfileScreen extends StatelessWidget {
                         Positioned(
                           bottom: 2,
                           right: 2,
-                          child: Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: const BoxDecoration(
-                              color: AppColors.primary,
-                              shape: BoxShape.circle,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const EditProfileScreen()),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: const BoxDecoration(
+                                color: AppColors.primary,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(Icons.camera_alt_rounded,
+                                  size: 14, color: Colors.white),
                             ),
-                            child: const Icon(Icons.camera_alt_rounded, size: 14, color: Colors.white),
                           ),
                         ),
                       ],
@@ -277,46 +162,67 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
+                    // Edit Profile (Dedicated Screen)
                     _buildMenuItem(
                       icon: Icons.edit_note_rounded,
                       title: 'Edit Profile',
-                      onTap: () => _showEditProfileDialog(context),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const EditProfileScreen()),
+                        );
+                      },
                     ),
                     const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
+                    // Change Password (Dedicated Screen)
                     _buildMenuItem(
                       icon: Icons.lock_outline_rounded,
                       title: 'Change Password',
-                      onTap: () => _showChangePasswordDialog(context),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const ChangePasswordScreen()),
+                        );
+                      },
                     ),
                     const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
+                    // App Settings (Dedicated Screen)
                     _buildMenuItem(
                       icon: Icons.settings_outlined,
                       title: 'App Settings',
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => const SettingsScreen()),
                         );
                       },
                     ),
-                    const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
-                    _buildMenuItem(
-                      icon: Icons.dashboard_outlined,
-                      title: 'Admin Dashboard',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const AdminDashboardScreen()),
-                        );
-                      },
-                    ),
+                    // Only show Admin Dashboard if current user is an Admin
+                    if (isAdmin) ...[
+                      const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
+                      _buildMenuItem(
+                        icon: Icons.dashboard_outlined,
+                        title: 'Admin Dashboard',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const AdminDashboardScreen()),
+                          );
+                        },
+                      ),
+                    ],
                     const Divider(height: 1, color: AppColors.divider, indent: 16, endIndent: 16),
                     _buildMenuItem(
                       icon: Icons.help_outline_rounded,
                       title: 'Help & Support',
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Support email: support@servicehub.com')),
+                          const SnackBar(
+                              content: Text('Support email: support@servicehub.com')),
                         );
                       },
                     ),
@@ -350,7 +256,7 @@ class ProfileScreen extends StatelessWidget {
   }) {
     return ListTile(
       onTap: onTap,
-      leading: Icon(icon, color: iconColor ?? AppColors.textPrimary, size: 22),
+      leading: Icon(icon, color: iconColor ?? AppColors.primary, size: 22),
       title: Text(
         title,
         style: TextStyle(
