@@ -78,8 +78,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _saveProfile() {
+  Future<void> _saveProfile() async {
     FocusScope.of(context).unfocus();
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    await authProvider.updateProfile(
+      name: _nameController.text.trim(),
+      address: _addressController.text.trim(),
+    );
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Row(

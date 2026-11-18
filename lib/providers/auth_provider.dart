@@ -113,7 +113,13 @@ class AuthProvider with ChangeNotifier {
   }
 
   // Update Profile
-  Future<bool> updateProfile({String? name, String? phone, String? currentPassword, String? newPassword}) async {
+  Future<bool> updateProfile({
+    String? name,
+    String? phone,
+    String? address,
+    String? currentPassword,
+    String? newPassword,
+  }) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -122,6 +128,7 @@ class AuthProvider with ChangeNotifier {
       final body = <String, dynamic>{};
       if (name != null) body['name'] = name;
       if (phone != null) body['phone'] = phone;
+      if (address != null) body['address'] = address;
       if (newPassword != null) {
         body['newPassword'] = newPassword;
         if (currentPassword != null) body['currentPassword'] = currentPassword;
