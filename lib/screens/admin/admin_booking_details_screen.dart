@@ -35,7 +35,6 @@ class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isConfirmed = _currentStatus.toLowerCase() == 'confirmed';
     final isPending = _currentStatus.toLowerCase() == 'pending';
     final isCompleted = _currentStatus.toLowerCase() == 'completed';
     final isCancelled = _currentStatus.toLowerCase() == 'cancelled';
@@ -136,9 +135,9 @@ class _AdminBookingDetailsScreenState extends State<AdminBookingDetailsScreen> {
                 title: 'Customer Information',
                 icon: Icons.person_outline_rounded,
                 children: [
-                  _buildDetailRow('Customer Name', widget.booking.customerName ?? 'Shakil Ahamed'),
+                  _buildDetailRow('Customer Name', widget.booking.customerName),
                   const Divider(height: 20, color: AppColors.divider),
-                  _buildDetailRow('Phone Number', widget.booking.customerPhone ?? '+880 1712-345678'),
+                  _buildDetailRow('Phone Number', widget.booking.customerPhone),
                   const Divider(height: 20, color: AppColors.divider),
                   _buildDetailRow('Service Address', widget.booking.address.isNotEmpty ? widget.booking.address : 'House 14, Road 7, Dhanmondi, Dhaka'),
                 ],

@@ -159,10 +159,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 24),
                 // Divider "or continue with"
-                Row(
+                const Row(
                   children: [
                     Expanded(child: Divider(color: AppColors.border, thickness: 1)),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.symmetric(horizontal: 14.0),
                       child: Text(
                         'or continue with',

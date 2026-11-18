@@ -11,6 +11,7 @@ class BookingProvider with ChangeNotifier {
 
   List<BookingModel> get upcomingBookings => _upcomingBookings;
   List<BookingModel> get pastBookings => _pastBookings;
+  List<BookingModel> get bookings => [..._upcomingBookings, ..._pastBookings];
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   BookingModel? get lastCreatedBooking => _lastCreatedBooking;

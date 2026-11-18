@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/constants.dart';
 import '../../widgets/app_illustrations.dart';
 import 'ai_assistant_screen.dart';
 

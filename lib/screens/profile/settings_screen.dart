@@ -306,7 +306,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
       ),
       value: value,
-      activeColor: AppColors.primary,
+      activeThumbColor: AppColors.primary,
       onChanged: onChanged,
     );
   }

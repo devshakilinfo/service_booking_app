@@ -69,25 +69,25 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: Icon(Icons.eco_rounded, size: 44, color: AppColors.accent.withValues(alpha: 0.45)),
               ),
             ),
-            Center(
+            const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Spacer(flex: 2),
+                  Spacer(flex: 2),
                   // Modern ServiceHub Logo
-                  const ServiceHubLogo(
+                  ServiceHubLogo(
                     iconSize: 56,
                     fontSize: 28,
                     showTagline: true,
                   ),
-                  const Spacer(flex: 2),
+                  Spacer(flex: 2),
                   // Charming House on Grassy Hill with winding path
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: HouseWithGardenIllustration(height: 160),
                   ),
-                  const SizedBox(height: 24),
-                  const Text(
+                  SizedBox(height: 24),
+                  Text(
                     'Your Trusted\nService Booking Partner',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -97,8 +97,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       color: AppColors.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
+                  SizedBox(height: 8),
+                  Text(
                     'Find & book the best services\nnear you with ease.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -107,9 +107,9 @@ class _SplashScreenState extends State<SplashScreen> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const Spacer(flex: 2),
+                  Spacer(flex: 2),
                   // Circular loading indicator
-                  const SizedBox(
+                  SizedBox(
                     width: 28,
                     height: 28,
                     child: CircularProgressIndicator(
@@ -117,7 +117,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF86EFAC)),
                     ),
                   ),
-                  const SizedBox(height: 36),
+                  SizedBox(height: 36),
                 ],
               ),
             ),

@@ -417,11 +417,11 @@ class _SearchScreenState extends State<SearchScreen> {
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      Container(
+                       Container(
                         height: 28,
                         width: 28,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE8F3E6),
+                        decoration:const BoxDecoration(
+                          color:  Color(0xFFE8F3E6),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(Icons.add, size: 18, color: AppColors.primary),

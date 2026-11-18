@@ -576,10 +576,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 scale: 0.8,
                 child: Switch(
                   value: true,
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                   onChanged: (val) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Service visibility toggled')),
+                      const SnackBar(content: Text('Service visibility toggled')),
                     );
                   },
                 ),
@@ -1132,7 +1132,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     title: const Text('Auto-Confirm New Bookings',
                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
                     value: _autoConfirmBookings,
-                    activeColor: AppColors.primary,
+                    activeThumbColor: AppColors.primary,
                     onChanged: (val) => setState(() => _autoConfirmBookings = val),
                   ),
                   const Divider(height: 1, color: AppColors.divider),

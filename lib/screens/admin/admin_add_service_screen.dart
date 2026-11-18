@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../core/constants.dart';
-import '../../providers/service_provider.dart';
 
 class AdminAddServiceScreen extends StatefulWidget {
   const AdminAddServiceScreen({super.key});
@@ -121,7 +119,7 @@ class _AdminAddServiceScreenState extends State<AdminAddServiceScreen> {
                     children: [
                       Container(
                         padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: AppColors.primaryUltraLight,
                           shape: BoxShape.circle,
                         ),
@@ -286,7 +284,7 @@ class _AdminAddServiceScreenState extends State<AdminAddServiceScreen> {
                         style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
                       ),
                       value: _isVisibleToCustomers,
-                      activeColor: AppColors.primary,
+                      activeThumbColor: AppColors.primary,
                       onChanged: (val) => setState(() => _isVisibleToCustomers = val),
                     ),
                   ],

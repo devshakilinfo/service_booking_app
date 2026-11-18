@@ -29,7 +29,7 @@ class OnboardingScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 16),
               // Top decorative leaves
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Opacity(
@@ -192,7 +192,7 @@ class OnboardingScreen extends StatelessWidget {
                   Container(
                     width: 7,
                     height: 7,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.border,
                       shape: BoxShape.circle,
                     ),
@@ -201,7 +201,7 @@ class OnboardingScreen extends StatelessWidget {
                   Container(
                     width: 7,
                     height: 7,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.border,
                       shape: BoxShape.circle,
                     ),

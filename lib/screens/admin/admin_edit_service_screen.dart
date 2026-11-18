@@ -264,7 +264,7 @@ class _AdminEditServiceScreenState extends State<AdminEditServiceScreen> {
                         style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
                       ),
                       value: _isVisibleToCustomers,
-                      activeColor: AppColors.primary,
+                      activeThumbColor: AppColors.primary,
                       onChanged: (val) => setState(() => _isVisibleToCustomers = val),
                     ),
                   ],

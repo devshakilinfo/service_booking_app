@@ -233,6 +233,12 @@ class _MyBookingsScreenState extends State<MyBookingsScreen>
       statusBg = const Color(0xFFFEE2E2);
       statusColor = const Color(0xFFDC2626);
     } else if (isCompleted) {
+      statusBg = const Color(0xFFF1F5F9);
+      statusColor = const Color(0xFF64748B);
+    } else if (isConfirmed) {
+      statusBg = const Color(0xFFE8F5E9);
+      statusColor = const Color(0xFF22C55E);
+    } else {
       statusBg = const Color(0xFFF3F4F6);
       statusColor = const Color(0xFF4B5563);
     }

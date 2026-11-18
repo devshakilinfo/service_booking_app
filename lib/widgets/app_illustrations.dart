@@ -225,8 +225,8 @@ class _HouseGardenPainter extends CustomPainter {
 
     // House in Center
     final houseCenter = Offset(w * 0.5, h * 0.60);
-    final houseW = 76.0;
-    final houseH = 50.0;
+    const houseW = 76.0;
+    const houseH = 50.0;
 
     // Walls
     final wallPaint = Paint()..color = const Color(0xFFFFFDF8);

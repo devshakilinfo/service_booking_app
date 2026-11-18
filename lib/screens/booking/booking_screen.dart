@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../core/constants.dart';
 import '../../models/service_model.dart';
 import '../../providers/booking_provider.dart';
-import '../../providers/service_provider.dart';
 import 'booking_confirmed_screen.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -258,9 +257,9 @@ class _BookingScreenState extends State<BookingScreen> {
                     ),
                     const SizedBox(height: 24),
                     // Section: Select Time Slot
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           'Select Time Slot',
                           style: TextStyle(
