@@ -18,12 +18,15 @@ class _SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   late String _selectedCategory;
 
-  // Categories in Screen 6 mockup: All, Cleaning, Repair, Beauty
+  // Categories matching mockup & database: All, Cleaning, Repair, Beauty, Health, Electric, Painting
   final List<String> _categories = [
     'All',
     'Cleaning',
     'Repair',
     'Beauty',
+    'Health',
+    'Electric',
+    'Painting',
   ];
 
   @override
